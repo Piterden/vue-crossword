@@ -13,11 +13,11 @@
             <cell 
               :x="cellIdx + 1"
               :y="rowIdx + 1"
-              :id="`${cellIdx + 1}:${rowIdx + 1}`"
+              :is-blank="blanks.includes(`${cellIdx + 1}:${rowIdx + 1}`)"
               :is-active="active.cell === `${cellIdx + 1}:${rowIdx + 1}`"
               @keyup="onKeyUp"
               @keyup.left.up="onLeftPress"
-              @cellfocus="onCellFocus"
+              @cellclick="onCellClick"
               @cellinput="goNextCell"
               v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
             />
@@ -25,6 +25,8 @@
         </div>
       </div>
     </div>
+    <pre class="data">blanks: {{ blanks }}</pre>
+    <pre class="data">edit blanks: {{ isEditBlanks }}</pre>
   </div>
 </template>
 
@@ -48,6 +50,25 @@ export default {
   props: {
     gridWidth: { type: Number, default: () => 1 },
     gridHeight: { type: Number, default: () => 1 },
+    blanks: { type: Array, default: () => [] },
+    isEditBlanks: { type: Boolean },
+  },
+  
+  computed: {
+    questions () {
+      return {
+        vertical: this.verticalQuestions,
+        horizontal: this.horizontalQuestions,
+      }
+    },
+    
+    horizontalQuestions () {
+      return []
+    },
+    
+    verticalQuestions () {
+      return []
+    },
   },
   
   methods: {
@@ -56,8 +77,13 @@ export default {
         ? this.goNext(e.target)
         : e.currentTarget.value = ''
     },
-    
-    onCellFocus ({ id }) {
+
+    onCellClick ({ id }) {
+      if (this.isEditBlanks) {
+        this.$emit('updateblanks', id)
+        return
+      }
+
       if (this.isBoth(id)) {
         this.toggleWords(id)
         return
@@ -66,7 +92,7 @@ export default {
       if (this.isNeither(id)) {
         return
       }
-      
+
       this.activateWord(id)
     },
 
@@ -74,59 +100,41 @@ export default {
       this.goPrev(e.currentTarget)
     },
     
-    getNext (id) {
-      let match = id.match(/(\d+):(\d+)/)
-      let last = this.active.word[this.active.word.length - 1]
-      let next
-      
-      if (this.active.vertical) {
-        next = Number(match[2]) + 1
+    getNextId (id) {
+      const match = id.match(/(\d+):(\d+)/)
+      const last = this.active.word[this.active.word.length - 1]
+      const next = Number(match[Number(this.active.vertical) + 1]) + 1
 
-        if (next > last.split(':')[1])
-          return false
-
-        return `${match[1]}:${next}`
-      }
-      
-      next = Number(match[1]) + 1
-
-      if (next > last.split(':')[0])
+      if (next > last.split(':')[Number(this.active.vertical)])
         return false
 
-      return `${next}:${match[2]}`
+      return this.active.vertical
+        ? `${match[1]}:${next}`
+        : `${next}:${match[2]}`
     },
     
-    getPrev (id) {
-      let match = id.match(/(\d+):(\d+)/)
-      let first = this.active.word[0]
-      let prev
-      
-      if (this.active.vertical) {
-        prev = Number(match[2]) - 1
+    getPrevId (id) {
+      const match = id.match(/(\d+):(\d+)/)
+      const first = this.active.word[0]
+      const prev = Number(match[Number(this.active.vertical) + 1]) - 1
 
-        if (prev < first.split(':')[1])
-          return false
-
-        return `${match[1]}:${prev}`
-      }
-      
-      prev = Number(match[1]) - 1
-
-      if (prev < first.split(':')[0])
+      if (prev < first.split(':')[Number(this.active.vertical)])
         return false
 
-      return `${prev}:${match[2]}`
+      return this.active.vertical
+        ? `${match[1]}:${prev}`
+        : `${prev}:${match[2]}`
     },
-    
+
     goNextCell ({ id }) {
-      let next = this.getNext(id)
+      const next = this.getNextId(id)
       this.active.cell = next
       // next && next.focus() || el.blur()
       document.execCommand('selectAll')
     },
     
     goPrevCell ({ id }) {
-      let prev = this.getPrev(id)
+      const prev = this.getPrevId(id)
       this.active.cell = prev
       // prev && prev.focus() || el.blur()
       document.execCommand('selectAll')
@@ -156,7 +164,7 @@ export default {
     },
     
     updateData (key, dir) {
-      let word = this[`get${dir.capitalize()}Word`](key)
+      const word = this[`get${dir.capitalize()}Word`](key)
       
       if (word === this.active.word) {
         return true
@@ -191,11 +199,11 @@ export default {
       return type
     },
     
-    isVertical (cell) {
+    isVertical (id) {
       return !this.allStartCells('horizontal').includes(
-        this.getHorizontalStartCell(cell)
+        this.getHorizontalStartCell(id)
       ) && this.allStartCells('vertical').includes(
-        this.getVerticalStartCell(cell)
+        this.getVerticalStartCell(id)
       )
     },
     
@@ -317,12 +325,15 @@ export default {
     },
     
     getCellClass (row, col) {
-//       let classes = []
-//       let index = `${col + 1}:${row + 1}`
+      let classes = []
+      let index = `${col + 1}:${row + 1}`
 
 //       this.letterCells.includes(index)
 //         ? classes.push('letter')
 //         : classes.push('blank')
+      this.blanks.includes(index)
+        ? classes.push('blank')
+        : classes.push('letter')
 
 //       this.startCells.includes(index)
 //         ? classes.push('start')
@@ -332,7 +343,7 @@ export default {
 //         ? classes.push('active')
 //         : true
       
-//       return classes
+      return classes
     },
 
     allStartCells (direction = null) {
@@ -355,7 +366,3 @@ export default {
   },
 }
 </script>
-
-<style>
-
-</style>
