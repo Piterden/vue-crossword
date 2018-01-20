@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img width="60" src="./assets/logo.png" />
     <menu-area />
     <router-view />
   </div>
@@ -10,7 +9,7 @@
 import MenuArea from './components/MenuArea'
   
 export default {
-  name: 'app',
+  name: 'App',
   
   components: { MenuArea },
 }
@@ -34,17 +33,20 @@ export default {
       text-align center
       width 40px
       height 40px
-      &.blank
-        background #000
-      &.start
-        background #ff00be
-      &.active
-        font-weigth bold
-        background rgba(5, 55, 225, .6)
       input
         text-align center
         width 32px
         height 30px
         font-size 1.35rem
         background rgba(255, 255, 77, .6)
+      &.blank
+        background #000
+        input
+          background #000
+          cursor default
+      &.start
+        background #ff00be
+      &.active
+        font-weigth bold
+        background rgba(5, 55, 225, .6)
 </style>
