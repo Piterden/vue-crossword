@@ -3,69 +3,63 @@
     <div v-if="modeName === 'Grid'">
       <span>Grid Height: {{ width }}</span>
       <input type="range" v-model="width" size="4" min="1" max="40" />
-      <span>Grid Width: {{ height }}</span> 
+      <span>Grid Width: {{ height }}</span>
       <input type="range" v-model="height" size="4" min="1" max="40" />
     </div>
 
     <div>
       <span>You are currently editing the <b>{{ modeName }}</b></span>
       <br />
-      <div class="button" @click="modeToggle">Change</div>
+      <div class="button" @click="isEditBlanks = !isEditBlanks">Change</div>
     </div>
   </section>
 </template>
 
 <script>
 export default {
-  name: "BuilderForm",
+  name: 'BuilderForm',
 
   data: () => ({
     width: null,
     height: null,
-    isEditBlanks: true
+    isEditBlanks: true,
   }),
 
   props: {
     initWidth: { type: Number, default: () => 1 },
-    initHeight: { type: Number, default: () => 1 }
+    initHeight: { type: Number, default: () => 1 },
   },
 
-  created() {
+  created () {
     this.width = this.initWidth
     this.height = this.initHeight
   },
 
   computed: {
-    modeName() {
-      return this.isEditBlanks ? "Grid" : "Words"
-    }
-  },
-
-  methods: {
-    modeToggle() {
-      this.isEditBlanks = !this.isEditBlanks
+    modeName () {
+      return this.isEditBlanks ? 'Grid' : 'Words'
     }
   },
 
   watch: {
-    width(val) {
-      this.$emit("rebuild", {
+    width (val) {
+      this.$emit('rebuild', {
         width: Number(val),
-        height: Number(this.height)
+        height: Number(this.height),
       })
     },
 
-    height(val) {
-      this.$emit("rebuild", {
+    height (val) {
+      this.$emit('rebuild', {
         width: Number(this.width),
-        height: Number(val)
+        height: Number(val),
       })
     },
 
-    isEditBlanks(isEditBlanks) {
-      this.$emit("mode", isEditBlanks)
-    }
-  }
+    isEditBlanks (val) {
+      this.$emit('mode', val)
+    },
+  },
 }
 </script>
 

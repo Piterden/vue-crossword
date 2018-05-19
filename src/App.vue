@@ -7,10 +7,10 @@
 
 <script>
 import MenuArea from './components/MenuArea'
-  
+
 export default {
   name: 'App',
-  
+
   components: { MenuArea },
 }
 </script>
@@ -26,8 +26,8 @@ grid-border = #ccc
 
 .grid
   display inline-table
-  border-radius: .5em
-  overflow: hidden
+  border-radius .5em
+  overflow hidden
   border 1px solid grid-border
 
   .row
@@ -41,27 +41,27 @@ grid-border = #ccc
 
       &:not(:last-child)
         border-right 1px solid grid-border
-      
+
       vertical-align middle
       text-align center
-      
+
       width 40px
       height 40px
-      
+
       input
         text-align center
         width 1em
         height 1em
         font-size 1.35rem
-        text-transform: uppercase
-        border: none
+        text-transform uppercase
+        border none
 
-        transition: all .2s
+        transition all .2s
 
         width 100%
         height 100%
 
-        outline: none
+        outline none
 
       &.blank
         background-color #aaa
