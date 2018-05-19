@@ -5,10 +5,7 @@ Array.prototype.unique = function () {
   let i
 
   for (i = 0; i < l; i++) {
-    if (u.hasOwnProperty(this[i])) {
-      continue
-    }
-
+    if (u.hasOwnProperty(this[i])) continue
     a.push(this[i])
     u[this[i]] = 1
   }

@@ -17,18 +17,10 @@ export default {
   props: {
     pages: {
       type: Array,
-      default () {
-        return [
-          {
-            title: 'Builder',
-            href: '/builder',
-          },
-          {
-            title: 'Crossword',
-            href: '/crossword',
-          },
-        ]
-      },
+      default: () => [
+        { title: 'Builder', href: '/builder' },
+        { title: 'Crossword', href: '/crossword' },
+      ],
     },
   },
 }

@@ -11,7 +11,7 @@ export default new Router({
     {
       path: '/',
       name: 'page.index',
-      redirect: '/crossword',
+      redirect: '/builder',
     },
     {
       path: '/crossword',
@@ -20,7 +20,7 @@ export default new Router({
     },
     {
       path: '/builder',
-      name: 'page.builder',      
+      name: 'page.builder',
       component: BuilderPage,
     },
   ],

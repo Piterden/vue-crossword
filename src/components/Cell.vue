@@ -1,6 +1,7 @@
 <template>
   <input type="text" size="1" minlength="1" maxlength="1"
-    @click="onCellClick"
+    @click="onClick"
+    @focus="onFocus"
     @input="onInput"
   />
 </template>
@@ -10,9 +11,10 @@ export default {
   name: 'Cell',
   
   props: {
-    isActive: { type: Boolean, default () { return false } },
     x: { type: Number, required: true },
     y: { type: Number, required: true },
+    isBlank: { type: Boolean, default: () => false },
+    isActive: { type: Boolean, default: () => false },
   },
   
   computed: {
@@ -22,17 +24,24 @@ export default {
   },
   
   methods: {
-    onCellClick (e) {
-      this.$emit('cellfocus', { id: this.identifier })
+    onClick () {
+      this.$emit('cellclick', { id: this.identifier })
     },
     
-    onInput (e) {
+    onInput () {
       this.$emit('cellinput', { id: this.identifier })
+    },
+    
+    onFocus (e) {
+      if (this.$parent.isEditBlacks) {
+        e.preventDefault()
+        return false
+      } 
     },
   },
 }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
 
 </style>
