@@ -26,6 +26,10 @@ export default {
 
   components: { BuilderForm, BuilderGrid },
 
+  mounted () {
+    this.toggleMode()
+  },
+
   data: () => ({
     width: 10,
     height: 10,
@@ -39,9 +43,15 @@ export default {
       this.height = payload.height
     },
 
+    toggleMode () {
+      document.querySelector('.grid')
+        .classList
+        .toggle('blanks', this.isEditBlanks)
+    },
+
     onToggleMode (payload) {
       this.isEditBlanks = payload
-      // document.body.classList
+      this.toggleMode()
     },
 
     onBlanksUpdate (id) {
