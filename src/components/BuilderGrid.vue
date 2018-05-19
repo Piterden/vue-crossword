@@ -25,8 +25,6 @@
         </div>
       </div>
     </div>
-    <pre class="data">blanks: {{ blanks }}</pre>
-    <pre class="data">edit blanks: {{ isEditBlanks }}</pre>
   </div>
 </template>
 

@@ -1,76 +1,138 @@
 <template>
-  <div>
-    <span>Height: {{ width }}</span>
-    <input type="range" v-model="width" size="4" min="1" max="40" />
-    <span>Width: {{ height }}</span>
-    <input type="range" v-model="height" size="4" min="1" max="40" />
-    <input type="button"
-      :value="modeName"
-      @click="modeToggle"
-    />
-  </div>
+  <section>
+    <div v-if="modeName === 'Grid'">
+      <span>Grid Height: {{ width }}</span>
+      <input type="range" v-model="width" size="4" min="1" max="40" />
+      <span>Grid Width: {{ height }}</span> 
+      <input type="range" v-model="height" size="4" min="1" max="40" />
+    </div>
+
+    <div>
+      <span>You are currently editing the <b>{{ modeName }}</b></span>
+      <br />
+      <div class="button" @click="modeToggle">Change</div>
+    </div>
+  </section>
 </template>
 
 <script>
 export default {
-  name: 'BuilderForm',
-  
+  name: "BuilderForm",
+
   data: () => ({
     width: null,
     height: null,
-    isEditBlanks: true,
+    isEditBlanks: true
   }),
-  
+
   props: {
     initWidth: { type: Number, default: () => 1 },
-    initHeight: { type: Number, default: () => 1 },
+    initHeight: { type: Number, default: () => 1 }
   },
-  
-  created () {
+
+  created() {
     this.width = this.initWidth
     this.height = this.initHeight
   },
-  
+
   computed: {
-    modeName () {
-      return this.isEditBlanks ? 'Edit grid' : 'Edit words'
-    },
+    modeName() {
+      return this.isEditBlanks ? "Grid" : "Words"
+    }
   },
-  
+
   methods: {
-    modeToggle () {
+    modeToggle() {
       this.isEditBlanks = !this.isEditBlanks
-    },
+    }
   },
-  
+
   watch: {
-    width (val) {
-      this.$emit('rebuild', {
+    width(val) {
+      this.$emit("rebuild", {
         width: Number(val),
-        height: Number(this.height),
+        height: Number(this.height)
       })
     },
 
-    height (val) {
-      this.$emit('rebuild', {
+    height(val) {
+      this.$emit("rebuild", {
         width: Number(this.width),
-        height: Number(val),
+        height: Number(val)
       })
     },
-    
-    isEditBlanks (isEditBlanks) {
-      this.$emit('mode', isEditBlanks)      
-    },
-  },
+
+    isEditBlanks(isEditBlanks) {
+      this.$emit("mode", isEditBlanks)
+    }
+  }
 }
 </script>
 
 <style lang="stylus" scoped>
-*
-  font-size 1.15rem
 input
   width 100%
   margin-bottom 1rem
   border none
-  box-shadow inset 0 0 6px 1px #000
+
+section
+  display: flex
+  flex-direction: column
+
+  bottom: 0
+  right: 2em
+
+  justify-content: flex-start
+  align-items: flex-start
+
+div
+  margin: 2em 0
+
+.button
+  display: inline-flex
+  background-color: #08f
+  padding: .75em 1.5em
+
+  border-radius: 3px
+  color: white
+
+  cursor: pointer
+  opacity: 0.8
+
+  transition: all .3s
+
+  &:hover
+    opacity: 1
+
+input[type=range]
+  -webkit-appearance: none
+
+  height: 38px
+  margin: 10px 0
+
+  width: 100%
+
+input[type=range]:focus
+  outline: none
+
+input[type=range]::-webkit-slider-runnable-track
+  width: 100%
+  height: 10px
+  cursor: pointer
+  animate: 0.2s
+  background: #eee
+  border-radius: 5px
+
+input[type=range]::-webkit-slider-thumb
+  height: 2em
+  width: 2em
+  border-radius: 50%
+  background: #08f
+  cursor: pointer
+  -webkit-appearance: none
+  margin-top: -11px
+
+input[type=range]:focus::-webkit-slider-runnable-track
+  /* background: #3071A9 */
+
 </style>

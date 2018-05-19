@@ -1,17 +1,18 @@
 <template>
   <div class="page builder-page">
-    <builder-form
-      :init-width="width"
-      :init-height="height"
-      @rebuild="rebuildGrid"
-      @mode="onToggleMode"
-    />
     <builder-grid
       :grid-width="width"
       :grid-height="height"
       :blanks="blanks"
       :is-edit-blanks="isEditBlanks"
       @updateblanks="onBlanksUpdate"
+    />
+
+    <builder-form
+      :init-width="width"
+      :init-height="height"
+      @rebuild="rebuildGrid"
+      @mode="onToggleMode"
     />
   </div>
 </template>
@@ -40,7 +41,7 @@ export default {
 
     onToggleMode (payload) {
       this.isEditBlanks = payload
-      document.body.style.background = payload ? '#222' : '#fff'
+      // document.body.classList
     },
 
     onBlanksUpdate (id) {

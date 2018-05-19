@@ -25,13 +25,6 @@
         </div>
       </div>
     </div>
-    <pre class="data">letterCells: {{ letterCells }}</pre>
-    <pre class="data">questionsCells: {{ questionsCells }}</pre>
-    <pre class="data">startCells: {{ startCells }}</pre>
-    <pre class="data">active: {{ active }}</pre>
-    <pre class="data">answer: {{ answers }}</pre>
-    <pre class="data">questionsCell: {{ questionsCells }}</pre>
-    <pre class="data">question: {{ questions }}</pre>
   </div>
 </template>
 

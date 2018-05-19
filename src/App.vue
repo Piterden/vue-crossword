@@ -16,36 +16,63 @@ export default {
 </script>
 
 <style lang="stylus">
+grid-border = #ccc
+
 #app
-  font-family 'Avenir', Helvetica, Arial, sans-serif
+  font-family 'Roboto', Helvetica, Arial, sans-serif
   text-align left
   color #2c3e50
   margin 25px
+
 .grid
   display inline-table
+  border-radius: .5em
+  overflow: hidden
+  border 1px solid grid-border
+
   .row
-    // border 1px solid red
+    &:not(:last-child)
+      border-bottom 1px solid grid-border
+
     height 40px
+
     .cell
       display table-cell
-      border 1px solid blue
+
+      &:not(:last-child)
+        border-right 1px solid grid-border
+      
       vertical-align middle
       text-align center
+      
       width 40px
       height 40px
+      
       input
         text-align center
-        width 32px
-        height 30px
+        width 1em
+        height 1em
         font-size 1.35rem
-        background rgba(255, 255, 77, .6)
+        text-transform: uppercase
+        border: none
+
+        transition: all .2s
+
+        width 100%
+        height 100%
+
+        outline: none
+
       &.blank
-        background #000
+        background-color #aaa
+
         input
-          background #000
+          background-color inherit
           cursor default
+
       &.start
         background #ff00be
+
       &.active
         font-weigth bold
         background rgba(5, 55, 225, .6)
