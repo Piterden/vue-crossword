@@ -17,7 +17,7 @@
               :is-active="active.cell === `${cellIdx + 1}:${rowIdx + 1}`"
               @keyup="onKeyUp"
               @keyup.left.up="onLeftPress"
-              @cellfocus="onCellFocus"
+              @cellclick="onCellClick"
               @cellinput="goNextCell"
               v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
             />
@@ -80,7 +80,7 @@ export default {
         : e.currentTarget.value = ''
     },
     
-    onCellFocus ({ id }) {
+    onCellClick ({ id }) {
       if (this.isBoth(id)) {
         this.toggleWords(id)
         return
@@ -97,59 +97,47 @@ export default {
       this.goPrev(e.currentTarget)
     },
     
-    getNext (id) {
-      let match = id.match(/(\d+):(\d+)/)
-      let last = this.active.word[this.active.word.length - 1]
-      let next
-      
-      if (this.active.vertical) {
-        next = Number(match[2]) + 1
+    getNextId (id) {
+      const match = id.match(/(\d+):(\d+)/)
+      const last = this.active.word[this.active.word.length - 1]
 
-        if (next > last.split(':')[1])
-          return false
+      const next = this.active.vertical
+        ? Number(match[2]) + 1
+        : Number(match[1]) + 1
 
-        return `${match[1]}:${next}`
-      }
-      
-      next = Number(match[1]) + 1
-
-      if (next > last.split(':')[0])
+      if (next > last.split(':')[Number(this.active.vertical)])
         return false
 
-      return `${next}:${match[2]}`
+      return this.active.vertical
+        ? `${match[1]}:${next}`
+        : `${next}:${match[2]}`
     },
     
-    getPrev (id) {
-      let match = id.match(/(\d+):(\d+)/)
-      let first = this.active.word[0]
-      let prev
-      
-      if (this.active.vertical) {
-        prev = Number(match[2]) - 1
+    getPrevId (id) {
+      const match = id.match(/(\d+):(\d+)/)
+      const first = this.active.word[0]
 
-        if (prev < first.split(':')[1])
-          return false
+      const prev = this.active.vertical
+        ? Number(match[2]) - 1
+        : Number(match[1]) - 1
 
-        return `${match[1]}:${prev}`
-      }
-      
-      prev = Number(match[1]) - 1
-
-      if (prev < first.split(':')[0])
+      if (prev < first.split(':')[Number(this.active.vertical)])
         return false
 
-      return `${prev}:${match[2]}`
+      return this.active.vertical
+        ? `${match[1]}:${prev}`
+        : `${prev}:${match[2]}`
     },
     
     goNextCell ({ id }) {
-      let next = this.getNext(id)
+      const next = this.getNextId(id)
       this.active.cell = next
       // next && next.focus() || el.blur()
       document.execCommand('selectAll')
     },
     
     goPrevCell ({ id }) {
-      let prev = this.getPrev(id)
+      const prev = this.getPrevId(id)
       this.active.cell = prev
       // prev && prev.focus() || el.blur()
       document.execCommand('selectAll')
@@ -432,7 +420,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-
-</style>
