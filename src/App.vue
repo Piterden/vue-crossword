@@ -12,6 +12,9 @@ export default {
   name: 'App',
 
   components: { MenuArea },
+
+  mounted () {
+  }
 }
 </script>
 
@@ -29,6 +32,12 @@ grid-border = #ccc
   border-radius .5em
   overflow hidden
   border 1px solid grid-border
+
+  margin: 0 2em
+
+  &.blanks
+    input
+      cursor: pointer
 
   .row
     &:not(:last-child)

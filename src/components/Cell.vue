@@ -9,34 +9,34 @@
 <script>
 export default {
   name: 'Cell',
-  
+
   props: {
     x: { type: Number, required: true },
     y: { type: Number, required: true },
     isBlank: { type: Boolean, default: () => false },
     isActive: { type: Boolean, default: () => false },
   },
-  
+
   computed: {
     identifier () {
       return `${this.x}:${this.y}`
     },
   },
-  
+
   methods: {
-    onClick () {
+    onClick (e) {
       this.$emit('cellclick', { id: this.identifier })
     },
-    
+
     onInput () {
       this.$emit('cellinput', { id: this.identifier })
     },
-    
+
     onFocus (e) {
-      if (this.$parent.isEditBlacks) {
-        e.preventDefault()
-        return false
-      } 
+      if (this.$parent.isEditBlanks)
+      {
+        return e.target.blur()
+      }
     },
   },
 }
