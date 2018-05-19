@@ -20,7 +20,7 @@
 <script>
 import BuilderGrid from './BuilderGrid'
 import BuilderForm from './BuilderForm'
-  
+
 export default {
   name: 'BuilderPage',
 
@@ -54,3 +54,18 @@ export default {
   },
 }
 </script>
+
+<style lang="stylus">
+
+.page
+  display: flex
+  justify-content: space-between
+
+@media screen and (max-width: 500px)
+  .page
+    flex-direction: column-reverse
+
+    .grid
+      margin: 0 auto
+
+</style>

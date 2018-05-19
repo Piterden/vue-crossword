@@ -30,6 +30,8 @@ grid-border = #ccc
   overflow hidden
   border 1px solid grid-border
 
+  margin: 0 2em
+
   .row
     &:not(:last-child)
       border-bottom 1px solid grid-border
