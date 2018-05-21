@@ -3,12 +3,11 @@
   "description": "Some drafts about crossword app.",
   "version": "0.0.282",
   "dependencies": {
-    "@atomix/eslint-config": "6.4.0",
-    "eslint": "4.19.1",
     "vue": "2.5.16",
     "vue-router": "3.0.1"
   },
   "devDependencies": {
+    "@atomix/eslint-config": "^6.4.0",
     "autoprefixer": "^7.2.6",
     "babel-core": "^6.26.3",
     "babel-eslint": "^7.1.1",
@@ -27,13 +26,8 @@
     "cross-spawn": "^5.0.1",
     "css-loader": "^0.28.11",
     "cssnano": "^3.10.0",
-    "eslint": "^3.19.0",
-    "eslint-config-standard": "^6.2.1",
-    "eslint-friendly-formatter": "^3.0.0",
-    "eslint-loader": "^1.7.1",
-    "eslint-plugin-html": "^3.0.0",
-    "eslint-plugin-promise": "^3.7.0",
-    "eslint-plugin-standard": "^2.0.1",
+    "eslint": "4.19.1",
+    "eslint-plugin-vue": "^4.5.0",
     "eventsource-polyfill": "^0.9.6",
     "express": "^4.16.3",
     "extract-text-webpack-plugin": "^2.0.0",
@@ -86,10 +80,10 @@
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
-    "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
+    "unit": "node_modules/.bin/cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "node_modules/.bin/eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "engines": {
     "node": ">= 4.0.0",

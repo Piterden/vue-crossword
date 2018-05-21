@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import BuilderPage from '../components/BuilderPage'
 import CrosswordPage from '../components/CrosswordPage'
 
+
 Vue.use(Router)
 
 export default new Router({
