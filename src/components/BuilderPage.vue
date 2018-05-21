@@ -20,11 +20,15 @@
 <script>
 import BuilderGrid from './BuilderGrid'
 import BuilderForm from './BuilderForm'
-  
+
 export default {
   name: 'BuilderPage',
 
   components: { BuilderForm, BuilderGrid },
+
+  mounted () {
+    this.toggleMode()
+  },
 
   data: () => ({
     width: 10,
@@ -39,9 +43,15 @@ export default {
       this.height = payload.height
     },
 
+    toggleMode () {
+      document.querySelector('.grid')
+        .classList
+        .toggle('blanks', this.isEditBlanks)
+    },
+
     onToggleMode (payload) {
       this.isEditBlanks = payload
-      // document.body.classList
+      this.toggleMode()
     },
 
     onBlanksUpdate (id) {
@@ -54,3 +64,18 @@ export default {
   },
 }
 </script>
+
+<style lang="stylus">
+
+.page
+  display: flex
+  justify-content: space-between
+
+@media screen and (max-width: 500px)
+  .page
+    flex-direction: column-reverse
+
+    .grid
+      margin: 0 auto
+
+</style>
