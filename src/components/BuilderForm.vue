@@ -61,19 +61,20 @@ export default {
           let i = 1
           const cols = new Array(vm.width).fill(0).map((col) => i++)
 
-          cols.join(':')
-            .split(new RegExp(rowBlankCells.join('|')))
-            .filter((word) => word.length > 1)
-            .map((word) => ({
-              x: Number(word.charAt(0)),
-              y: row,
-              length: String(word).length,
-              question: '',
-              word: word,
-            }))
-            .forEach((word) => {
-              words.push(word)
-            })
+          if (cols) {
+            `:${cols.join(':')}`
+              .split(new RegExp(`:${rowBlankCells.join('|:')}`))
+              .filter((word) => word && word.match(/:/g).length > 1)
+              .map((word) => ({
+                x: Number(word.match(/^:(\d+)/)[1]),
+                y: row,
+                length: word.match(/:/g).length,
+                question: '',
+              }))
+              .forEach((word) => {
+                words.push(word)
+              })
+          }
         } else {
           words.push({
             x: 1,
