@@ -1,6 +1,6 @@
 <template>
   <div class="questions-list">
-    
+
   </div>
 </template>
 

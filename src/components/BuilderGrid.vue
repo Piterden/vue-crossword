@@ -103,8 +103,9 @@ export default {
       const last = this.active.word[this.active.word.length - 1]
       const next = Number(match[Number(this.active.vertical) + 1]) + 1
 
-      if (next > last.split(':')[Number(this.active.vertical)])
+      if (next > last.split(':')[Number(this.active.vertical)]) {
         return false
+      }
 
       return this.active.vertical
         ? `${match[1]}:${next}`
@@ -116,8 +117,9 @@ export default {
       const first = this.active.word[0]
       const prev = Number(match[Number(this.active.vertical) + 1]) - 1
 
-      if (prev < first.split(':')[Number(this.active.vertical)])
+      if (prev < first.split(':')[Number(this.active.vertical)]) {
         return false
+      }
 
       return this.active.vertical
         ? `${match[1]}:${prev}`
@@ -254,7 +256,7 @@ export default {
     },
 
     getHorizontalStartCell (id) {
-      let xy = id.split(':')
+      const xy = id.split(':')
 
       while (!this.allStartCells('horizontal').includes(id) && xy[0] > 0) {
         xy[0]--
@@ -265,7 +267,7 @@ export default {
     },
 
     getVerticalStartCell (id) {
-      let xy = id.split(':')
+      const xy = id.split(':')
 
       while (!this.allStartCells('vertical').includes(id) && xy[1] > 0) {
         xy[1]--
@@ -280,7 +282,7 @@ export default {
         return []
       }
 
-      let cells = []
+      const cells = []
       let i
 
       for (i = question.x; i < question.x + question.length; i++) {
@@ -295,7 +297,7 @@ export default {
         return []
       }
 
-      let cells = []
+      const cells = []
       let i
 
       for (i = question.y; i < question.y + question.length; i++) {
@@ -318,34 +320,34 @@ export default {
     },
 
     exact (question, id) {
-      let xy = id.split(':')
+      const xy = id.split(':')
       return question.x === Number(xy[0]) && question.y === Number(xy[1])
     },
 
     getCellClass (row, col) {
-      let classes = []
-      let index = `${col + 1}:${row + 1}`
+      const classes = []
+      const index = `${col + 1}:${row + 1}`
 
-//       this.letterCells.includes(index)
-//         ? classes.push('letter')
-//         : classes.push('blank')
+      // this.letterCells.includes(index)
+      //   ? classes.push('letter')
+      //   : classes.push('blank')
       this.blanks.includes(index)
         ? classes.push('blank')
         : classes.push('letter')
 
-//       this.startCells.includes(index)
-//         ? classes.push('start')
-//         : true
+      // this.startCells.includes(index)
+      //   ? classes.push('start')
+      //   : true
 
-//       this.active.word.includes(index)
-//         ? classes.push('active')
-//         : true
+      // this.active.word.includes(index)
+      //   ? classes.push('active')
+      //   : true
 
       return classes
     },
 
     allStartCells (direction = null) {
-      let cells = []
+      const cells = []
 
       if (!direction || direction === 'horizontal') {
         this.questions.horizontal.forEach(question => {

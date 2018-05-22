@@ -1,9 +1,9 @@
 <template>
   <section>
     <div v-if="modeName === 'Grid'">
-      <span>Grid Height: {{ width }}</span>
+      <span>Grid Height: {{width}}</span>
       <input type="range" v-model="width" size="4" min="1" max="40" />
-      <span>Grid Width: {{ height }}</span>
+      <span>Grid Width: {{height}}</span>
       <input type="range" v-model="height" size="4" min="1" max="40" />
     </div>
 
