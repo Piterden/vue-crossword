@@ -49,10 +49,6 @@ export default {
       return this.isEditBlanks ? 'Grid' : 'Words'
     },
 
-    letters () {
-
-    },
-
     horizontalWords () {
       const vm = this
       const words = []
@@ -70,13 +66,22 @@ export default {
           if (cols) {
             `:${cols.join(':')}`
               .split(new RegExp(`:${rowBlankCells.join('|:')}`))
-              .filter((word) => word && word.match(/:/g).length > 1)
-              .map((word) => ({
-                x: Number(word.match(/^:(\d+)/)[1]),
-                y: row,
-                length: word.match(/:/g).length,
-                question: '',
-              }))
+              .filter((word) => {
+                const match = word.match(/:/g)
+
+                return match ? match.length > 1 : false
+              })
+              .map((word) => {
+                const match = word.match(/:/g)
+                const length = match ? match.length : 0
+
+                return {
+                  x: Number(word.match(/^:(\d+)/)[1]),
+                  y: row,
+                  length,
+                  question: '',
+                }
+              })
               .forEach((word) => {
                 words.push(word)
               })
@@ -95,7 +100,7 @@ export default {
     },
 
     verticalWords () {
-
+      return []
     },
   },
 
