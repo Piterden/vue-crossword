@@ -3,7 +3,7 @@
     <li v-for="page in pages">
       <div class="inner">
         <router-link :to="page.href">
-          {{ page.title }}
+          {{page.title}}
         </router-link>
       </div>
     </li>
@@ -13,7 +13,7 @@
 <script>
 export default {
   name: 'MenuArea',
-  
+
   props: {
     pages: {
       type: Array,

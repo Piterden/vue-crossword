@@ -33,8 +33,7 @@ export default {
     },
 
     onFocus (e) {
-      if (this.$parent.isEditBlanks)
-      {
+      if (this.$parent.isEditBlanks) {
         return e.target.blur()
       }
     },

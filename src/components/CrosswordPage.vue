@@ -8,12 +8,12 @@
 <script>
 import CrosswordGrid from './CrosswordGrid'
 import QuestionsList from './QuestionsList'
-  
+
 export default {
   name: 'CrosswordPage',
-  
+
   components: { CrosswordGrid, QuestionsList },
-  
+
   data: () => ({
     questions: {
       horizontal: [

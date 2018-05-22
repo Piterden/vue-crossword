@@ -11,6 +11,7 @@
     <builder-form
       :init-width="width"
       :init-height="height"
+      :blanks="blanks"
       @rebuild="rebuildGrid"
       @mode="onToggleMode"
     />
@@ -38,9 +39,9 @@ export default {
   }),
 
   methods: {
-    rebuildGrid (payload) {
-      this.width = payload.width
-      this.height = payload.height
+    rebuildGrid ({ width, height }) {
+      this.width = width
+      this.height = height
     },
 
     toggleMode () {
@@ -59,7 +60,7 @@ export default {
         return this.blanks.push(id)
       }
 
-      this.blanks = this.blanks.filter(i => i !== id)
+      this.blanks = this.blanks.filter((blank) => blank !== id)
     },
   },
 }
@@ -68,14 +69,15 @@ export default {
 <style lang="stylus">
 
 .page
-  display: flex
-  justify-content: space-between
+  display flex
+  justify-content space-between
 
 @media screen and (max-width: 500px)
+
   .page
-    flex-direction: column-reverse
+    flex-direction column-reverse
 
     .grid
-      margin: 0 auto
+      margin 0 auto
 
 </style>
