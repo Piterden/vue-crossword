@@ -8,18 +8,24 @@
     </div>
 
     <div class="forms-list horizontal">
-      <word-form v-for="(word, index) in horizontalWords" :key="index" />
+      <word-form v-for="(word, index) in horizontalWords" :key="index" :word="word" />
     </div>
 
     <div class="forms-list vertical">
-      <word-form v-for="(word, index) in verticalWords" :key="index" />
+      <word-form v-for="(word, index) in verticalWords" :key="index" :word="word" />
     </div>
   </section>
 </template>
 
 <script>
+import WordForm from './WordForm'
+
 export default {
   name: 'BuilderForm',
+
+  components: {
+    WordForm,
+  },
 
   data: () => ({
     width: null,
