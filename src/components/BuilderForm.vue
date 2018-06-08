@@ -42,22 +42,22 @@ export default {
   },
 
   watch: {
-    width (val) {
+    width (value) {
       this.$emit('rebuild', {
-        width: Number(val),
+        width: Number(value),
         height: Number(this.height),
       })
     },
 
-    height (val) {
+    height (value) {
       this.$emit('rebuild', {
         width: Number(this.width),
-        height: Number(val),
+        height: Number(value),
       })
     },
 
-    isEditBlanks (val) {
-      this.$emit('mode', val)
+    isEditBlanks (value) {
+      this.$emit('mode', value)
     },
   },
 }
@@ -72,10 +72,8 @@ input
 section
   display: flex
   flex-direction: column
-
   bottom: 0
   right: 2em
-
   justify-content: flex-start
   align-items: flex-start
 
@@ -86,13 +84,10 @@ div
   display: inline-flex
   background-color: #08f
   padding: .75em 1.5em
-
   border-radius: 3px
   color: white
-
   cursor: pointer
   opacity: 0.8
-
   transition: all .3s
 
   &:hover
@@ -100,10 +95,8 @@ div
 
 input[type=range]
   -webkit-appearance: none
-
   height: 38px
   margin: 10px 0
-
   width: 100%
 
 input[type=range]:focus

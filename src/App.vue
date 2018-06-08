@@ -32,7 +32,6 @@ grid-border = #ccc
   border-radius .5em
   overflow hidden
   border 1px solid grid-border
-
   margin: 0 2em
 
   &.blanks
@@ -40,22 +39,20 @@ grid-border = #ccc
       cursor: pointer
 
   .row
+    height 40px
+
     &:not(:last-child)
       border-bottom 1px solid grid-border
 
-    height 40px
-
     .cell
       display table-cell
+      vertical-align middle
+      text-align center
+      width 40px
+      height 40px
 
       &:not(:last-child)
         border-right 1px solid grid-border
-
-      vertical-align middle
-      text-align center
-
-      width 40px
-      height 40px
 
       input
         text-align center
@@ -64,12 +61,9 @@ grid-border = #ccc
         font-size 1.35rem
         text-transform uppercase
         border none
-
         transition all .2s
-
         width 100%
         height 100%
-
         outline none
 
       &.blank

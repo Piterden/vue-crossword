@@ -59,14 +59,13 @@ export default {
         return this.blanks.push(id)
       }
 
-      this.blanks = this.blanks.filter(i => i !== id)
+      this.blanks = this.blanks.filter((i) => i !== id)
     },
   },
 }
 </script>
 
 <style lang="stylus">
-
 .page
   display: flex
   justify-content: space-between
@@ -77,5 +76,4 @@ export default {
 
     .grid
       margin: 0 auto
-
 </style>
