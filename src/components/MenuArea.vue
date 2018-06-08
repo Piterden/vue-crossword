@@ -30,6 +30,7 @@ export default {
 ul
   list-style none
   text-align left
+
   li
     display inline-block
     margin-right 20px

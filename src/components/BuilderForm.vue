@@ -105,22 +105,22 @@ export default {
   },
 
   watch: {
-    width (val) {
+    width (value) {
       this.$emit('rebuild', {
-        width: Number(val),
+        width: Number(value),
         height: Number(this.height),
       })
     },
 
-    height (val) {
+    height (value) {
       this.$emit('rebuild', {
         width: Number(this.width),
-        height: Number(val),
+        height: Number(value),
       })
     },
 
-    isEditBlanks (val) {
-      this.$emit('mode', val)
+    isEditBlanks (value) {
+      this.$emit('mode', value)
     },
   },
 }
@@ -157,32 +157,32 @@ div
     opacity 1
 
 input[type=range]
-  -webkit-appearance none
-  height 38px
-  margin 10px 0
-  width 100%
+  -webkit-appearance: none
+  height: 38px
+  margin: 10px 0
+  width: 100%
 
-  &:focus
-    outline none
+input[type=range]:focus
+  outline: none
 
-  &::-webkit-slider-runnable-track
-    width 100%
-    height 10px
-    cursor pointer
-    animate 0.2s
-    background #eee
-    border-radius 5px
+input[type=range]::-webkit-slider-runnable-track
+  width: 100%
+  height: 10px
+  cursor: pointer
+  animate: 0.2s
+  background: #eee
+  border-radius: 5px
 
-  &::-webkit-slider-thumb
-    height 2em
-    width 2em
-    border-radius 50%
-    background #08f
-    cursor pointer
-    -webkit-appearance none
-    margin-top -11px
+input[type=range]::-webkit-slider-thumb
+  height: 2em
+  width: 2em
+  border-radius: 50%
+  background: #08f
+  cursor: pointer
+  -webkit-appearance: none
+  margin-top: -11px
 
-// input[type=range]:focus::-webkit-slider-runnable-track
+input[type=range]:focus::-webkit-slider-runnable-track
   /* background: #3071A9 */
 
 </style>
