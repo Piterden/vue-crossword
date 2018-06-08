@@ -1,4 +1,15 @@
-extends: '@atomix/eslint-config'
+extends: vue
+parser: vue-eslint-parser
+parserOptions:
+  ecmaVersion: 6
+  allowImportExportEverywhere: true
+plugins:
+  - vue
 rules:
   no-console: 0
+  no-extend-native: 0
+  comma-dangle:
+    - 2
+    - only-multiline
   unicorn/filename-case: 0
+  eol-last: 0
