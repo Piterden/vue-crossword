@@ -1,6 +1,6 @@
 <template>
   <section>
-    <div v-if="modeName === 'Grid'">
+    <div>
       <span>Grid Height: {{ width }}</span>
       <input type="range" v-model="width" size="4" min="1" max="40" />
       <span>Grid Width: {{ height }}</span>
@@ -39,7 +39,6 @@ export default {
     return {
       width: this.initWidth,
       height: this.initHeight,
-      isEditBlanks: true,
     }
   },
 
@@ -50,10 +49,6 @@ export default {
   },
 
   computed: {
-    modeName () {
-      return this.isEditBlanks ? 'Grid' : 'Words'
-    },
-
     horizontalWords () {
       const words = []
       let row = 1
@@ -160,10 +155,6 @@ export default {
         width: Number(this.width),
         height: Number(value),
       })
-    },
-
-    isEditBlanks (value) {
-      this.$emit('mode', value)
     },
   },
 }
