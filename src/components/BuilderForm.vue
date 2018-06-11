@@ -64,15 +64,15 @@ export default {
           const cols = new Array(vm.width).fill(0).map((col) => i++)
 
           if (cols) {
-            `:${cols.join(':')}`
-              .split(new RegExp(`:${rowBlankCells.join('|:')}`))
+            `:${cols.join('::')}:`
+              .split(new RegExp(`:${rowBlankCells.join(':|:')}:`))
               .filter((word) => {
-                const match = word.match(/:/g)
+                const match = word.match(/:\d+:/g)
 
                 return match ? match.length > 1 : false
               })
               .map((word) => {
-                const match = word.match(/:/g)
+                const match = word.match(/:\d+:/g)
                 const length = match ? match.length : 0
 
                 return {
