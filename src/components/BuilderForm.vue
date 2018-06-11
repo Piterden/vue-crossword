@@ -35,21 +35,18 @@ export default {
     WordForm,
   },
 
-  data: () => ({
-    width: null,
-    height: null,
-    isEditBlanks: true,
-  }),
+  data () {
+    return {
+      width: this.initWidth,
+      height: this.initHeight,
+      isEditBlanks: true,
+    }
+  },
 
   props: {
     blanks: { type: Array, default: () => [] },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
-  },
-
-  created () {
-    this.width = this.initWidth
-    this.height = this.initHeight
   },
 
   computed: {
