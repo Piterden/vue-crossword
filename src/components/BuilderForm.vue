@@ -1,18 +1,26 @@
 <template>
   <section>
     <div v-if="modeName === 'Grid'">
-      <span>Grid Height: {{width}}</span>
+      <span>Grid Height: {{ width }}</span>
       <input type="range" v-model="width" size="4" min="1" max="40" />
-      <span>Grid Width: {{height}}</span>
+      <span>Grid Width: {{ height }}</span>
       <input type="range" v-model="height" size="4" min="1" max="40" />
     </div>
 
     <div class="forms-list horizontal">
-      <word-form v-for="(word, index) in horizontalWords" :key="index" :word="word" />
+      <word-form
+        v-for="(word, index) in horizontalWords"
+        :key="index"
+        :word="word"
+      />
     </div>
 
     <div class="forms-list vertical">
-      <word-form v-for="(word, index) in verticalWords" :key="index" :word="word" />
+      <word-form 
+        v-for="(word, index) in verticalWords"
+        :key="index"
+        :word="word"
+      />
     </div>
   </section>
 </template>
@@ -70,19 +78,16 @@ export default {
 
                 return match ? match.length > 1 : false
               })
-              .map((word) => {
+              .forEach((word) => {
                 const match = word.match(/:\d+:/g)
                 const length = match ? match.length : 0
 
-                return {
+                words.push({
                   x: Number(word.match(/^:(\d+)/)[1]),
                   y: row,
                   length,
                   question: '',
-                }
-              })
-              .forEach((word) => {
-                words.push(word)
+                })
               })
           }
         } else {
@@ -99,7 +104,49 @@ export default {
     },
 
     verticalWords () {
-      return []
+      const words = []
+      let col = 1
+
+      for (col; col <= this.width; col++) {
+        const colBlankCells = this.blanks
+          .filter((cell) => Number(cell.split(':')[0]) === col)
+          .map((cell) => Number(cell.split(':')[1]))
+
+        if (colBlankCells.length > 0) {
+          let i = 1
+          const rows = new Array(this.height).fill(0).map((row) => i++)
+
+          if (rows) {
+            `:${rows.join('::')}:`
+              .split(new RegExp(`:${colBlankCells.join(':|:')}:`))
+              .filter((word) => {
+                const match = word.match(/:\d+:/g)
+
+                return match ? match.length > 1 : false
+              })
+              .forEach((word) => {
+                const match = word.match(/:\d+:/g)
+                const length = match ? match.length : 0
+
+                words.push({
+                  x: col,
+                  y: Number(word.match(/^:(\d+)/)[1]),
+                  length,
+                  question: '',
+                })
+              })
+          }
+        } else {
+          words.push({
+            x: col,
+            y: 1,
+            length: this.height,
+            question: '',
+          })
+        }
+      }
+
+      return words
     },
   },
 
