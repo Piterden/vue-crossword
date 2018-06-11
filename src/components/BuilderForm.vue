@@ -50,18 +50,17 @@ export default {
     },
 
     horizontalWords () {
-      const vm = this
       const words = []
       let row = 1
 
-      for (row; row <= vm.height; row++) {
-        const rowBlankCells = vm.blanks
+      for (row; row <= this.height; row++) {
+        const rowBlankCells = this.blanks
           .filter((cell) => Number(cell.split(':')[1]) === row)
           .map((cell) => Number(cell.split(':')[0]))
 
         if (rowBlankCells.length > 0) {
           let i = 1
-          const cols = new Array(vm.width).fill(0).map((col) => i++)
+          const cols = new Array(this.width).fill(0).map((col) => i++)
 
           if (cols) {
             `:${cols.join('::')}:`
@@ -90,7 +89,7 @@ export default {
           words.push({
             x: 1,
             y: row,
-            length: vm.width,
+            length: this.width,
             question: '',
           })
         }
