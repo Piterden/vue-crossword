@@ -16,7 +16,7 @@
     </div>
 
     <div class="forms-list vertical">
-      <word-form 
+      <word-form
         v-for="(word, index) in verticalWords"
         :key="index"
         :word="word"
