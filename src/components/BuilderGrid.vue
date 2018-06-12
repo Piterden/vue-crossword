@@ -46,27 +46,10 @@ export default {
   }),
 
   props: {
-    gridWidth: { type: Number, default: () => 1 },
     gridHeight: { type: Number, default: () => 1 },
+    gridWidth: { type: Number, default: () => 1 },
     blanks: { type: Array, default: () => [] },
     isEditBlanks: { type: Boolean },
-  },
-
-  computed: {
-    questions () {
-      return {
-        vertical: this.verticalQuestions,
-        horizontal: this.horizontalQuestions,
-      }
-    },
-
-    horizontalQuestions () {
-      return []
-    },
-
-    verticalQuestions () {
-      return []
-    },
   },
 
   methods: {
