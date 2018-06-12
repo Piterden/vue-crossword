@@ -71,17 +71,6 @@ export default {
 
     onCellClick ({ id }) {
       this.$emit('updateblanks', id)
-
-      // if (this.isBoth(id)) {
-      //   this.toggleWords(id)
-      //   return
-      // }
-
-      // if (this.isNeither(id)) {
-      //   return
-      // }
-
-      // this.activateWord(id)
     },
 
     onLeftPress (e) {
@@ -181,8 +170,9 @@ export default {
           return true
         }
 
-        type =
-          prev.split(':')[0] === cell.split(':')[0] ? 'vertical' : 'horizontal'
+        type = prev.split(':')[0] === cell.split(':')[0]
+          ? 'vertical'
+          : 'horizontal'
       })
 
       return type

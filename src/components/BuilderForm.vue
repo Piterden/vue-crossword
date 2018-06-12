@@ -13,7 +13,11 @@
         <word-form
           v-for="(word, index) in horizontalWords"
           :key="index"
-          :word="word"
+          :x="word.x"
+          :y="word.y"
+          :length="word.length"
+          :number="word.index"
+          :is-vertical="false"
         />
       </div>
     </div>
@@ -24,7 +28,11 @@
         <word-form
           v-for="(word, index) in verticalWords"
           :key="index"
-          :word="word"
+          :x="word.x"
+          :y="word.y"
+          :length="word.length"
+          :number="word.index"
+          :is-vertical="true"
         />
       </div>
     </div>
