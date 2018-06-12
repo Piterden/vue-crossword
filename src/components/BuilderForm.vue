@@ -31,9 +31,7 @@ import WordForm from './WordForm'
 export default {
   name: 'BuilderForm',
 
-  components: {
-    WordForm,
-  },
+  components: { WordForm },
 
   data () {
     return {

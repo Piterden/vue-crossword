@@ -61,7 +61,7 @@ export default {
 
     getNumber (x, y) {
       const titleCell = this.getTitleCell(x, y)
-      return titleCell ? titleCell.index : null 
+      return titleCell ? titleCell.index : null
     },
 
     onKeyUp (e) {
