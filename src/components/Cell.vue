@@ -1,9 +1,12 @@
 <template>
-  <input type="text" size="1" minlength="1" maxlength="1"
-    @click="onClick"
-    @focus="onFocus"
-    @input="onInput"
-  />
+  <div>
+    <sup>{{ number }}</sup>
+    <input type="text" size="1" minlength="1" maxlength="1"
+      @click="onClick"
+      @focus="onFocus"
+      @input="onInput"
+    />
+  </div>
 </template>
 
 <script>
@@ -15,6 +18,7 @@ export default {
     y: { type: Number, required: true },
     isBlank: { type: Boolean, default: () => false },
     isActive: { type: Boolean, default: () => false },
+    number: { type: Number, default: () => 0 },
   },
 
   computed: {
@@ -42,5 +46,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+div
+  position relative
 
+  sup
+    position absolute
+    top -5px
+    right 2px
+    font-size 10px
+    color blue
 </style>

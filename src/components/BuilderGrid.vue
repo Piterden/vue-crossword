@@ -13,6 +13,7 @@
             <cell
               :x="cellIdx + 1"
               :y="rowIdx + 1"
+              :number="getNumber(cellIdx + 1, rowIdx + 1)"
               :is-blank="blanks.includes(`${cellIdx + 1}:${rowIdx + 1}`)"
               :is-active="active.cell === `${cellIdx + 1}:${rowIdx + 1}`"
               @keyup="onKeyUp"
@@ -46,6 +47,7 @@ export default {
   }),
 
   props: {
+    firstLetters: { type: Array, default: () => [] },
     gridHeight: { type: Number, default: () => 1 },
     gridWidth: { type: Number, default: () => 1 },
     blanks: { type: Array, default: () => [] },
@@ -53,6 +55,15 @@ export default {
   },
 
   methods: {
+    getTitleCell (x, y) {
+      return this.firstLetters.find((word) => word.x === +x && word.y === +y)
+    },
+
+    getNumber (x, y) {
+      const titleCell = this.getTitleCell(x, y)
+      return titleCell ? titleCell.index : null 
+    },
+
     onKeyUp (e) {
       e.target.value.match(/[A-Za-zА-Яа-я]/)
         ? this.goNext(e.target)

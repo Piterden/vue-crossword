@@ -4,10 +4,11 @@
       :grid-width="width"
       :grid-height="height"
       :blanks="blanks"
+      :first-letters="firstLetters"
       :is-edit-blanks="isEditBlanks"
       @updateblanks="onBlanksUpdate"
     />
-    <div v-html="firstLetters"></div>
+
     <builder-form
       :init-width="width"
       :init-height="height"
@@ -171,7 +172,8 @@ export default {
 
           return acc
         }, [])
-        .sort((a, b) => a.x === b.x ? a.y - b.y : a.x - b.x)
+        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
+        .map((word, index) => ({ ...word, index: index + 1 }))
     },
   },
 }
