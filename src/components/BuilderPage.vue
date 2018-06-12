@@ -71,14 +71,14 @@ export default {
       const words = []
       let row = 1
 
-      for (row; row <= this.height; row++) {
+      for (row; row <= this.width; row++) {
         const rowBlankCells = this.blanks
           .filter((cell) => Number(cell.split(':')[1]) === row)
           .map((cell) => Number(cell.split(':')[0]))
 
         if (rowBlankCells.length > 0) {
           let i = 1
-          const cols = new Array(this.width).fill(0).map((col) => i++)
+          const cols = new Array(this.height).fill(0).map((col) => i++)
 
           if (cols) {
             `:${cols.join('::')}:`
@@ -117,14 +117,14 @@ export default {
       const words = []
       let col = 1
 
-      for (col; col <= this.width; col++) {
+      for (col; col <= this.height; col++) {
         const colBlankCells = this.blanks
           .filter((cell) => Number(cell.split(':')[0]) === col)
           .map((cell) => Number(cell.split(':')[1]))
 
         if (colBlankCells.length > 0) {
           let i = 1
-          const rows = new Array(this.height).fill(0).map((row) => i++)
+          const rows = new Array(this.width).fill(0).map((row) => i++)
 
           if (rows) {
             `:${rows.join('::')}:`
