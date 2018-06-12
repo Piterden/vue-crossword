@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sup>{{ number }}</sup>
+    <sup class="word-start">{{ number }}</sup>
     <input type="text" size="1" minlength="1" maxlength="1"
       @click="onClick"
       @focus="onFocus"
@@ -49,7 +49,7 @@ export default {
 div
   position relative
 
-  sup
+  .word-start
     position absolute
     top -5px
     right 2px

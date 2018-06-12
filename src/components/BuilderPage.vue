@@ -4,18 +4,16 @@
       :grid-width="width"
       :grid-height="height"
       :blanks="blanks"
-      :first-letters="firstLetters"
-      :is-edit-blanks="isEditBlanks"
+      :words="withFirstLetters(words)"
       @updateblanks="onBlanksUpdate"
     />
 
     <builder-form
       :init-width="width"
       :init-height="height"
-      :horizontal-words="horizontalWords"
-      :vertical-words="verticalWords"
+      :horizontal-words="withFirstLetters(horizontalWords)"
+      :vertical-words="withFirstLetters(verticalWords)"
       @rebuild="rebuildGrid"
-      @mode="onToggleMode"
     />
   </div>
 </template>
@@ -29,15 +27,10 @@ export default {
 
   components: { BuilderForm, BuilderGrid },
 
-  mounted () {
-    this.toggleMode()
-  },
-
   data: () => ({
     width: 10,
     height: 10,
     blanks: [],
-    isEditBlanks: true,
   }),
 
   methods: {
@@ -46,23 +39,25 @@ export default {
       this.height = height
     },
 
-    toggleMode () {
-      document.querySelector('.grid')
-        .classList
-        .toggle('blanks', this.isEditBlanks)
-    },
-
-    onToggleMode (payload) {
-      this.isEditBlanks = payload
-      this.toggleMode()
-    },
-
     onBlanksUpdate (id) {
       if (!this.blanks.includes(id)) {
         return this.blanks.push(id)
       }
 
       this.blanks = this.blanks.filter((blank) => blank !== id)
+    },
+
+    withFirstLetters (words) {
+      return words
+        .reduce((acc, cur) => {
+          if (!acc.find((w) => w.x === cur.x && w.y === cur.y)) {
+            acc.push(cur)
+          }
+
+          return acc
+        }, [])
+        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
+        .map((word, index) => ({ ...word, index: index + 1 }))
     },
   },
 
@@ -95,6 +90,7 @@ export default {
                 words.push({
                   x: Number(word.match(/^:(\d+)/)[1]),
                   y: row,
+                  type: 'horizontal',
                   length,
                   question: '',
                 })
@@ -104,6 +100,7 @@ export default {
           words.push({
             x: 1,
             y: row,
+            type: 'horizontal',
             length: this.width,
             question: '',
           })
@@ -141,6 +138,7 @@ export default {
                 words.push({
                   x: col,
                   y: Number(word.match(/^:(\d+)/)[1]),
+                  type: 'vertical',
                   length,
                   question: '',
                 })
@@ -150,6 +148,7 @@ export default {
           words.push({
             x: col,
             y: 1,
+            type: 'vertical',
             length: this.height,
             question: '',
           })
@@ -160,20 +159,10 @@ export default {
     },
 
     words () {
-      return [...this.horizontalWords, ...this.verticalWords]
-    },
-
-    firstLetters () {
-      return this.words
-        .reduce((acc, cur) => {
-          if (!acc.find((w) => w.x === cur.x && w.y === cur.y)) {
-            acc.push(cur)
-          }
-
-          return acc
-        }, [])
-        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
-        .map((word, index) => ({ ...word, index: index + 1 }))
+      return [
+        ...this.horizontalWords,
+        ...this.verticalWords,
+      ]
     },
   },
 }

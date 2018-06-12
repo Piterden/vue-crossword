@@ -7,20 +7,26 @@
       <input type="range" v-model="height" size="4" min="1" max="40" />
     </div>
 
-    <div class="forms-list horizontal">
-      <word-form
-        v-for="(word, index) in horizontalWords"
-        :key="index"
-        :word="word"
-      />
+    <div class="forms-list-wrapper horizontal">
+      <label>Horizontal questions:</label>
+      <div class="forms-list">
+        <word-form
+          v-for="(word, index) in horizontalWords"
+          :key="index"
+          :word="word"
+        />
+      </div>
     </div>
 
-    <div class="forms-list vertical">
-      <word-form
-        v-for="(word, index) in verticalWords"
-        :key="index"
-        :word="word"
-      />
+    <div class="forms-list-wrapper vertical">
+      <label>Vertical questions:</label>
+      <div class="forms-list">
+        <word-form
+          v-for="(word, index) in verticalWords"
+          :key="index"
+          :word="word"
+        />
+      </div>
     </div>
   </section>
 </template>

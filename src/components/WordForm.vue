@@ -1,10 +1,12 @@
 <template>
   <div>
-    <input type="text" v-model="question" />
+    <span class="index">{{ word.index }}</span>
+    <textarea type="text" v-model="question"></textarea>
     <div class="answer-letters">
       <input type="text" size="1"
         v-for="(letter, index) in cells"
         v-model="answer[index]"
+        :key="index"
       />
     </div>
   </div>

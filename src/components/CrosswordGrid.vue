@@ -2,12 +2,12 @@
   <div class="grid">
     <div class="inner">
       <div class="row"
-        v-for="row, rowIdx in gridWidth"
+        v-for="(row, rowIdx) in gridWidth"
         :key="rowIdx"
       >
         <div class="inner">
           <div :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
-            v-for="cell, cellIdx in gridHeight"
+            v-for="(cell, cellIdx) in gridHeight"
             :key="`${cellIdx + 1}:${rowIdx + 1}`"
           >
             <cell
