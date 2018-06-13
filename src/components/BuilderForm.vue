@@ -16,7 +16,7 @@
           :x="word.x"
           :y="word.y"
           :length="word.length"
-          :number="word.index"
+          :index="word.index"
           :is-vertical="false"
         />
       </div>
@@ -31,7 +31,7 @@
           :x="word.x"
           :y="word.y"
           :length="word.length"
-          :number="word.index"
+          :index="word.index"
           :is-vertical="true"
         />
       </div>

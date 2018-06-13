@@ -1,11 +1,11 @@
 <template>
   <div>
-    <span class="index">{{ number }}</span>
+    <span class="index">{{ index }}</span>
 
     <div class="answer-letters">
       <div class="letter"
-        v-for="(letter, index) of cells"
-        :key="index"
+        v-for="(letter, idx) of cells"
+        :key="idx"
       >
         <input type="text" size="1" minlength="1" maxlength="1"
           v-model="answer[index]"
@@ -36,8 +36,8 @@ export default {
   props: {
     x: { type: Number, default: () => 0 },
     y: { type: Number, default: () => 0 },
+    index: { type: Number, default: () => 0 },
     length: { type: Number, default: () => 0 },
-    number: { type: Number, default: () => 0 },
     isVertical: { type: Boolean, default: () => false },
   },
 
