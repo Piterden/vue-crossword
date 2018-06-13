@@ -4,15 +4,14 @@
       :grid-width="width"
       :grid-height="height"
       :blanks="blanks"
-      :words="withFirstLetters(words)"
+      :words="words"
       @updateblanks="onBlanksUpdate"
     />
 
     <builder-form
       :init-width="width"
       :init-height="height"
-      :horizontal-words="withFirstLetters(horizontalWords)"
-      :vertical-words="withFirstLetters(verticalWords)"
+      :words="words"
       @rebuild="rebuildGrid"
     />
   </div>
@@ -47,8 +46,8 @@ export default {
       this.blanks = this.blanks.filter((blank) => blank !== id)
     },
 
-    withFirstLetters (words) {
-      return words
+    addIndexes (startCells) {
+      return startCells
         .reduce((acc, cur) => {
           if (!acc.find((w) => w.x === cur.x && w.y === cur.y)) {
             acc.push(cur)
@@ -159,10 +158,10 @@ export default {
     },
 
     words () {
-      return [
+      return this.addIndexes([
         ...this.horizontalWords,
         ...this.verticalWords,
-      ]
+      ])
     },
   },
 }

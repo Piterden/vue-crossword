@@ -55,10 +55,21 @@ export default {
   },
 
   props: {
+    words: { type: Array, default: () => [] },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
-    verticalWords: { type: Array, default: () => [] },
-    horizontalWords: { type: Array, default: () => [] },
+    // verticalWords: { type: Array, default: () => [] },
+    // horizontalWords: { type: Array, default: () => [] },
+  },
+
+  computed: {
+    verticalWords () {
+      return this.words.filter(({ type }) => type === 'vertical')
+    },
+
+    horizontalWords () {
+      return this.words.filter(({ type }) => type === 'horizontal')
+    },
   },
 
   watch: {
