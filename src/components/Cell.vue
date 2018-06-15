@@ -5,6 +5,7 @@
       @click="onClick"
       @focus="onFocus"
       @input="onInput"
+      readonly
     />
   </div>
 </template>
@@ -48,6 +49,10 @@ export default {
 <style lang="stylus" scoped>
 div
   position relative
+  cursor pointer
+
+  input
+    cursor pointer
 
   .word-start
     position absolute

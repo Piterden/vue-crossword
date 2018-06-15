@@ -1,7 +1,5 @@
 <template>
   <div>
-    <span class="index">{{ index }}</span>
-
     <div class="answer-letters">
       <div class="letter"
         v-for="(letter, idx) of cells"
@@ -14,8 +12,10 @@
     </div>
 
     <div class="question">
-      <textarea type="text" class="textarea"
+      <textarea type="text" class="textarea" rows="5"
         v-model="question"
+        :placeholder="`${this.index}. `"
+        @focus="!question ? question = '1. ' : question"
       ></textarea>
     </div>
   </div>
@@ -56,17 +56,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-.letter
+.answer-letters
   float left
-  width 20px
-
-  > input
-    width 17px
-
-.question
   width 100%
 
-  .textarea
-    margin-top 10px
+  .letter
+    float left
+    width 20px
+
+    > input
+      width 17px
+
+  .question
     width 100%
+    background #eee
+
+    .textarea
+      margin-top 10px
+      width calc(100% - 6px)
 </style>
