@@ -58,8 +58,6 @@ export default {
     words: { type: Array, default: () => [] },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
-    // verticalWords: { type: Array, default: () => [] },
-    // horizontalWords: { type: Array, default: () => [] },
   },
 
   computed: {
@@ -90,27 +88,18 @@ export default {
 }
 </script>
 
-<style lang="stylus" scoped>
-input
-  width 100%
-  margin-bottom 1rem
-  border none
-
-/* .builder-form.page-inner
+<style lang="stylus">
+.builder-form.page-inner
   display flex
   flex-direction column
   bottom 0
   right 2em
   justify-content flex-start
-  align-items flex-start */
-
-/* div
-  margin 2em 0 */
+  align-items flex-start
 
 .button
-  display inline-flex
+  display flex
   background-color #08f
-  padding .75em 1.5em
   border-radius 3px
   color #fff
   cursor pointer
@@ -120,12 +109,9 @@ input
   &:hover
     opacity 1
 
-
-.cell.blank
-  > div
-    input
-      background #ddd
-      border none
+.cell.blank > div input
+  background #ddd
+  border none
 
 input[type=range]
   -webkit-appearance: none
@@ -155,5 +141,4 @@ input[type=range]::-webkit-slider-thumb
 
 input[type=range]:focus::-webkit-slider-runnable-track
   /* background: #3071A9 */
-
 </style>

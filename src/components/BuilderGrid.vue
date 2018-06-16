@@ -351,14 +351,16 @@ export default {
 </script>
 
 <style lang="stylus">
-.cell
-  display inline-flex
-  margin -2px -1px
-  padding 0
-  width 15px
-  heigth 2
+.builder-grid.page-inner
+  display block
+  float left
+  width 50%
+  white-space nowrap
 
-  .word-start
-    position absolute
-    top 10px
+  .cell
+    display inline-flex
+    margin -2px -1px
+    padding 0
+    width 30px
+    heigth 2
 </style>

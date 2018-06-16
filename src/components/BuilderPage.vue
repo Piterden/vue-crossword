@@ -172,11 +172,6 @@ export default {
   display flex
   flex-direction row
 
-  .page-inner
-    display block
-    float left
-    width 50%
-
 @media screen and (max-width: 500px)
   .page
     flex-direction column-reverse

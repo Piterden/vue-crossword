@@ -48,15 +48,19 @@ export default {
 
 <style lang="stylus" scoped>
 div
+  display inline-flex
   position relative
   cursor pointer
+  width 40px
+  height 40px
 
   input
     cursor pointer
+    width 100%
 
   .word-start
     position absolute
-    top -5px
+    top 1px
     right 2px
     font-size 10px
     color blue
