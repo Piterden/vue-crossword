@@ -89,13 +89,13 @@ export default {
 </script>
 
 <style lang="stylus">
-.builder-form.page-inner
-  display flex
-  flex-direction column
-  bottom 0
-  right 2em
-  justify-content flex-start
-  align-items flex-start
+.page-inner
+  width calc(50% - 30px)
+  margin-right 30px
+
+  &.builder-form
+    display flex
+    flex-direction column
 
 .button
   display flex
@@ -129,6 +129,7 @@ input[type=range]::-webkit-slider-runnable-track
   animate: 0.2s
   background: #eee
   border-radius: 5px
+  transition background .6s ease-out
 
 input[type=range]::-webkit-slider-thumb
   height: 2em
@@ -140,5 +141,5 @@ input[type=range]::-webkit-slider-thumb
   margin-top: -11px
 
 input[type=range]:focus::-webkit-slider-runnable-track
-  /* background: #3071A9 */
+  background: #f001A9
 </style>
