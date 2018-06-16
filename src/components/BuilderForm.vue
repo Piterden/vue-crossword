@@ -1,6 +1,6 @@
 <template>
-  <section>
-    <div>
+  <div class="builder-form page-inner">
+    <div class="controls">
       <span>Grid Height: {{ width }}</span>
       <input type="range" v-model="width" size="4" min="1" max="40" />
       <span>Grid Width: {{ height }}</span>
@@ -36,7 +36,7 @@
         />
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -96,16 +96,16 @@ input
   margin-bottom 1rem
   border none
 
-section
+/* .builder-form.page-inner
   display flex
   flex-direction column
   bottom 0
   right 2em
   justify-content flex-start
-  align-items flex-start
+  align-items flex-start */
 
-div
-  margin 2em 0
+/* div
+  margin 2em 0 */
 
 .button
   display inline-flex
@@ -119,6 +119,13 @@ div
 
   &:hover
     opacity 1
+
+
+.cell.blank
+  > div
+    input
+      background #ddd
+      border none
 
 input[type=range]
   -webkit-appearance: none

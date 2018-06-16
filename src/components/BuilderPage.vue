@@ -1,18 +1,18 @@
 <template>
   <div class="page builder-page">
+    <builder-form
+      :init-width="width"
+      :init-height="height"
+      :words="words"
+      @rebuild="rebuildGrid"
+    />
+
     <builder-grid
       :grid-width="width"
       :grid-height="height"
       :blanks="blanks"
       :words="words"
       @updateblanks="onBlanksUpdate"
-    />
-
-    <builder-form
-      :init-width="width"
-      :init-height="height"
-      :words="words"
-      @rebuild="rebuildGrid"
     />
   </div>
 </template>
@@ -168,14 +168,19 @@ export default {
 </script>
 
 <style lang="stylus">
-.page
+.builder-page
   display flex
-  justify-content space-between
+  flex-direction row
+
+  .page-inner
+    display block
+    float left
+    width 50%
 
 @media screen and (max-width: 500px)
   .page
     flex-direction column-reverse
 
-    .grid
+    .builder-grid
       margin 0 auto
 </style>

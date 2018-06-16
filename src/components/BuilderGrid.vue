@@ -1,5 +1,5 @@
 <template>
-  <div class="grid">
+  <div class="builder-grid page-inner">
     <div class="inner">
       <div class="row"
         v-for="(row, rowIdx) in gridWidth"
@@ -349,3 +349,16 @@ export default {
   },
 }
 </script>
+
+<style lang="stylus">
+.cell
+  display inline-flex
+  margin -2px -1px
+  padding 0
+  width 15px
+  heigth 2
+
+  .word-start
+    position absolute
+    top 10px
+</style>
