@@ -1,15 +1,18 @@
-extends: vue
+root: true
+extends:
+  - '@atomix'
 parser: vue-eslint-parser
 parserOptions:
-  ecmaVersion: 6
+  ecmaVersion: 2017
   allowImportExportEverywhere: true
 plugins:
   - vue
 rules:
-  no-console: 0
-  no-extend-native: 0
+  # no-console: 0
+  # no-extend-native: 0
   comma-dangle:
-    - 2
-    - only-multiline
-  unicorn/filename-case: 0
-  eol-last: 0
+    - error
+    - always-multiline
+  unicorn/filename-case: off
+  no-trailing-spaces: off
+  eol-last: off
