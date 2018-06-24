@@ -14,8 +14,8 @@
     <div class="question">
       <textarea type="text" class="textarea" rows="5"
         v-model="question"
-        :placeholder="`${this.index}. `"
-        @focus="!question ? question = '1. ' : question"
+        :placeholder="`${questionNumber}. `"
+        @focus="!question ? question = `${questionNumber}. ` : question"
       ></textarea>
     </div>
   </div>
@@ -30,6 +30,7 @@ export default {
       question: '',
       answer: new Array(this.length).fill(null),
       active: null,
+      questionNumber: null,
     }
   },
 
@@ -39,6 +40,12 @@ export default {
     index: { type: Number, default: () => 0 },
     length: { type: Number, default: () => 0 },
     isVertical: { type: Boolean, default: () => false },
+  },
+
+  mounted () {
+    this.questionNumber = this.isVertical
+      ? this.index - 1
+      : this.index
   },
 
   computed: {
