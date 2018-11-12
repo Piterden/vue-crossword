@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="answer-letters">
+      <div>{{ index }}</div>
       <div
         v-for="(letter, idx) of cells"
         :key="idx"
@@ -20,11 +21,11 @@
 
     <div class="question">
       <textarea
+        ref="question"
         v-model="question"
         type="text"
         class="textarea"
         rows="5"
-        :placeholder="`${index}. `"
       ></textarea>
     </div>
   </div>
@@ -110,6 +111,20 @@ export default {
         value: e.target.value,
         ...this.getCellPosition(e.target.dataset.idx),
       })
+
+      if (e.target.value !== '') {
+        this.$nextTick(() => {
+          const nextEl = e.target.parentElement.nextElementSibling
+
+          if (nextEl) {
+            nextEl.children[0].focus()
+            document.execCommand('selectAll')
+          }
+          else {
+            this.$refs.question.focus()
+          }
+        })
+      }
     },
 
     getCellPosition (index) {
