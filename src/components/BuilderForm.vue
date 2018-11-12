@@ -117,9 +117,7 @@ export default {
   width calc(50% - 30px)
   margin-right 30px
 
-  &.builder-form
-    display flex
-    flex-direction column
+  // &.builder-form
 
 .button
   display flex
@@ -166,4 +164,8 @@ input[type=range]::-webkit-slider-thumb
 
 input[type=range]:focus::-webkit-slider-runnable-track
   background: #f001A9
+
+.forms-list-wrapper
+  width 50%
+  float left
 </style>
