@@ -1,19 +1,27 @@
 <template>
   <div>
     <div class="answer-letters">
-      <div class="letter"
+      <div
         v-for="(letter, idx) of cells"
         :key="idx"
+        class="letter"
       >
-        <input type="text" size="1" minlength="1" maxlength="1"
+        <input
           v-model="answer[index]"
+          type="text"
+          size="1"
+          minlength="1"
+          maxlength="1"
         />
       </div>
     </div>
 
     <div class="question">
-      <textarea type="text" class="textarea" rows="5"
+      <textarea
         v-model="question"
+        type="text"
+        class="textarea"
+        rows="5"
         :placeholder="`${index}. `"
       ></textarea>
     </div>
@@ -24,14 +32,6 @@
 export default {
   name: 'WordForm',
 
-  data() {
-    return {
-      question: '',
-      answer: new Array(this.length).fill(null),
-      active: null,
-    }
-  },
-
   props: {
     x: { type: Number, default: () => 0 },
     y: { type: Number, default: () => 0 },
@@ -40,15 +40,24 @@ export default {
     isVertical: { type: Boolean, default: () => false },
   },
 
+  data () {
+    return {
+      question: '',
+      answer: new Array(this.length).fill(null),
+      active: null,
+    }
+  },
+
   computed: {
-    cells() {
+    cells () {
       let i = this.isVertical ? this.x : this.y
 
-      return new Array(this.length).fill(0).map((cell) => ({
-        x: this.isVertical ? i++ : this.x,
-        y: this.isVertical ? this.y : i++,
-        value: '',
-      }))
+      return new Array(this.length).fill(0)
+        .map((cell) => ({
+          x: this.isVertical ? i++ : this.x, // eslint-disable-line
+          y: this.isVertical ? this.y : i++, // eslint-disable-line
+          value: '',
+        }))
     },
   },
 }

@@ -1,9 +1,12 @@
 <template>
   <ul>
-    <li v-for="page in pages">
+    <li
+      v-for="(page, index) in pages"
+      :key="index"
+    >
       <div class="inner">
         <router-link :to="page.href">
-          {{page.title}}
+          {{ page.title }}
         </router-link>
       </div>
     </li>

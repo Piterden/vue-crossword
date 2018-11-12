@@ -2,9 +2,21 @@
   <div class="builder-form page-inner">
     <div class="controls">
       <span>Grid Height: {{ width }}</span>
-      <input type="range" v-model="width" size="4" min="1" max="40" />
+      <input
+        v-model="width"
+        type="range"
+        size="4"
+        min="1"
+        max="40"
+      />
       <span>Grid Width: {{ height }}</span>
-      <input type="range" v-model="height" size="4" min="1" max="40" />
+      <input
+        v-model="height"
+        type="range"
+        size="4"
+        min="1"
+        max="40"
+      />
     </div>
 
     <div class="forms-list-wrapper horizontal">
@@ -48,38 +60,38 @@ export default {
 
   components: { WordForm },
 
-  data() {
-    return {
-      width: this.initWidth,
-      height: this.initHeight,
-    }
-  },
-
   props: {
     words: { type: Array, default: () => [] },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
   },
 
+  data () {
+    return {
+      width: this.initWidth,
+      height: this.initHeight,
+    }
+  },
+
   computed: {
-    verticalWords() {
+    verticalWords () {
       return this.words.filter(({ type }) => type === 'vertical')
     },
 
-    horizontalWords() {
+    horizontalWords () {
       return this.words.filter(({ type }) => type === 'horizontal')
     },
   },
 
   watch: {
-    width(value) {
+    width (value) {
       this.$emit('rebuild', {
         width: Number(value),
         height: Number(this.height),
       })
     },
 
-    height(value) {
+    height (value) {
       this.$emit('rebuild', {
         width: Number(this.width),
         height: Number(value),

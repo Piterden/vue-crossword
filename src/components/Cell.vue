@@ -1,11 +1,15 @@
 <template>
   <div>
     <sup class="word-start">{{ number }}</sup>
-    <input type="text" size="1" minlength="1" maxlength="1"
+    <input
+      type="text"
+      size="1"
+      minlength="1"
+      maxlength="1"
+      readonly
       @click="onClick"
       @focus="onFocus"
       @input="onInput"
-      readonly
     />
   </div>
 </template>
@@ -23,21 +27,21 @@ export default {
   },
 
   computed: {
-    identifier() {
+    identifier () {
       return `${this.x}:${this.y}`
     },
   },
 
   methods: {
-    onClick(e) {
+    onClick (e) {
       this.$emit('cellclick', { id: this.identifier })
     },
 
-    onInput() {
+    onInput () {
       this.$emit('cellinput', { id: this.identifier })
     },
 
-    onFocus(e) {
+    onFocus (e) {
       if (this.$parent.isEditBlanks) {
         return e.target.blur()
       }

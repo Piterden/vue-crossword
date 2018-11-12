@@ -1,16 +1,19 @@
 <template>
   <div class="builder-grid page-inner">
     <div class="inner">
-      <div class="row"
+      <div
         v-for="(row, rowIdx) in gridWidth"
         :key="rowIdx"
+        class="row"
       >
         <div class="inner">
-          <div :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
+          <div
             v-for="(cell, cellIdx) in gridHeight"
             :key="`${cellIdx + 1}:${rowIdx + 1}`"
+            :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
           >
             <cell
+              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
               :number="getNumber(cellIdx + 1, rowIdx + 1)"
@@ -20,7 +23,6 @@
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"
-              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
             />
           </div>
         </div>
@@ -38,6 +40,13 @@ export default {
 
   components: { Cell },
 
+  props: {
+    gridHeight: { type: Number, default: () => 1 },
+    gridWidth: { type: Number, default: () => 1 },
+    blanks: { type: Array, default: () => [] },
+    words: { type: Array, default: () => [] },
+  },
+
   data: () => ({
     answers: {},
     active: {
@@ -47,39 +56,32 @@ export default {
     },
   }),
 
-  props: {
-    gridHeight: { type: Number, default: () => 1 },
-    gridWidth: { type: Number, default: () => 1 },
-    blanks: { type: Array, default: () => [] },
-    words: { type: Array, default: () => [] },
-  },
-
   methods: {
-    isTitleCell(x, y) {
+    isTitleCell (x, y) {
       return this.words.find((word) => word.x === +x && word.y === +y)
     },
 
-    getNumber(x, y) {
+    getNumber (x, y) {
       const titleCell = this.isTitleCell(x, y)
 
       return titleCell ? titleCell.index : null
     },
 
-    onKeyUp(e) {
+    onKeyUp (e) {
       e.target.value.match(/[A-Za-zА-Яа-я]/)
         ? this.goNext(e.target)
         : (e.currentTarget.value = '')
     },
 
-    onCellClick({ id }) {
+    onCellClick ({ id }) {
       this.$emit('updateblanks', id)
     },
 
-    onLeftPress(e) {
+    onLeftPress (e) {
       this.goPrev(e.currentTarget)
     },
 
-    getNextId(id) {
+    getNextId (id) {
       const match = id.match(/(\d+):(\d+)/)
       const last = this.active.word[this.active.word.length - 1]
       const next = Number(match[Number(this.active.vertical) + 1]) + 1
@@ -93,7 +95,7 @@ export default {
         : `${next}:${match[2]}`
     },
 
-    getPrevId(id) {
+    getPrevId (id) {
       const match = id.match(/(\d+):(\d+)/)
       const first = this.active.word[0]
       const prev = Number(match[Number(this.active.vertical) + 1]) - 1
@@ -107,7 +109,7 @@ export default {
         : `${prev}:${match[2]}`
     },
 
-    goNextCell({ id }) {
+    goNextCell ({ id }) {
       const next = this.getNextId(id)
 
       this.active.cell = next
@@ -115,7 +117,7 @@ export default {
       document.execCommand('selectAll')
     },
 
-    goPrevCell({ id }) {
+    goPrevCell ({ id }) {
       const prev = this.getPrevId(id)
 
       this.active.cell = prev
@@ -123,7 +125,7 @@ export default {
       document.execCommand('selectAll')
     },
 
-    activateWord(key) {
+    activateWord (key) {
       let dir
 
       if (this.isHorizontal(key)) dir = 'horizontal'
@@ -132,7 +134,7 @@ export default {
       return this.updateData(key, dir)
     },
 
-    toggleWords(key) {
+    toggleWords (key) {
       let dir = 'horizontal'
 
       if (!this.active.word.length) {
@@ -146,7 +148,7 @@ export default {
       return this.updateData(key, dir)
     },
 
-    updateData(key, dir) {
+    updateData (key, dir) {
       const word = this[`get${dir.capitalize()}Word`](key)
 
       if (word === this.active.word) {
@@ -164,7 +166,7 @@ export default {
       return true
     },
 
-    typeOfWord(word) {
+    typeOfWord (word) {
       let prev
       let type
 
@@ -182,39 +184,39 @@ export default {
       return type
     },
 
-    isVertical(id) {
+    isVertical (id) {
       return (
-        !this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
-        && this.allStartCells('vertical').includes(this.getVerticalStartCell(id))
-      )
-    },
-
-    isHorizontal(id) {
-      return (
-        !this.allStartCells('vertical').includes(this.getVerticalStartCell(id))
-        && this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
-      )
-    },
-
-    isBoth(id) {
-      return (
+        !this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id)) &&
         this.allStartCells('vertical').includes(this.getVerticalStartCell(id))
-        && this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
       )
     },
 
-    isNeither(id) {
+    isHorizontal (id) {
       return (
-        !this.allStartCells('vertical').includes(this.getVerticalStartCell(id))
-        && !this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
+        !this.allStartCells('vertical').includes(this.getVerticalStartCell(id)) &&
+        this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
       )
     },
 
-    getWordStartCells(id) {
-      return this.allStartCells().filter((c) => c === id)
+    isBoth (id) {
+      return (
+        this.allStartCells('vertical').includes(this.getVerticalStartCell(id)) &&
+        this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
+      )
     },
 
-    getHorizontalWord(id) {
+    isNeither (id) {
+      return (
+        !this.allStartCells('vertical').includes(this.getVerticalStartCell(id)) &&
+        !this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
+      )
+    },
+
+    getWordStartCells (id) {
+      return this.allStartCells().filter((cell) => cell === id)
+    },
+
+    getHorizontalWord (id) {
       id = this.allStartCells('horizontal').includes(id)
         ? id
         : this.getHorizontalStartCell(id)
@@ -222,7 +224,7 @@ export default {
       return this.collectHorizontalWordCells(this.getHorizontalQuestion(id))
     },
 
-    getVerticalWord(id) {
+    getVerticalWord (id) {
       id = this.allStartCells('vertical').includes(id)
         ? id
         : this.getVerticalStartCell(id)
@@ -230,73 +232,73 @@ export default {
       return this.collectVerticalWordCells(this.getVerticalQuestion(id))
     },
 
-    getHorizontalStartCell(id) {
+    getHorizontalStartCell (id) {
       const xy = id.split(':')
 
       while (!this.allStartCells('horizontal').includes(id) && xy[0] > 0) {
-        xy[0]--
+        xy[0] -= 1
         id = xy.join(':')
       }
 
       return id
     },
 
-    getVerticalStartCell(id) {
+    getVerticalStartCell (id) {
       const xy = id.split(':')
 
       while (!this.allStartCells('vertical').includes(id) && xy[1] > 0) {
-        xy[1]--
+        xy[1] -= 1
         id = xy.join(':')
       }
 
       return id
     },
 
-    collectHorizontalWordCells(question) {
+    collectHorizontalWordCells (question) {
       if (!question) {
         return []
       }
 
       const cells = []
-      let i
+      let idx
 
-      for (i = question.x; i < question.x + question.length; i++) {
-        cells.push(`${i}:${question.y}`)
+      for (idx = question.x; idx < question.x + question.length; idx += 1) {
+        cells.push(`${idx}:${question.y}`)
       }
 
       return cells === [] ? null : cells
     },
 
-    collectVerticalWordCells(question) {
+    collectVerticalWordCells (question) {
       if (!question) {
         return []
       }
 
       const cells = []
-      let i
+      let idx
 
-      for (i = question.y; i < question.y + question.length; i++) {
-        cells.push(`${question.x}:${i}`)
+      for (idx = question.y; idx < question.y + question.length; idx += 1) {
+        cells.push(`${question.x}:${idx}`)
       }
 
       return cells === [] ? null : cells
     },
 
-    getVerticalQuestion(id) {
+    getVerticalQuestion (id) {
       return this.questions.vertical.find((question) => this.exact(question, id))
     },
 
-    getHorizontalQuestion(id) {
+    getHorizontalQuestion (id) {
       return this.questions.horizontal.find((question) => this.exact(question, id))
     },
 
-    exact(question, id) {
+    exact (question, id) {
       const xy = id.split(':')
 
       return question.x === Number(xy[0]) && question.y === Number(xy[1])
     },
 
-    getCellClass(row, col) {
+    getCellClass (row, col) {
       const classes = []
       const index = `${col + 1}:${row + 1}`
 
@@ -318,7 +320,7 @@ export default {
       return classes
     },
 
-    allStartCells(direction = null) {
+    allStartCells (direction = null) {
       const cells = []
 
       if (!direction || direction === 'horizontal') {
