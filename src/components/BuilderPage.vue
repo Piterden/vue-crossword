@@ -46,17 +46,14 @@ export default {
       this.blanks = this.blanks.filter((blank) => blank !== id)
     },
 
-    addIndexes (startCells) {
-      return startCells
-        .reduce((acc, cur) => {
-          if (!acc.find((w) => w.x === cur.x && w.y === cur.y)) {
-            acc.push(cur)
-          }
+    addIndexes (words) {
+      return words
+        .map((word) => {
+          const { index } = this.startCells
+            .find(({ x, y }) => word.x === x && word.y === y)
 
-          return acc
-        }, [])
-        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
-        .map((word, index) => ({ ...word, index: index + 1 }))
+          return { ...word, index }
+        })
     },
   },
 
@@ -162,6 +159,25 @@ export default {
         ...this.horizontalWords,
         ...this.verticalWords,
       ])
+    },
+
+    startCells () {
+      return [
+        ...this.horizontalWords,
+        ...this.verticalWords,
+      ]
+        .map((word) => ({
+          x: word.x,
+          y: word.y,
+        }))
+        .reduce((acc, cur) => {
+          if (!acc.find(({ x, y }) => x === cur.x && y === cur.y)) {
+            acc.push(cur)
+          }
+          return acc
+        }, [])
+        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
+        .map((word, index) => ({ ...word, index: index + 1 }))
     },
   },
 }

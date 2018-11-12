@@ -54,12 +54,12 @@ export default {
   },
 
   methods: {
-    getTitleCell (x, y) {
+    isTitleCell (x, y) {
       return this.words.find(word => word.x === +x && word.y === +y)
     },
 
     getNumber (x, y) {
-      const titleCell = this.getTitleCell(x, y)
+      const titleCell = this.isTitleCell(x, y)
       return titleCell ? titleCell.index : null
     },
 
