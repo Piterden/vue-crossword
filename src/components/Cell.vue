@@ -3,6 +3,7 @@
     <sup class="word-start">{{ number }}</sup>
     <input
       type="text"
+      v-model="value"
       size="1"
       minlength="1"
       maxlength="1"
@@ -21,9 +22,10 @@ export default {
   props: {
     x: { type: Number, required: true },
     y: { type: Number, required: true },
+    value: { type: String, default: () => '' },
+    number: { type: Number, default: () => 0 },
     isBlank: { type: Boolean, default: () => false },
     isActive: { type: Boolean, default: () => false },
-    number: { type: Number, default: () => 0 },
   },
 
   computed: {
@@ -61,6 +63,8 @@ div
   input
     cursor pointer
     width 100%
+    text-align center
+    font-size 1.25em
 
   .word-start
     position absolute

@@ -27,8 +27,9 @@
           :key="index"
           :x="word.x"
           :y="word.y"
-          :length="word.length"
+          :letters="letters"
           :index="word.index"
+          :length="word.length"
           :is-vertical="false"
           @input="onInputLetter"
         />
@@ -43,6 +44,7 @@
           :key="index"
           :x="word.x"
           :y="word.y"
+          :letters="letters"
           :length="word.length"
           :index="word.index"
           :is-vertical="true"
@@ -64,6 +66,7 @@ export default {
 
   props: {
     words: { type: Array, default: () => [] },
+    letters: { type: Object, default: () => ({}) },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
   },

@@ -39,6 +39,7 @@ export default {
     y: { type: Number, default: () => 0 },
     index: { type: Number, default: () => 0 },
     length: { type: Number, default: () => 0 },
+    letters: { type: Object, default: () => ({}) },
     isVertical: { type: Boolean, default: () => false },
   },
 
@@ -60,6 +61,46 @@ export default {
           y: this.isVertical ? this.y : i++, // eslint-disable-line
           value: '',
         }))
+    },
+
+    ownCells () {
+      const cells = []
+
+      if (this.isVertical) {
+        let i = this.y
+        const end = this.length + this.y
+
+        for (i; i < end; i += 1) {
+          cells.push(`${this.x}:${i}`)
+        }
+
+        return cells
+      }
+
+      let i = this.x
+      const end = this.length + this.x
+
+      for (i; i < end; i += 1) {
+        cells.push(`${i}:${this.y}`)
+      }
+
+      return cells
+    },
+
+    ownLetters () {
+      const letters = {}
+
+      this.ownCells.forEach((cell) => {
+        letters[cell] = this.letters[cell]
+      })
+
+      return letters
+    },
+  },
+
+  watch: {
+    ownLetters (value) {
+      this.answer = Object.values(value)
     },
   },
 

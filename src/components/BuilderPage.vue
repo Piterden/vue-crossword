@@ -3,6 +3,7 @@
     <builder-form
       :init-width="width"
       :init-height="height"
+      :letters="letters"
       :words="words"
       @rebuild="rebuildGrid"
       @input="onInputLetter"
@@ -11,15 +12,11 @@
     <builder-grid
       :grid-width="width"
       :grid-height="height"
+      :letters="letters"
       :blanks="blanks"
       :words="words"
       @updateblanks="onBlanksUpdate"
     />
-
-    <pre>
-      {{ blanks }}
-      {{ words }}
-    </pre>
   </div>
 </template>
 
@@ -38,6 +35,7 @@ export default {
     width: 10,
     height: 10,
     blanks: [],
+    letters: {},
   }),
 
   computed: {
@@ -167,23 +165,37 @@ export default {
         .map((word, index) => ({ ...word, index: index + 1 }))
     },
 
-    // letterCells () {
-    //   const cells = []
-    //   let col = 1
-    //   let row = 1
+    letterCells () {
+      const cells = []
+      let col = 1
 
-    //   for (col; col <= this.width; col += 1) {
-    //     for (row; row <= this.height; row += 1) {
-    //       const re = new RegExp(`${col}:${row}`)
+      for (col; col <= this.width; col++) {
+        let row = 1
 
-    //       if (!this.blanks.find(({ match }) => match(re))) {
-    //         cells.push({ x: col, y: row })
-    //       }
-    //     }
-    //   }
+        for (row; row <= this.height; row++) {
+          const re = new RegExp(`${col}:${row}`)
 
-    //   return cells
-    // },
+          if (!this.blanks.find((blank) => blank && blank.match(re))) {
+            cells.push({ x: col, y: row })
+          }
+        }
+      }
+
+      return cells.reduce((acc, { x, y }) => {
+        acc[`${x}:${y}`] = ''
+        return acc
+      }, {})
+    },
+  },
+
+  watch: {
+    letterCells (value) {
+      this.letters = { ...value, ...this.letters }
+    }
+  },
+
+  mounted () {
+    this.letters = this.letterCells
   },
 
   methods: {
@@ -200,8 +212,8 @@ export default {
       this.blanks = this.blanks.filter((blank) => blank !== id)
     },
 
-    onInputLetter (payload) {
-
+    onInputLetter ({ x, y, value }) {
+      this.letters[`${x}:${y}`] = value
     },
 
     addIndexes (words) {

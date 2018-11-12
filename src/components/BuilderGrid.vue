@@ -13,7 +13,7 @@
             :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
           >
             <cell
-              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
+              :value="letters[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
               :number="getNumber(cellIdx + 1, rowIdx + 1)"
@@ -43,6 +43,7 @@ export default {
   props: {
     gridHeight: { type: Number, default: () => 1 },
     gridWidth: { type: Number, default: () => 1 },
+    letters: { type: Object, default: () => ({}) },
     blanks: { type: Array, default: () => [] },
     words: { type: Array, default: () => [] },
   },
