@@ -5,6 +5,7 @@
       :init-height="height"
       :words="words"
       @rebuild="rebuildGrid"
+      @input="onInputLetter"
     />
 
     <builder-grid
@@ -14,6 +15,11 @@
       :words="words"
       @updateblanks="onBlanksUpdate"
     />
+
+    <pre>
+      {{ blanks }}
+      {{ words }}
+    </pre>
   </div>
 </template>
 
@@ -39,7 +45,7 @@ export default {
       const words = []
       let row = 1
 
-      for (row; row <= this.width; row += 1) {
+      for (row; row <= this.height; row += 1) {
         const rowBlankCells = this.blanks
           .filter((cell) => Number(cell.split(':')[1]) === row)
           .map((cell) => Number(cell.split(':')[0]))
@@ -47,7 +53,7 @@ export default {
         if (rowBlankCells.length > 0) {
           let i = 1
           // eslint-disable-next-line
-          const cols = new Array(this.height).fill(0).map((col) => i += 1)
+          const cols = new Array(this.width).fill(0).map((col) => i++)
 
           if (cols) {
             `:${cols.join('::')}:`
@@ -89,7 +95,7 @@ export default {
       const words = []
       let col = 1
 
-      for (col; col <= this.height; col += 1) {
+      for (col; col <= this.width; col += 1) {
         const colBlankCells = this.blanks
           .filter((cell) => Number(cell.split(':')[0]) === col)
           .map((cell) => Number(cell.split(':')[1]))
@@ -97,7 +103,7 @@ export default {
         if (colBlankCells.length > 0) {
           let i = 1
           // eslint-disable-next-line
-          const rows = new Array(this.width).fill(0).map((row) => i += 1)
+          const rows = new Array(this.height).fill(0).map((row) => i++)
 
           if (rows) {
             `:${rows.join('::')}:`
@@ -160,6 +166,24 @@ export default {
         .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
         .map((word, index) => ({ ...word, index: index + 1 }))
     },
+
+    // letterCells () {
+    //   const cells = []
+    //   let col = 1
+    //   let row = 1
+
+    //   for (col; col <= this.width; col += 1) {
+    //     for (row; row <= this.height; row += 1) {
+    //       const re = new RegExp(`${col}:${row}`)
+
+    //       if (!this.blanks.find(({ match }) => match(re))) {
+    //         cells.push({ x: col, y: row })
+    //       }
+    //     }
+    //   }
+
+    //   return cells
+    // },
   },
 
   methods: {
@@ -174,6 +198,10 @@ export default {
       }
 
       this.blanks = this.blanks.filter((blank) => blank !== id)
+    },
+
+    onInputLetter (payload) {
+
     },
 
     addIndexes (words) {

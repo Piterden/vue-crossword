@@ -2,13 +2,13 @@
   <div class="builder-grid page-inner">
     <div class="inner">
       <div
-        v-for="(row, rowIdx) in gridWidth"
+        v-for="(row, rowIdx) in gridHeight"
         :key="rowIdx"
         class="row"
       >
         <div class="inner">
           <div
-            v-for="(cell, cellIdx) in gridHeight"
+            v-for="(cell, cellIdx) in gridWidth"
             :key="`${cellIdx + 1}:${rowIdx + 1}`"
             :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
           >

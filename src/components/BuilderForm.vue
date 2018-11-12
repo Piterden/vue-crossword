@@ -1,7 +1,7 @@
 <template>
   <div class="builder-form page-inner">
     <div class="controls">
-      <span>Grid Height: {{ width }}</span>
+      <span>Grid Width: {{ width }}</span>
       <input
         v-model="width"
         type="range"
@@ -9,7 +9,7 @@
         min="1"
         max="40"
       />
-      <span>Grid Width: {{ height }}</span>
+      <span>Grid Height: {{ height }}</span>
       <input
         v-model="height"
         type="range"
@@ -30,6 +30,7 @@
           :length="word.length"
           :index="word.index"
           :is-vertical="false"
+          @input="onInputLetter"
         />
       </div>
     </div>
@@ -45,6 +46,7 @@
           :length="word.length"
           :index="word.index"
           :is-vertical="true"
+          @input="onInputLetter"
         />
       </div>
     </div>
@@ -96,6 +98,12 @@ export default {
         width: Number(this.width),
         height: Number(value),
       })
+    },
+  },
+
+  methods: {
+    onInputLetter (payload) {
+      this.$emit('input', payload)
     },
   },
 }

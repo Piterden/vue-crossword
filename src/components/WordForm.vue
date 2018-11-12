@@ -7,11 +7,13 @@
         class="letter"
       >
         <input
-          v-model="answer[index]"
+          v-model="answer[idx]"
           type="text"
           size="1"
           minlength="1"
           maxlength="1"
+          :data-idx="idx"
+          @input="onInputLetter"
         />
       </div>
     </div>
@@ -43,7 +45,7 @@ export default {
   data () {
     return {
       question: '',
-      answer: new Array(this.length).fill(null),
+      answer: new Array(this.length).fill(''),
       active: null,
     }
   },
@@ -60,6 +62,21 @@ export default {
         }))
     },
   },
+
+  methods: {
+    onInputLetter (e) {
+      this.$emit('input', {
+        value: e.target.value,
+        ...this.getCellPosition(e.target.dataset.idx)
+      })
+    },
+
+    getCellPosition (index) {
+      return this.isVertical
+        ? { x: this.x, y: Number(this.y) + Number(index) }
+        : { x: Number(this.x) + Number(index), y: this.y }
+    },
+  },
 }
 </script>
 
@@ -74,6 +91,7 @@ export default {
 
     > input
       width 17px
+      text-align center
 
   .question
     width 100%
