@@ -42,12 +42,13 @@
 <script>
 import WordForm from './WordForm'
 
+
 export default {
   name: 'BuilderForm',
 
   components: { WordForm },
 
-  data () {
+  data() {
     return {
       width: this.initWidth,
       height: this.initHeight,
@@ -61,24 +62,24 @@ export default {
   },
 
   computed: {
-    verticalWords () {
+    verticalWords() {
       return this.words.filter(({ type }) => type === 'vertical')
     },
 
-    horizontalWords () {
+    horizontalWords() {
       return this.words.filter(({ type }) => type === 'horizontal')
     },
   },
 
   watch: {
-    width (value) {
+    width(value) {
       this.$emit('rebuild', {
         width: Number(value),
         height: Number(this.height),
       })
     },
 
-    height (value) {
+    height(value) {
       this.$emit('rebuild', {
         width: Number(this.width),
         height: Number(value),

@@ -24,7 +24,7 @@
 export default {
   name: 'WordForm',
 
-  data () {
+  data() {
     return {
       question: '',
       answer: new Array(this.length).fill(null),
@@ -41,7 +41,7 @@ export default {
   },
 
   computed: {
-    cells () {
+    cells() {
       let i = this.isVertical ? this.x : this.y
 
       return new Array(this.length).fill(0).map((cell) => ({

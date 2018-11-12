@@ -9,9 +9,9 @@ export default {
         return false
       }
 
-      return this.active.vertical ?
-        `${match[1]}:${next}` :
-        `${next}:${match[2]}`
+      return this.active.vertical
+        ? `${match[1]}:${next}`
+        : `${next}:${match[2]}`
     },
 
     getPrevId(id) {
@@ -23,9 +23,9 @@ export default {
         return false
       }
 
-      return this.active.vertical ?
-        `${match[1]}:${prev}` :
-        `${prev}:${match[2]}`
+      return this.active.vertical
+        ? `${match[1]}:${prev}`
+        : `${prev}:${match[2]}`
     },
   },
 }

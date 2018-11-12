@@ -23,21 +23,21 @@ export default {
   },
 
   computed: {
-    identifier () {
+    identifier() {
       return `${this.x}:${this.y}`
     },
   },
 
   methods: {
-    onClick (e) {
+    onClick(e) {
       this.$emit('cellclick', { id: this.identifier })
     },
 
-    onInput () {
+    onInput() {
       this.$emit('cellinput', { id: this.identifier })
     },
 
-    onFocus (e) {
+    onFocus(e) {
       if (this.$parent.isEditBlanks) {
         return e.target.blur()
       }

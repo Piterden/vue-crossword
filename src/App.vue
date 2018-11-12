@@ -8,6 +8,7 @@
 <script>
 import MenuArea from './components/MenuArea'
 
+
 export default {
   name: 'App',
 
