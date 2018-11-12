@@ -108,7 +108,7 @@ export default {
     onInputLetter (e) {
       this.$emit('input', {
         value: e.target.value,
-        ...this.getCellPosition(e.target.dataset.idx)
+        ...this.getCellPosition(e.target.dataset.idx),
       })
     },
 

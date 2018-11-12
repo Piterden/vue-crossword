@@ -2,8 +2,8 @@
   <div>
     <sup class="word-start">{{ number }}</sup>
     <input
-      type="text"
       v-model="value"
+      type="text"
       size="1"
       minlength="1"
       maxlength="1"

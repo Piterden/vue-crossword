@@ -169,10 +169,10 @@ export default {
       const cells = []
       let col = 1
 
-      for (col; col <= this.width; col++) {
+      for (col; col <= this.width; col += 1) {
         let row = 1
 
-        for (row; row <= this.height; row++) {
+        for (row; row <= this.height; row += 1) {
           const re = new RegExp(`${col}:${row}`)
 
           if (!this.blanks.find((blank) => blank && blank.match(re))) {
@@ -191,7 +191,7 @@ export default {
   watch: {
     letterCells (value) {
       this.letters = { ...value, ...this.letters }
-    }
+    },
   },
 
   mounted () {
