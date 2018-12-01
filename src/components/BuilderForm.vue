@@ -31,7 +31,9 @@
           :index="word.index"
           :length="word.length"
           :is-vertical="false"
+          :focused-cell="focusedCell"
           @input="onInputLetter"
+          @focus-cell="onFocusCell"
         />
       </div>
     </div>
@@ -48,7 +50,9 @@
           :length="word.length"
           :index="word.index"
           :is-vertical="true"
+          :focused-cell="focusedCell"
           @input="onInputLetter"
+          @focus-cell="onFocusCell"
         />
       </div>
     </div>
@@ -69,6 +73,7 @@ export default {
     letters: { type: Object, default: () => ({}) },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
+    focusedCell: { type: String, default: () => '0:0' },
   },
 
   data () {
@@ -107,6 +112,10 @@ export default {
   methods: {
     onInputLetter (payload) {
       this.$emit('input', payload)
+    },
+  
+    onFocusCell (x, y) {
+      this.$emit('focus-cell', x, y)
     },
   },
 }

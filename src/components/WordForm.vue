@@ -6,6 +6,7 @@
         v-for="(letter, idx) of cells"
         :key="idx"
         class="letter"
+        :class="{ focused: isActive(idx) }"
       >
         <input
           v-model="answer[idx]"
@@ -15,6 +16,7 @@
           maxlength="1"
           :data-idx="idx"
           @input="onInputLetter"
+          @focus="onFocus"
         />
       </div>
     </div>
@@ -42,6 +44,7 @@ export default {
     length: { type: Number, default: () => 0 },
     letters: { type: Object, default: () => ({}) },
     isVertical: { type: Boolean, default: () => false },
+    focusedCell: { type: String, default: () => '0:0' },
   },
 
   data () {
@@ -132,11 +135,29 @@ export default {
         ? { x: this.x, y: Number(this.y) + Number(index) }
         : { x: Number(this.x) + Number(index), y: this.y }
     },
+
+    onFocus (e) {
+      this.$emit(
+        'focus-cell',
+        this.isVertical
+          ? Number(this.x)
+          : Number(this.x) + Number(e.target.dataset.idx),
+        this.isVertical
+          ? Number(this.y) + Number(e.target.dataset.idx)
+          : Number(this.y),
+      )
+    },
+
+    isActive (idx) {
+      return this.isVertical
+        ? `${this.x}:${Number(this.y) + Number(idx)}` === this.focusedCell
+        : `${Number(this.x) + Number(idx)}:${this.y}` === this.focusedCell
+    }
   },
 }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="stylus">
 .answer-letters
   float left
   width 100%
@@ -148,6 +169,9 @@ export default {
     > input
       width 17px
       text-align center
+
+    &.focused > input
+      background #FFEB3B
 
   .question
     width 100%

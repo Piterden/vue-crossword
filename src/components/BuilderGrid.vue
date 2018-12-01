@@ -41,6 +41,7 @@ export default {
   components: { Cell },
 
   props: {
+    focusedCell: { type: String, default: () => '0:0' },
     gridHeight: { type: Number, default: () => 1 },
     gridWidth: { type: Number, default: () => 1 },
     letters: { type: Object, default: () => ({}) },
@@ -310,6 +311,9 @@ export default {
         ? classes.push('blank')
         : classes.push('letter')
 
+      if (index === this.focusedCell) {
+        classes.push('focused')
+      }
       // this.startCells.includes(index)
       //   ? classes.push('start')
       //   : true
@@ -355,4 +359,7 @@ export default {
     padding 0
     width 30px
     heigth 2
+
+    &.focused > div > input
+      background #FFEB3B
 </style>

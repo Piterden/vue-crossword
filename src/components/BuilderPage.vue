@@ -5,8 +5,10 @@
       :init-height="height"
       :letters="letters"
       :words="words"
+      :focused-cell="focusedCell"
       @rebuild="rebuildGrid"
       @input="onInputLetter"
+      @focus-cell="onFocusCell"
     />
 
     <builder-grid
@@ -15,6 +17,7 @@
       :letters="letters"
       :blanks="blanks"
       :words="words"
+      :focused-cell="focusedCell"
       @updateblanks="onBlanksUpdate"
     />
   </div>
@@ -36,6 +39,7 @@ export default {
     height: 10,
     blanks: [],
     letters: {},
+    focusedCell: '0:0',
   }),
 
   computed: {
@@ -225,6 +229,10 @@ export default {
           return { ...word, index }
         })
     },
+
+    onFocusCell (x, y) {
+      this.focusedCell = `${x}:${y}`
+    }
   },
 }
 </script>
