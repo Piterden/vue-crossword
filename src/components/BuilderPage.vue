@@ -232,7 +232,7 @@ export default {
 
     onFocusCell (x, y) {
       this.focusedCell = `${x}:${y}`
-    }
+    },
   },
 }
 </script>

@@ -113,7 +113,7 @@ export default {
     onInputLetter (payload) {
       this.$emit('input', payload)
     },
-  
+
     onFocusCell (x, y) {
       this.$emit('focus-cell', x, y)
     },

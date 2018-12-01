@@ -152,7 +152,7 @@ export default {
       return this.isVertical
         ? `${this.x}:${Number(this.y) + Number(idx)}` === this.focusedCell
         : `${Number(this.x) + Number(idx)}:${this.y}` === this.focusedCell
-    }
+    },
   },
 }
 </script>
