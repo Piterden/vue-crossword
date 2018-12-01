@@ -1,4 +1,6 @@
-# vue
+# vue-crossword
+
+[![Build Status](https://travis-ci.com/Piterden/vue-crossword.svg?branch=master)](https://travis-ci.com/Piterden/vue-crossword)
 
 > A Vue.js project
 
