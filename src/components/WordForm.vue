@@ -1,7 +1,18 @@
 <template>
   <div>
+    <div>{{ index }}</div>
+
+    <div class="question">
+      <textarea
+        ref="question"
+        v-model="question"
+        type="text"
+        class="textarea"
+        rows="1"
+      ></textarea>
+    </div>
+
     <div class="answer-letters">
-      <div>{{ index }}</div>
       <div
         v-for="(letter, idx) of cells"
         :key="idx"
@@ -21,15 +32,8 @@
       </div>
     </div>
 
-    <div class="question">
-      <textarea
-        ref="question"
-        v-model="question"
-        type="text"
-        class="textarea"
-        rows="5"
-      ></textarea>
-    </div>
+    <br />
+    <hr />
   </div>
 </template>
 
