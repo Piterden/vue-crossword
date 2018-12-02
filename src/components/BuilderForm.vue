@@ -126,8 +126,6 @@ export default {
   width calc(50% - 30px)
   margin-right 30px
 
-  // &.builder-form
-
 .button
   display flex
   background-color #08f
@@ -141,38 +139,38 @@ export default {
     opacity 1
 
 .cell.blank > div input
-  background #ddd
+  background #000
   border none
 
 input[type=range]
-  -webkit-appearance: none
-  height: 38px
-  margin: 10px 0
-  width: 100%
+  -webkit-appearance none
+  height 38px
+  margin 10px 0
+  width 100%
 
-input[type=range]:focus
-  outline: none
+  &:focus
+    outline none
 
-input[type=range]::-webkit-slider-runnable-track
-  width: 100%
-  height: 10px
-  cursor: pointer
-  animate: 0.2s
-  background: #eee
-  border-radius: 5px
-  transition background .6s ease-out
+    &::-webkit-slider-runnable-track
+      background #f001A9
 
-input[type=range]::-webkit-slider-thumb
-  height: 2em
-  width: 2em
-  border-radius: 50%
-  background: #08f
-  cursor: pointer
-  -webkit-appearance: none
-  margin-top: -11px
+  &::-webkit-slider-runnable-track
+    width 100%
+    height 10px
+    cursor pointer
+    animate 0.2s
+    background #eee
+    border-radius 5px
+    transition background .6s ease-out
 
-input[type=range]:focus::-webkit-slider-runnable-track
-  background: #f001A9
+  &::-webkit-slider-thumb
+    height 2em
+    width 2em
+    border-radius 50%
+    background #08f
+    cursor pointer
+    -webkit-appearance none
+    margin-top -11px
 
 .forms-list-wrapper
   width 50%

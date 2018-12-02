@@ -140,7 +140,7 @@ export default {
         }
       }
 
-      return words
+      return words.sort((a, b) => a.y - b.y)
     },
 
     words () {
