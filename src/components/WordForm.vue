@@ -28,6 +28,7 @@
           :data-idx="idx"
           @input="onInputLetter"
           @focus="onFocus"
+          @paste.prevent.stop="onPaste"
         />
       </div>
     </div>
@@ -156,6 +157,14 @@ export default {
       return this.isVertical
         ? `${this.x}:${Number(this.y) + Number(idx)}` === this.focusedCell
         : `${Number(this.x) + Number(idx)}:${this.y}` === this.focusedCell
+    },
+
+    onPaste (e) {
+      const text = e.clipboardData.getData('text')
+
+      if (typeof text === 'string' && text && text.length === this.length) {
+        this.answer = text.split('')
+      }
     },
   },
 }
