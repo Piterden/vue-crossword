@@ -1,35 +1,41 @@
 <template>
   <div class="page builder-page">
     <builder-form
+      :words="words"
+      :letters="letters"
+      :loading="loading"
       :init-width="width"
       :init-height="height"
-      :letters="letters"
-      :words="words"
+      :suggestions="suggestions"
       :filled-words="filledWords"
       :focused-cell="focusedCell"
-      @rebuild="rebuildGrid"
+      :suggestion-counts="suggestionCounts"
       @input="onInputLetter"
+      @rebuild="rebuildGrid"
       @focus-cell="onFocusCell"
       @paste-word="onPasteWord"
       @letters-update="onLettersUpdate"
     />
 
     <builder-grid
+      :words="words"
+      :blanks="blanks"
+      :letters="letters"
       :grid-width="width"
       :grid-height="height"
-      :letters="letters"
-      :blanks="blanks"
-      :words="words"
       :filled-words="filledWords"
       :focused-cell="focusedCell"
       @updateblanks="onBlanksUpdate"
     />
 
     <div class="toolbox">
-      <button class="make-blanks" @click.prevent="onGenerate">
+      <button class="make-blanks" @click.prevent="onGenerateGrid">
         Generate Grid
       </button>
-      <button class="make-blanks" @click.prevent="onClear">
+      <button class="make-blanks" @click.prevent="onClearGrid">
+        Clear Grid
+      </button>
+      <button class="make-blanks" @click.prevent="onClearLetters">
         Clear Letters
       </button>
     </div>
@@ -52,8 +58,11 @@ export default {
     height: 10,
     blanks: [],
     letters: {},
+    loading: false,
     filledWords: [],
+    suggestions: [],
     focusedCell: '0:0',
+    suggestionCounts: [],
   }),
 
   computed: {
@@ -210,14 +219,30 @@ export default {
     letterCells (value) {
       this.letters = { ...value, ...this.letters }
     },
+
+    blanks (value) {
+      this.updateSuggestions()
+    },
   },
 
   mounted () {
     this.letters = this.letterCells
+    this.updateSuggestions()
   },
 
   methods: {
-    onGenerate () {
+    async updateSuggestions () {
+      const queries = this.getWordQueries()
+
+      this.loading = true
+
+      this.suggestionCounts = await this.getSuggestionCounts(queries)
+      this.suggestions = await this.getSuggestions(queries)
+
+      this.loading = false
+    },
+
+    onGenerateGrid () {
       this.blanks = []
       const halfWidth = this.width % 2
         ? parseInt(this.width / 2) + 1
@@ -228,7 +253,8 @@ export default {
 
       for (let x = 1; x <= halfWidth; x += 1) {
         for (let y = 1; y <= halfHeight; y += 1) {
-          if (parseInt(Math.random() * 2)) {
+          // eslint-disable-next-line no-magic-numbers
+          if (parseInt(Math.random() * 1.5)) {
             this.blanks.push(`${x}:${y}`)
             this.blanks.push(`${this.width - x + 1}:${y}`)
             this.blanks.push(`${x}:${this.height - y + 1}`)
@@ -236,6 +262,20 @@ export default {
           }
         }
       }
+    },
+
+    onClearLetters () {
+      const indexes = Object.keys(this.letters)
+
+      for (let idx = indexes.length - 1; idx >= 0; idx -= 1) {
+        this.letters[indexes[idx]] = ''
+      }
+
+      this.filledWords = []
+    },
+
+    onClearGrid () {
+      this.blanks = []
     },
 
     rebuildGrid ({ width, height }) {
@@ -283,6 +323,53 @@ export default {
 
     onLettersUpdate ({ letters }) {
       Object.assign(this.letters, letters)
+    },
+
+    getWordQueries () {
+      return this.words.map((word) => this.$root
+        .getWordCells({ ...word, word: { length: word.length } })
+        .map((idx) => this.letters[idx] || '_')
+        .join(''))
+    },
+
+    getSuggestionsUrl (query, page = 0) {
+      return `https://crossword.stagelab.pro/crossword/words/find/${page}/${query}`
+    },
+
+    async getSuggestions (queries, useCache = true) {
+      const suggestions = await Promise.all(queries.unique().map(async (query) => {
+        if (useCache) {
+          const cached = this.suggestions.find((data) => data.query === query)
+
+          if (cached) {
+            return cached
+          }
+        }
+        const url = this.getSuggestionsUrl(query)
+        const response = await this.$http.get(url)
+
+        return { query, data: response.data }
+      }))
+
+      return suggestions
+    },
+
+    async getSuggestionCounts (queries, useCache = true) {
+      const counts = await Promise.all(queries.unique().map(async (query) => {
+        if (useCache) {
+          const cached = this.suggestions.find((data) => data.query === query)
+
+          if (cached) {
+            return cached
+          }
+        }
+        const url = `https://crossword.stagelab.pro/crossword/words/count/${query}`
+        const response = await this.$http.get(url)
+
+        return { query, data: response.data }
+      }))
+
+      return counts
     },
   },
 }

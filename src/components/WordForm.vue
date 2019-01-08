@@ -48,7 +48,7 @@
       <a
         href="#"
         title="Show words"
-        @click.prevent="showSuggestionsModal(wordsQuery)"
+        @click.prevent="showSuggestionsModal(query)"
         v-text="`Found ${wordsCount} words`"
       ></a>
     </div>
@@ -89,17 +89,17 @@ export default {
     index: { type: Number, default: () => 0 },
     length: { type: Number, default: () => 0 },
     letters: { type: Object, default: () => ({}) },
+    loading: { type: Boolean, default: () => false },
     isVertical: { type: Boolean, default: () => false },
     filledWords: { type: Array, default: () => [] },
+    suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
+    suggestionCounts: { type: Array, default: () => [] },
   },
 
   data () {
     return {
-      wordsCount: 0,
-      suggested: [],
       question: '',
-      loading: false,
       timeout: null,
       answer: new Array(this.length).fill(''),
       active: null,
@@ -109,7 +109,7 @@ export default {
   },
 
   computed: {
-    wordsQuery () {
+    query () {
       return Object.keys(this.ownLetters)
         .map((key) => this.ownLetters[key] || '_')
         .join('')
@@ -159,10 +159,23 @@ export default {
 
       return letters
     },
+
+    suggested () {
+      const data = this.suggestions.find(({ query }) => this.query)
+
+      // eslint-disable-next-line no-magic-numbers
+      return data ? data.data.slice(this.page * 50, (this.page + 1) * 50) : []
+    },
+
+    wordsCount () {
+      const data = this.suggestionCounts.find(({ query }) => query === this.query)
+
+      return data ? data.data : 0
+    },
   },
 
   watch: {
-    wordsQuery (query) {
+    query (query) {
       clearTimeout(this.timeout)
 
       this.timeout = setTimeout(() => {
@@ -173,28 +186,16 @@ export default {
   },
 
   mounted () {
-    this.countWords()
+    // this.countWords()
   },
 
   methods: {
     async prevPage () {
-      this.page = !this.page ? 0 : this.page - 1
-      const url = this.getSuggestionsUrl(this.wordsQuery, this.page)
-      const response = await this.$http.get(url).catch(console.log)
-
-      if (response) {
-        this.suggested = response.data
-      }
+      this.page = this.page ? this.page - 1 : 0
     },
 
     async nextPage () {
       this.page += 1
-      const url = this.getSuggestionsUrl(this.wordsQuery, this.page)
-      const response = await this.$http.get(url).catch(console.log)
-
-      if (response) {
-        this.suggested = response.data
-      }
     },
 
     getWordText ({ id, length, ...letters }) {
@@ -219,40 +220,27 @@ export default {
 
     hideSuggestionsModal () {
       this.modal = false
-      this.suggested = []
     },
 
-    getSuggestionsUrl (query, page = 0) {
-      return `https://crossword.stagelab.pro/crossword/words/find/${page}/${query}`
-    },
+    // async showSuggestionsModal (query) {
+    //   this.modal = true
+    //   const url = this.getSuggestionsUrl(query, this.page)
+    //   const response = await this.$http.get(url).catch(console.log)
+    //   const highlighted = query.split('')
+    //     .reduce((acc, letter, idx) => {
+    //       if (letter !== '_') {
+    //         acc[`letter_${idx + 1}`] = `<mark>${letter}</mark>`
+    //       }
+    //       return acc
+    //     }, {})
 
-    async showSuggestionsModal (query) {
+    //   if (response) {
+    //     this.suggested = response.data.map((word) => ({ ...word, ...highlighted }))
+    //   }
+    // },
+
+    showSuggestionsModal () {
       this.modal = true
-      const url = this.getSuggestionsUrl(query, this.page)
-      const response = await this.$http.get(url).catch(console.log)
-      const highlighted = query.split('')
-        .reduce((acc, letter, idx) => {
-          if (letter !== '_') {
-            acc[`letter_${idx + 1}`] = `<mark>${letter}</mark>`
-          }
-          return acc
-        }, {})
-
-      if (response) {
-        this.suggested = response.data.map((word) => ({ ...word, ...highlighted }))
-      }
-    },
-
-    async countWords (query) {
-      this.loading = true
-      query = query || this.wordsQuery
-      const url = `https://crossword.stagelab.pro/crossword/words/count/${query}`
-      const response = await this.$http.get(url).catch(console.log)
-
-      if (response) {
-        this.wordsCount = response.data
-      }
-      this.loading = false
     },
 
     onInputLetter (e) {
@@ -273,7 +261,7 @@ export default {
             this.$refs.question.focus()
           }
 
-          this.showSuggestionsModal(this.wordsQuery)
+          this.showSuggestionsModal(this.query)
         })
       }
     },

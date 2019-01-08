@@ -30,15 +30,18 @@
           :x="word.x"
           :y="word.y"
           :letters="letters"
+          :loading="loading"
           :index="word.index"
           :length="word.length"
           :is-vertical="false"
+          :suggestions="suggestions"
           :filled-words="filledWords"
           :focused-cell="focusedCell"
-          @input="onInputLetter"
-          @focus-cell="onFocusCell"
-          @letters-update="(payload) => $emit('letters-update', payload)"
+          :suggestion-counts="suggestionCounts"
+          @input="(payload) => $emit('input', payload)"
+          @focus-cell="(x, y) => $emit('focus-cell', x, y)"
           @paste-word="(payload) => $emit('paste-word', payload)"
+          @letters-update="(payload) => $emit('letters-update', payload)"
         />
       </div>
     </div>
@@ -52,15 +55,18 @@
           :x="word.x"
           :y="word.y"
           :letters="letters"
+          :loading="loading"
           :length="word.length"
           :index="word.index"
           :is-vertical="true"
+          :suggestions="suggestions"
           :filled-words="filledWords"
           :focused-cell="focusedCell"
-          @input="onInputLetter"
-          @focus-cell="onFocusCell"
-          @letters-update="(payload) => $emit('letters-update', payload)"
+          :suggestion-counts="suggestionCounts"
+          @input="(payload) => $emit('input', payload)"
+          @focus-cell="(x, y) => $emit('focus-cell', x, y)"
           @paste-word="(payload) => $emit('paste-word', payload)"
+          @letters-update="(payload) => $emit('letters-update', payload)"
         />
       </div>
     </div>
@@ -79,10 +85,13 @@ export default {
   props: {
     words: { type: Array, default: () => [] },
     letters: { type: Object, default: () => ({}) },
+    loading: { type: Boolean, default: () => false },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
     filledWords: { type: Array, default: () => [] },
+    suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
+    suggestionCounts: { type: Array, default: () => [] },
   },
 
   data () {
@@ -115,16 +124,6 @@ export default {
         width: Number(this.width),
         height: Number(value),
       })
-    },
-  },
-
-  methods: {
-    onInputLetter (payload) {
-      this.$emit('input', payload)
-    },
-
-    onFocusCell (x, y) {
-      this.$emit('focus-cell', x, y)
     },
   },
 }
