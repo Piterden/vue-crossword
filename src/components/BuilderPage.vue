@@ -357,7 +357,7 @@ export default {
     async getSuggestionCounts (queries, useCache = true) {
       const counts = await Promise.all(queries.unique().map(async (query) => {
         if (useCache) {
-          const cached = this.suggestions.find((data) => data.query === query)
+          const cached = this.suggestionCounts.find((data) => data.query === query)
 
           if (cached) {
             return cached

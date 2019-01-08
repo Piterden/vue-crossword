@@ -185,10 +185,6 @@ export default {
     },
   },
 
-  mounted () {
-    // this.countWords()
-  },
-
   methods: {
     async prevPage () {
       this.page = this.page ? this.page - 1 : 0
