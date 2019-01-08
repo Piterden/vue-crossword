@@ -160,16 +160,16 @@ export default {
   },
 
   watch: {
-    ownLetters (letters) {
+    wordsQuery (query) {
       this.$nextTick(() => {
-        this.answer = Object.values(letters)
-        this.countWords()
+        this.answer = Object.values(this.ownLetters)
+        this.countWords(query)
       })
     },
+  },
 
-    wordsQuery (query) {
-      this.countWords(query)
-    },
+  mounted () {
+    this.countWords()
   },
 
   methods: {
