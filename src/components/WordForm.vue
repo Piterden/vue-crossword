@@ -67,8 +67,9 @@
           minlength="1"
           maxlength="1"
           :data-idx="idx"
-          @input="onInputLetter"
+          @blur="onBlur"
           @focus="onFocus"
+          @input="onInputLetter"
           @paste.prevent.stop="onPaste"
         />
       </div>
@@ -278,6 +279,10 @@ export default {
           ? Number(this.y) + Number(e.target.dataset.idx)
           : Number(this.y),
       )
+    },
+
+    onBlur () {
+      this.$emit('focus-cell', 0, 0)
     },
 
     isActive (idx) {
