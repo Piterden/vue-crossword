@@ -22,6 +22,10 @@
       :focused-cell="focusedCell"
       @updateblanks="onBlanksUpdate"
     />
+
+    <button class="make-blanks" @click.prevent="onGenerate">
+      Generate Grid
+    </button>
   </div>
 </template>
 
@@ -205,6 +209,27 @@ export default {
   },
 
   methods: {
+    onGenerate () {
+      this.blanks = []
+      const halfWidth = this.width % 2
+        ? parseInt(this.width / 2) + 1
+        : parseInt(this.width / 2)
+      const halfHeight = this.height % 2
+        ? parseInt(this.height / 2) + 1
+        : parseInt(this.height / 2)
+
+      for (let x = 1; x <= halfWidth; x += 1) {
+        for (let y = 1; y <= halfHeight; y += 1) {
+          if (parseInt(Math.random() * 2)) {
+            this.blanks.push(`${x}:${y}`)
+            this.blanks.push(`${this.width - x + 1}:${y}`)
+            this.blanks.push(`${x}:${this.height - y + 1}`)
+            this.blanks.push(`${this.width - x + 1}:${this.height - y + 1}`)
+          }
+        }
+      }
+    },
+
     rebuildGrid ({ width, height }) {
       this.width = width
       this.height = height
@@ -258,6 +283,9 @@ export default {
 .builder-page
   display flex
   flex-direction row
+
+.make-blanks
+  height 50px
 
 @media screen and (max-width: 500px)
   .page

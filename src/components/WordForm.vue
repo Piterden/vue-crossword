@@ -99,6 +99,7 @@ export default {
       suggested: [],
       question: '',
       loading: false,
+      timeout: null,
       answer: new Array(this.length).fill(''),
       active: null,
       modal: false,
@@ -161,10 +162,12 @@ export default {
 
   watch: {
     wordsQuery (query) {
-      this.$nextTick(() => {
+      clearTimeout(this.timeout)
+
+      this.timeout = setTimeout(() => {
         this.answer = Object.values(this.ownLetters)
         this.countWords(query)
-      })
+      }, 1000) // eslint-disable-line no-magic-numbers
     },
   },
 

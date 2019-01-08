@@ -3,6 +3,7 @@
     <div class="controls">
       <span>Grid Width: {{ width }}</span>
       <input
+        ref="sizeWidth"
         v-model="width"
         type="range"
         size="4"
@@ -11,6 +12,7 @@
       />
       <span>Grid Height: {{ height }}</span>
       <input
+        ref="sizeHeight"
         v-model="height"
         type="range"
         size="4"
