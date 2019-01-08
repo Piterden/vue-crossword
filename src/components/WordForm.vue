@@ -6,9 +6,9 @@
 
     <div v-if="modal" class="modal">
       <div class="inner">
-        <div class="close">
+        <a href="#" class="close" @click.prevent="hideSuggestionsModal">
           X
-        </div>
+        </a>
         <ul class="suggested-list">
           <li v-for="item in suggested" :key="item.id">
             <a
@@ -18,6 +18,17 @@
             ></a>
           </li>
         </ul>
+        <div class="controls">
+          <div class="prev go-to-page">
+            <a href="#" @click.prevent="prevPage">Prev.</a>
+          </div>
+          <div class="index go-to-page">
+            Page {{ page + 1 }}
+          </div>
+          <div class="next go-to-page">
+            <a href="#" @click.prevent="nextPage">Next.</a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -91,6 +102,7 @@ export default {
       answer: new Array(this.length).fill(''),
       active: null,
       modal: false,
+      page: 0,
     }
   },
 
@@ -161,6 +173,26 @@ export default {
   },
 
   methods: {
+    async prevPage () {
+      this.page = !this.page ? 0 : this.page - 1
+      const url = this.getSuggestionsUrl(this.wordsQuery, this.page)
+      const response = await this.$http.get(url).catch(console.log)
+
+      if (response) {
+        this.suggested = response.data
+      }
+    },
+
+    async nextPage () {
+      this.page += 1
+      const url = this.getSuggestionsUrl(this.wordsQuery, this.page)
+      const response = await this.$http.get(url).catch(console.log)
+
+      if (response) {
+        this.suggested = response.data
+      }
+    },
+
     getWord ({ id, length, ...letters }) {
       return Object.values(letters).join('')
     },
@@ -180,9 +212,13 @@ export default {
       this.suggested = []
     },
 
+    getSuggestionsUrl (query, page = 0) {
+      return `https://crossword.stagelab.pro/crossword/words/find/${page}/${query}`
+    },
+
     async showSuggestionsModal (query) {
       this.modal = true
-      const url = `https://crossword.stagelab.pro/crossword/words/find/0/${query}`
+      const url = this.getSuggestionsUrl(query, this.page)
       const response = await this.$http.get(url).catch(console.log)
 
       if (response) {
@@ -295,6 +331,14 @@ export default {
 
     > .inner
       position relative
+
+      .controls
+        text-align center
+
+        .go-to-page
+          display inline-block
+          margin 0 50px
+          font-size 1.35em
 
       .suggested-list
         li
