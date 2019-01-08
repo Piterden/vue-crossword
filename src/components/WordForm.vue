@@ -13,8 +13,8 @@
           <li v-for="item in suggested" :key="item.id">
             <a
               href="#"
-              @click.prevent="pasteWord(getWord(item))"
-              v-text="getWord(item)"
+              @click.prevent="pasteWord(getWordText(item))"
+              v-html="getWordHtml(item)"
             ></a>
           </li>
         </ul>
@@ -193,7 +193,13 @@ export default {
       }
     },
 
-    getWord ({ id, length, ...letters }) {
+    getWordText ({ id, length, ...letters }) {
+      return Object.values(letters)
+        .map((letter) => letter.replace(/<.+?>/g, ''))
+        .join('')
+    },
+
+    getWordHtml ({ id, length, ...letters }) {
       return Object.values(letters).join('')
     },
 
@@ -220,9 +226,16 @@ export default {
       this.modal = true
       const url = this.getSuggestionsUrl(query, this.page)
       const response = await this.$http.get(url).catch(console.log)
+      const highlighted = query.split('')
+        .reduce((acc, letter, idx) => {
+          if (letter !== '_') {
+            acc[`letter_${idx + 1}`] = `<mark>${letter}</mark>`
+          }
+          return acc
+        }, {})
 
       if (response) {
-        this.suggested = response.data
+        this.suggested = response.data.map((word) => ({ ...word, ...highlighted }))
       }
     },
 
