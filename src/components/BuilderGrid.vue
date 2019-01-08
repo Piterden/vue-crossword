@@ -19,7 +19,7 @@
               :number="getNumber(cellIdx + 1, rowIdx + 1)"
               :is-blank="blanks.includes(`${cellIdx + 1}:${rowIdx + 1}`)"
               :is-active="active.cell === `${cellIdx + 1}:${rowIdx + 1}`"
-              @keyup="onKeyUp"
+              @keyup.exact="onKeyUp"
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"

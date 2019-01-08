@@ -1,10 +1,14 @@
 <template>
   <div class="word-form">
-    <div v-if="loading" class="word-form-overlay">Loading...</div>
+    <div v-if="loading" class="word-form-overlay">
+      Loading...
+    </div>
 
     <div v-if="modal" class="modal">
       <div class="inner">
-        <div class="close">X</div>
+        <div class="close">
+          X
+        </div>
         <ul class="suggested-list">
           <li v-for="item in suggested" :key="item.id">
             <a

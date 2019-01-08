@@ -68,7 +68,6 @@
           :focused-cell="focusedCell"
           @input="onInputLetter"
           @focus-cell="onFocusCell"
-          @modal="onModal"
           @letters-update="(payload) => $emit('letters-update', payload)"
           @paste-word="(payload) => $emit('paste-word', payload)"
         />
@@ -98,9 +97,6 @@ export default {
     return {
       width: this.initWidth,
       height: this.initHeight,
-      modal: false,
-      suggested: [],
-      activeWord: { x: null, y: null, isVertical: null },
     }
   },
 

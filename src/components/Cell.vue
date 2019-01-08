@@ -1,6 +1,8 @@
 <template>
   <div>
-    <sup class="word-start">{{ number }}</sup>
+    <sup class="word-start">
+      {{ number }}
+    </sup>
     <input
       v-model="value"
       type="text"

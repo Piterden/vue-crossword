@@ -18,7 +18,7 @@
               :x="cellIdx + 1"
               :y="rowIdx + 1"
               :is-active="active.cell === `${cellIdx + 1}:${rowIdx + 1}`"
-              @keyup="onKeyUp"
+              @keyup.exact="onKeyUp"
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"
