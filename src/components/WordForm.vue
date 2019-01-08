@@ -58,7 +58,7 @@
         v-for="(letter, idx) of cells"
         :key="idx"
         class="letter"
-        :class="{ focused: isActive(idx) }"
+        :class="{ focused: isActive(idx), filled: isFilled(idx) }"
       >
         <input
           v-model="answer[idx]"
@@ -90,6 +90,7 @@ export default {
     length: { type: Number, default: () => 0 },
     letters: { type: Object, default: () => ({}) },
     isVertical: { type: Boolean, default: () => false },
+    filledWords: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
   },
 
@@ -301,6 +302,14 @@ export default {
         : `${Number(this.x) + Number(idx)}:${this.y}` === this.focusedCell
     },
 
+    isFilled (idx) {
+      return this.isVertical
+        ? this.$root.getAllWordCells(this.filledWords)
+          .includes(`${this.x}:${Number(this.y) + Number(idx)}`)
+        : this.$root.getAllWordCells(this.filledWords)
+          .includes(`${Number(this.x) + Number(idx)}:${this.y}`)
+    },
+
     onPaste (e) {
       const text = e.clipboardData.getData('text')
 
@@ -324,6 +333,9 @@ export default {
     > input
       width 17px
       text-align center
+
+    &.filled > input
+      background greenyellow
 
     &.focused > input
       background #FFEB3B

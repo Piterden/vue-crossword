@@ -42,6 +42,7 @@ export default {
 
   props: {
     focusedCell: { type: String, default: () => '0:0' },
+    filledWords: { type: Array, default: () => [] },
     gridHeight: { type: Number, default: () => 1 },
     gridWidth: { type: Number, default: () => 1 },
     letters: { type: Object, default: () => ({}) },
@@ -311,6 +312,10 @@ export default {
         ? classes.push('blank')
         : classes.push('letter')
 
+      if (this.$root.getAllWordCells(this.filledWords).includes(index)) {
+        classes.push('filled')
+      }
+
       if (index === this.focusedCell) {
         classes.push('focused')
       }
@@ -359,6 +364,9 @@ export default {
     padding 0
     width 30px
     heigth 2
+
+    &.filled > div > input
+      background greenyellow
 
     &.focused > div > input
       background #FFEB3B

@@ -33,6 +33,7 @@
           :index="word.index"
           :length="word.length"
           :is-vertical="false"
+          :filled-words="filledWords"
           :focused-cell="focusedCell"
           @input="onInputLetter"
           @focus-cell="onFocusCell"
@@ -54,6 +55,7 @@
           :length="word.length"
           :index="word.index"
           :is-vertical="true"
+          :filled-words="filledWords"
           :focused-cell="focusedCell"
           @input="onInputLetter"
           @focus-cell="onFocusCell"
@@ -79,6 +81,7 @@ export default {
     letters: { type: Object, default: () => ({}) },
     initWidth: { type: Number, default: () => 1 },
     initHeight: { type: Number, default: () => 1 },
+    filledWords: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
   },
 

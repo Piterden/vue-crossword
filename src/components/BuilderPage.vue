@@ -5,11 +5,12 @@
       :init-height="height"
       :letters="letters"
       :words="words"
+      :filled-words="filledWords"
       :focused-cell="focusedCell"
       @rebuild="rebuildGrid"
       @input="onInputLetter"
       @focus-cell="onFocusCell"
-      @paste-word="onPasteLetters"
+      @paste-word="onPasteWord"
       @letters-update="onLettersUpdate"
     />
 
@@ -19,13 +20,19 @@
       :letters="letters"
       :blanks="blanks"
       :words="words"
+      :filled-words="filledWords"
       :focused-cell="focusedCell"
       @updateblanks="onBlanksUpdate"
     />
 
-    <button class="make-blanks" @click.prevent="onGenerate">
-      Generate Grid
-    </button>
+    <div class="toolbox">
+      <button class="make-blanks" @click.prevent="onGenerate">
+        Generate Grid
+      </button>
+      <button class="make-blanks" @click.prevent="onClear">
+        Clear Letters
+      </button>
+    </div>
   </div>
 </template>
 
@@ -45,6 +52,7 @@ export default {
     height: 10,
     blanks: [],
     letters: {},
+    filledWords: [],
     focusedCell: '0:0',
   }),
 
@@ -261,7 +269,7 @@ export default {
       this.focusedCell = `${x}:${y}`
     },
 
-    onPasteLetters ({ word, x, y, isVertical }) {
+    onPasteWord ({ word, x, y, isVertical }) {
       word.split('').forEach((letter, index) => {
         if (isVertical) {
           this.letters[`${x}:${y + index}`] = letter
@@ -270,6 +278,7 @@ export default {
           this.letters[`${x + index}:${y}`] = letter
         }
       })
+      this.filledWords.push({ word, x, y, isVertical })
     },
 
     onLettersUpdate ({ letters }) {

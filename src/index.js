@@ -40,6 +40,20 @@ new Vue({
 
       return response
     },
+
+    getAllWordCells (words) {
+      return words.flatMap(this.getWordCells)
+    },
+
+    getWordCells ({ word, x, y, isVertical }) {
+      return new Array(word.length).fill(null)
+        .map((letter, idx) => isVertical ? `${x}:${y + idx}` : `${x + idx}:${y}`)
+    },
+
+    getWordLetters ({ word }) {
+      return new Array(word.length).fill(null)
+        .map((letter, idx) => word[idx])
+    },
   },
   template: '<App/>',
 })
