@@ -1,5 +1,17 @@
 <template>
   <div class="builder-form page-inner">
+    <div v-if="modal" class="overlay">
+      <ul class="suggested-list">
+        <li v-for="item in suggested" :key="item.id">
+          <a
+            href="#"
+            @click.prevent="pasteWord(getWord(item))"
+            v-text="getWord(item)"
+          ></a>
+        </li>
+      </ul>
+    </div>
+
     <div class="controls">
       <span>Grid Width: {{ width }}</span>
       <input
@@ -34,6 +46,9 @@
           :focused-cell="focusedCell"
           @input="onInputLetter"
           @focus-cell="onFocusCell"
+          @modal="onModal"
+          @letters-update="(payload) => $emit('letters-update', payload)"
+          @paste-word="(payload) => $emit('paste-word', payload)"
         />
       </div>
     </div>
@@ -53,6 +68,9 @@
           :focused-cell="focusedCell"
           @input="onInputLetter"
           @focus-cell="onFocusCell"
+          @modal="onModal"
+          @letters-update="(payload) => $emit('letters-update', payload)"
+          @paste-word="(payload) => $emit('paste-word', payload)"
         />
       </div>
     </div>
@@ -80,6 +98,9 @@ export default {
     return {
       width: this.initWidth,
       height: this.initHeight,
+      modal: false,
+      suggested: [],
+      activeWord: { x: null, y: null, isVertical: null },
     }
   },
 

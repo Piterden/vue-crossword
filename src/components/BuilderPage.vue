@@ -9,6 +9,8 @@
       @rebuild="rebuildGrid"
       @input="onInputLetter"
       @focus-cell="onFocusCell"
+      @paste-word="onPasteLetters"
+      @letters-update="onLettersUpdate"
     />
 
     <builder-grid
@@ -232,6 +234,21 @@ export default {
 
     onFocusCell (x, y) {
       this.focusedCell = `${x}:${y}`
+    },
+
+    onPasteLetters ({ word, x, y, isVertical }) {
+      word.split('').forEach((letter, index) => {
+        if (isVertical) {
+          this.letters[`${x}:${y + index}`] = letter
+        }
+        else {
+          this.letters[`${x + index}:${y}`] = letter
+        }
+      })
+    },
+
+    onLettersUpdate ({ letters }) {
+      Object.assign(this.letters, letters)
     },
   },
 }

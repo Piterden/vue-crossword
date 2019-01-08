@@ -1,5 +1,22 @@
 <template>
-  <div>
+  <div class="word-form">
+    <div v-if="loading" class="word-form-overlay">Loading...</div>
+
+    <div v-if="modal" class="modal">
+      <div class="inner">
+        <div class="close">X</div>
+        <ul class="suggested-list">
+          <li v-for="item in suggested" :key="item.id">
+            <a
+              href="#"
+              @click.prevent="pasteWord(getWord(item))"
+              v-text="getWord(item)"
+            ></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
     <div>{{ index }}</div>
 
     <div class="question">
@@ -10,6 +27,15 @@
         class="textarea"
         rows="1"
       ></textarea>
+    </div>
+
+    <div class="words-count">
+      <a
+        href="#"
+        title="Show words"
+        @click.prevent="showSuggestionsModal(wordsQuery)"
+        v-text="`Found ${wordsCount} words`"
+      ></a>
     </div>
 
     <div class="answer-letters">
@@ -54,13 +80,23 @@ export default {
 
   data () {
     return {
+      wordsCount: 0,
+      suggested: [],
       question: '',
+      loading: false,
       answer: new Array(this.length).fill(''),
       active: null,
+      modal: false,
     }
   },
 
   computed: {
+    wordsQuery () {
+      return Object.keys(this.ownLetters)
+        .map((key) => this.ownLetters[key] || '_')
+        .join('')
+    },
+
     cells () {
       let i = this.isVertical ? this.x : this.y
 
@@ -108,12 +144,60 @@ export default {
   },
 
   watch: {
-    ownLetters (value) {
-      this.answer = Object.values(value)
+    ownLetters (letters) {
+      this.$nextTick(() => {
+        this.answer = Object.values(letters)
+        this.countWords()
+      })
+    },
+
+    wordsQuery (query) {
+      this.countWords(query)
     },
   },
 
   methods: {
+    getWord ({ id, length, ...letters }) {
+      return Object.values(letters).join('')
+    },
+
+    pasteWord (word) {
+      this.$emit('paste-word', {
+        word,
+        x: this.x,
+        y: this.y,
+        isVertical: this.isVertical,
+      })
+      this.hideSuggestionsModal()
+    },
+
+    hideSuggestionsModal () {
+      this.modal = false
+      this.suggested = []
+    },
+
+    async showSuggestionsModal (query) {
+      this.modal = true
+      const url = `https://crossword.stagelab.pro/crossword/words/find/0/${query}`
+      const response = await this.$http.get(url).catch(console.log)
+
+      if (response) {
+        this.suggested = response.data
+      }
+    },
+
+    async countWords (query) {
+      this.loading = true
+      query = query || this.wordsQuery
+      const url = `https://crossword.stagelab.pro/crossword/words/count/${query}`
+      const response = await this.$http.get(url).catch(console.log)
+
+      if (response) {
+        this.wordsCount = response.data
+      }
+      this.loading = false
+    },
+
     onInputLetter (e) {
       this.$emit('input', {
         value: e.target.value,
@@ -193,4 +277,36 @@ export default {
     .textarea
       margin-top 10px
       width calc(100% - 6px)
+
+.word-form
+  position relative
+
+  .modal
+    position absolute
+    width 183%
+    top 100%
+    background #cacdce
+    z-index 10
+    padding 20px 0
+
+    > .inner
+      position relative
+
+      .suggested-list
+        li
+          width 120px
+
+      .close
+        position absolute
+        right 12px
+        top -25px
+        font-size 2em
+
+  .word-form-overlay
+    position absolute
+    width 100%
+    height 100%
+    top 0
+    left 0
+    background #ccca
 </style>
