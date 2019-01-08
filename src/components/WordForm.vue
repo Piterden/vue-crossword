@@ -253,7 +253,7 @@ export default {
 
     onInputLetter (e) {
       this.$emit('input', {
-        value: e.target.value,
+        value: e.target.value.toUpperCase(),
         ...this.getCellPosition(e.target.dataset.idx),
       })
 
@@ -268,6 +268,8 @@ export default {
           else {
             this.$refs.question.focus()
           }
+
+          this.showSuggestionsModal(this.wordsQuery)
         })
       }
     },
