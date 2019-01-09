@@ -350,24 +350,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-.builder-grid.page-inner
-  display block
-  float left
-  width 50%
-  white-space nowrap
-
-  .cell
-    display inline-flex
-    margin -2px -1px
-    padding 0
-    width 30px
-    heigth 2
-
-    &.filled > div > input
-      background greenyellow
-
-    &.focused > div > input
-      background #FFEB3B
-</style>

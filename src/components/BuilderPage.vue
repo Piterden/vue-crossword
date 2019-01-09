@@ -33,6 +33,7 @@
       @rebuild="rebuildGrid"
       @focus-cell="onFocusCell"
       @paste-word="onPasteWord"
+      @remove-word="onRemoveWord"
       @letters-update="onLettersUpdate"
     />
 
@@ -261,6 +262,22 @@ export default {
   },
 
   methods: {
+    onRemoveWord ({ x, y, isVertical, word }) {
+      const index = this.filledWords.findIndex((word) => word.x === x &&
+        word.y === y && word.isVertical === isVertical)
+
+      this.filledWords.splice(index, 1)
+      const keep = this.$root.getAllWordCells(this.filledWords)
+
+      this.$root.getWordCells({ x, y, isVertical, word })
+        .forEach((cell) => {
+          if (keep.includes(cell)) {
+            return
+          }
+          this.letters[cell] = ''
+        })
+    },
+
     onRefreshSuggestions () {
       this.suggestions = []
       this.suggestionCounts = []
@@ -414,27 +431,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-.builder-page
-  display flex
-  flex-direction row
-
-.btn
-  height 50px
-  width 120px
-
-.toolbox
-  padding 20px
-
-.log
-  position absolute
-  right 20px
-
-@media screen and (max-width: 500px)
-  .page
-    flex-direction column-reverse
-
-    .builder-grid
-      margin 0 auto
-</style>

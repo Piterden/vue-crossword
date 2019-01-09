@@ -42,6 +42,7 @@
           @input="(payload) => $emit('input', payload)"
           @focus-cell="(x, y) => $emit('focus-cell', x, y)"
           @paste-word="(payload) => $emit('paste-word', payload)"
+          @remove-word="(payload) => $emit('remove-word', payload)"
           @letters-update="(payload) => $emit('letters-update', payload)"
         />
       </div>
@@ -68,6 +69,7 @@
           @input="(payload) => $emit('input', payload)"
           @focus-cell="(x, y) => $emit('focus-cell', x, y)"
           @paste-word="(payload) => $emit('paste-word', payload)"
+          @remove-word="(payload) => $emit('remove-word', payload)"
           @letters-update="(payload) => $emit('letters-update', payload)"
         />
       </div>
@@ -131,59 +133,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-.page-inner
-  width calc(50% - 30px)
-  margin-right 30px
-
-.button
-  display flex
-  background-color #08f
-  border-radius 3px
-  color #fff
-  cursor pointer
-  opacity 0.8
-  transition opacity .3s
-
-  &:hover
-    opacity 1
-
-.cell.blank > div input
-  background #000
-  border none
-
-input[type=range]
-  -webkit-appearance none
-  height 38px
-  margin 10px 0
-  width 100%
-
-  &:focus
-    outline none
-
-    &::-webkit-slider-runnable-track
-      background #f001A9
-
-  &::-webkit-slider-runnable-track
-    width 100%
-    height 10px
-    cursor pointer
-    animate 0.2s
-    background #eee
-    border-radius 5px
-    transition background .6s ease-out
-
-  &::-webkit-slider-thumb
-    height 2em
-    width 2em
-    border-radius 50%
-    background #08f
-    cursor pointer
-    -webkit-appearance none
-    margin-top -11px
-
-.forms-list-wrapper
-  width 50%
-  float left
-</style>

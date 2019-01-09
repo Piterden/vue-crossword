@@ -3,7 +3,6 @@
 import Vue from 'vue'
 import './shitcode'
 import App from './App'
-import router from './router'
 import { http } from './plugins'
 
 
@@ -14,8 +13,7 @@ Vue.use(http)
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
-  router,
+  el: '#crossword',
   components: { App },
   methods: {
     serialize (obj, prefix) {
