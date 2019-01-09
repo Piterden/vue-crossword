@@ -83,7 +83,7 @@
         class="danger"
         href="#"
         title="Remove word"
-        @click.prevent="$emit('remove-word', ({ x, y, isVertical, word: { length } }))"
+        @click.prevent="removeWord"
       >
         Remove word
       </a>
@@ -252,6 +252,13 @@ export default {
   },
 
   methods: {
+    removeWord () {
+      const { x, y, isVertical, word } = this
+
+      this.$emit('remove-word', ({ x, y, isVertical, word }))
+      this.question = ''
+    },
+
     showModal (query) {
       this.word
         ? this.showClues()

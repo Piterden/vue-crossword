@@ -263,8 +263,8 @@ export default {
 
   methods: {
     onRemoveWord ({ x, y, isVertical, word }) {
-      const index = this.filledWords.findIndex((word) => word.x === x &&
-        word.y === y && word.isVertical === isVertical)
+      const index = this.filledWords.findIndex((wordString) => wordString.x === x &&
+        wordString.y === y && wordString.isVertical === isVertical)
 
       this.filledWords.splice(index, 1)
       const keep = this.$root.getAllWordCells(this.filledWords)
@@ -276,6 +276,8 @@ export default {
           }
           this.letters[cell] = ''
         })
+
+      this.clues.splice(this.clues.findIndex((clue) => clue.word === word), 1)
     },
 
     onRefreshSuggestions () {
