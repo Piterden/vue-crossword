@@ -4,7 +4,7 @@
       Loading...
     </div>
 
-    <div v-if="suggestionsVisible" class="modal suggestions">
+    <div v-if="suggestionsVisible" class="modal-area suggestions">
       <div class="inner">
         <a href="#" class="close" @click.prevent="hideSuggestionsModal">
           X
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div v-if="cluesVisible" class="modal clues">
+    <div v-if="cluesVisible" class="modal-area clues">
       <div class="inner">
         <a href="#" class="close" @click.prevent="hideClues">
           X
@@ -74,10 +74,19 @@
     <div class="words-count">
       <a
         href="#"
-        title="Show words"
+        title="Show variants"
         @click.prevent="showModal(query)"
         v-text="suggestionsText"
       ></a>
+      <a
+        v-if="word"
+        class="danger"
+        href="#"
+        title="Remove word"
+        @click.prevent="$emit('remove-word', ({ x, y, isVertical, word: { length } }))"
+      >
+        Remove word
+      </a>
     </div>
 
     <div class="answer-letters">
@@ -240,10 +249,6 @@ export default {
     query (query) {
       this.answer = Object.values(this.ownLetters)
     },
-
-    clues (value) {
-      console.log(value)
-    },
   },
 
   methods: {
@@ -375,76 +380,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus">
-.word-form
-  .letter
-    float left
-    width 20px
-
-    > input
-      width 17px
-      text-align center
-
-    &.filled > input
-      background greenyellow
-
-    &.focused > input
-      background #FFEB3B
-
-  .question
-    width 100%
-
-    .textarea
-      margin-top 10px
-
-    .green-plus
-      display inline-block
-      font-size 2em
-      color green
-      cursor pointer
-
-.word-form
-  position relative
-
-  .modal
-    position absolute
-    width 183%
-    top 100%
-    background #cacdce
-    z-index 10
-    padding 20px 0
-
-    > .inner
-      position relative
-
-      .controls
-        text-align center
-
-        .go-to-page
-          display inline-block
-          margin 0 50px
-          font-size 1.35em
-
-      .suggested-list
-        li
-          width 120px
-
-      .clues-list
-        li
-          width 100%
-
-      .close
-        position absolute
-        right 12px
-        top -25px
-        font-size 2em
-
-  .word-form-overlay
-    position absolute
-    width 100%
-    height 100%
-    top 0
-    left 0
-    background #ccca
-</style>

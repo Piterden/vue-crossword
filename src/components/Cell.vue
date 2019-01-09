@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="cell-item">
     <sup class="word-start">
       {{ number }}
     </sup>
@@ -53,25 +53,3 @@ export default {
   },
 }
 </script>
-
-<style lang="stylus" scoped>
-div
-  display inline-flex
-  position relative
-  cursor pointer
-  width 40px
-  height 40px
-
-  input
-    cursor pointer
-    width 100%
-    text-align center
-    font-size 1.25em
-
-  .word-start
-    position absolute
-    top 1px
-    right 2px
-    font-size 10px
-    color blue
-</style>
