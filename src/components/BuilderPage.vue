@@ -1,5 +1,23 @@
 <template>
   <div class="page builder-page">
+    <div class="toolbox">
+      <button class="btn" @click.prevent="onGenerateGrid">
+        Generate Grid
+      </button>
+      <br />
+      <button class="btn" @click.prevent="onClearGrid">
+        Clear Grid
+      </button>
+      <br />
+      <button class="btn" @click.prevent="onClearLetters">
+        Clear Letters
+      </button>
+      <br />
+      <button class="btn" @click.prevent="onRefreshSuggestions">
+        Refresh Suggestions
+      </button>
+    </div>
+
     <builder-form
       :words="words"
       :letters="letters"
@@ -28,16 +46,10 @@
       @updateblanks="onBlanksUpdate"
     />
 
-    <div class="toolbox">
-      <button class="make-blanks" @click.prevent="onGenerateGrid">
-        Generate Grid
-      </button>
-      <button class="make-blanks" @click.prevent="onClearGrid">
-        Clear Grid
-      </button>
-      <button class="make-blanks" @click.prevent="onClearLetters">
-        Clear Letters
-      </button>
+    <div class="log">
+      <pre>
+        {{ log }}
+      </pre>
     </div>
   </div>
 </template>
@@ -54,6 +66,7 @@ export default {
   components: { BuilderForm, BuilderGrid },
 
   data: () => ({
+    log: [],
     width: 10,
     height: 10,
     blanks: [],
@@ -231,13 +244,19 @@ export default {
   },
 
   methods: {
-    async updateSuggestions () {
+    onRefreshSuggestions () {
+      this.suggestions = []
+      this.suggestionCounts = []
+      this.updateSuggestions(true)
+    },
+
+    async updateSuggestions (force = false) {
       const queries = this.getWordQueries()
 
       this.loading = true
 
-      this.suggestionCounts = await this.getSuggestionCounts(queries)
-      this.suggestions = await this.getSuggestions(queries)
+      this.suggestionCounts = await this.getSuggestionCounts(queries, !force)
+      this.suggestions = await this.getSuggestions(queries, !force)
 
       this.loading = false
     },
@@ -346,7 +365,12 @@ export default {
           }
         }
         const url = this.getSuggestionsUrl(query)
+
+        this.log.push(query)
+
         const response = await this.$http.get(url)
+
+        this.log.splice(this.log.findIndex((string) => string === query), 1)
 
         return { query, data: response.data }
       }))
@@ -380,8 +404,12 @@ export default {
   display flex
   flex-direction row
 
-.make-blanks
+.btn
   height 50px
+  width 120px
+
+.toolbox
+  padding 20px
 
 @media screen and (max-width: 500px)
   .page

@@ -1,6 +1,6 @@
 <template>
   <div class="word-form">
-    <div v-if="loading" class="word-form-overlay">
+    <div v-if="loading && !suggested.length" class="word-form-overlay">
       Loading...
     </div>
 
@@ -20,13 +20,17 @@
         </ul>
         <div class="controls">
           <div class="prev go-to-page">
-            <a href="#" @click.prevent="prevPage">Prev.</a>
+            <a href="#" @click.prevent="prevPage">
+              Prev.
+            </a>
           </div>
           <div class="index go-to-page">
             Page {{ page + 1 }}
           </div>
           <div class="next go-to-page">
-            <a href="#" @click.prevent="nextPage">Next.</a>
+            <a href="#" @click.prevent="nextPage">
+              Next.
+            </a>
           </div>
         </div>
       </div>
@@ -162,7 +166,7 @@ export default {
     },
 
     suggested () {
-      const data = this.suggestions.find(({ query }) => this.query)
+      const data = this.suggestions.find(({ query }) => query === this.query)
 
       // eslint-disable-next-line no-magic-numbers
       return data ? data.data.slice(this.page * 50, (this.page + 1) * 50) : []
@@ -181,7 +185,6 @@ export default {
 
       this.timeout = setTimeout(() => {
         this.answer = Object.values(this.ownLetters)
-        this.countWords(query)
       }, 1000) // eslint-disable-line no-magic-numbers
     },
   },
