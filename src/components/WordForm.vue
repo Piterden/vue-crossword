@@ -4,7 +4,7 @@
       Loading...
     </div>
 
-    <div v-if="modal" class="modal">
+    <div v-if="suggestionsVisible" class="modal suggestions">
       <div class="inner">
         <a href="#" class="close" @click.prevent="hideSuggestionsModal">
           X
@@ -36,6 +36,24 @@
       </div>
     </div>
 
+    <div v-if="cluesVisible" class="modal clues">
+      <div class="inner">
+        <a href="#" class="close" @click.prevent="hideClues">
+          X
+        </a>
+        <ol class="clues-list">
+          <li v-for="clue in ownClues" :key="clue.id">
+            <a
+              href="#"
+              @click.prevent="pasteClue(clue)"
+              v-html="getClueHtml(clue)"
+            ></a>
+            <br />
+          </li>
+        </ol>
+      </div>
+    </div>
+
     <div>{{ index }}</div>
 
     <div class="question">
@@ -44,16 +62,21 @@
         v-model="question"
         type="text"
         class="textarea"
-        rows="1"
+        :cols="cols"
+        :rows="rows"
+        @focus="showClues"
       ></textarea>
+      <div v-if="noClue" class="green-plus">
+        +
+      </div>
     </div>
 
     <div class="words-count">
       <a
         href="#"
         title="Show words"
-        @click.prevent="showSuggestionsModal(query)"
-        v-text="`Found ${wordsCount} words`"
+        @click.prevent="showModal(query)"
+        v-text="suggestionsText"
       ></a>
     </div>
 
@@ -92,6 +115,7 @@ export default {
     x: { type: Number, default: () => 0 },
     y: { type: Number, default: () => 0 },
     index: { type: Number, default: () => 0 },
+    clues: { type: Array, default: () => [] },
     length: { type: Number, default: () => 0 },
     letters: { type: Object, default: () => ({}) },
     loading: { type: Boolean, default: () => false },
@@ -104,20 +128,42 @@ export default {
 
   data () {
     return {
-      question: '',
-      timeout: null,
-      answer: new Array(this.length).fill(''),
-      active: null,
-      modal: false,
       page: 0,
+      active: null,
+      answer: new Array(this.length).fill(''),
+      timeout: null,
+      question: '',
+      cluesVisible: false,
+      suggestionsVisible: false,
     }
   },
 
   computed: {
+    suggestionsText () {
+      return this.word && this.ownClues
+        ? `Found ${this.ownClues.length} clues`
+        : `Found ${this.suggestionsCount} words`
+    },
+
+    noClue () {
+      return this.question && this.word &&
+        !this.ownClues.map(({ name }) => name).includes(this.question)
+    },
+
+    word () {
+      return this.answer.every(Boolean) ? this.answer.join('') : ''
+    },
+
     query () {
       return Object.keys(this.ownLetters)
         .map((key) => this.ownLetters[key] || '_')
         .join('')
+    },
+
+    ownClues () {
+      const clues = this.clues.find(({ word }) => word === this.word)
+
+      return clues ? clues.data : []
     },
 
     cells () {
@@ -172,29 +218,54 @@ export default {
       return data ? data.data.slice(this.page * 50, (this.page + 1) * 50) : []
     },
 
-    wordsCount () {
+    suggestionsCount () {
       const data = this.suggestionCounts.find(({ query }) => query === this.query)
 
       return data ? data.data : 0
+    },
+
+    cols () {
+      return 28 // eslint-disable-line no-magic-numbers
+    },
+
+    rows () {
+      return this.question
+        // eslint-disable-next-line no-magic-numbers
+        ? parseInt(this.question.length / this.cols * 1.2)
+        : 1
     },
   },
 
   watch: {
     query (query) {
-      clearTimeout(this.timeout)
+      this.answer = Object.values(this.ownLetters)
+    },
 
-      this.timeout = setTimeout(() => {
-        this.answer = Object.values(this.ownLetters)
-      }, 1000) // eslint-disable-line no-magic-numbers
+    clues (value) {
+      console.log(value)
     },
   },
 
   methods: {
-    async prevPage () {
+    showModal (query) {
+      this.word
+        ? this.showClues()
+        : this.showSuggestionsModal(query)
+    },
+
+    showClues () {
+      this.cluesVisible = !!this.word
+    },
+
+    hideClues () {
+      this.cluesVisible = false
+    },
+
+    prevPage () {
       this.page = this.page ? this.page - 1 : 0
     },
 
-    async nextPage () {
+    nextPage () {
       this.page += 1
     },
 
@@ -219,28 +290,20 @@ export default {
     },
 
     hideSuggestionsModal () {
-      this.modal = false
+      this.suggestionsVisible = false
     },
 
-    // async showSuggestionsModal (query) {
-    //   this.modal = true
-    //   const url = this.getSuggestionsUrl(query, this.page)
-    //   const response = await this.$http.get(url).catch(console.log)
-    //   const highlighted = query.split('')
-    //     .reduce((acc, letter, idx) => {
-    //       if (letter !== '_') {
-    //         acc[`letter_${idx + 1}`] = `<mark>${letter}</mark>`
-    //       }
-    //       return acc
-    //     }, {})
+    getClueHtml ({ name }) {
+      return name
+    },
 
-    //   if (response) {
-    //     this.suggested = response.data.map((word) => ({ ...word, ...highlighted }))
-    //   }
-    // },
+    pasteClue (clue) {
+      this.question = clue.name
+      this.hideClues()
+    },
 
     showSuggestionsModal () {
-      this.modal = true
+      this.suggestionsVisible = true
     },
 
     onInputLetter (e) {
@@ -314,10 +377,7 @@ export default {
 </script>
 
 <style lang="stylus">
-.answer-letters
-  float left
-  width 100%
-
+.word-form
   .letter
     float left
     width 20px
@@ -334,11 +394,15 @@ export default {
 
   .question
     width 100%
-    background #eee
 
     .textarea
       margin-top 10px
-      width calc(100% - 6px)
+
+    .green-plus
+      display inline-block
+      font-size 2em
+      color green
+      cursor pointer
 
 .word-form
   position relative
@@ -365,6 +429,10 @@ export default {
       .suggested-list
         li
           width 120px
+
+      .clues-list
+        li
+          width 100%
 
       .close
         position absolute

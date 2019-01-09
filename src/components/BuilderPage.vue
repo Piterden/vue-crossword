@@ -19,6 +19,7 @@
     </div>
 
     <builder-form
+      :clues="clues"
       :words="words"
       :letters="letters"
       :loading="loading"
@@ -67,6 +68,7 @@ export default {
 
   data: () => ({
     log: [],
+    clues: [],
     width: 10,
     height: 10,
     blanks: [],
@@ -186,6 +188,17 @@ export default {
       ])
     },
 
+    queries () {
+      return this.words.map((word) => this.$root
+        .getWordCells({
+          ...word,
+          word: { length: word.length },
+          isVertical: word.type === 'vertical',
+        })
+        .map((idx) => this.letters[idx] || '_')
+        .join('')).unique()
+    },
+
     startCells () {
       return [
         ...this.horizontalWords,
@@ -233,14 +246,18 @@ export default {
       this.letters = { ...value, ...this.letters }
     },
 
-    blanks (value) {
+    blanks () {
+      this.updateSuggestions()
+    },
+
+    queries () {
       this.updateSuggestions()
     },
   },
 
   mounted () {
     this.letters = this.letterCells
-    this.updateSuggestions()
+    // this.updateSuggestions()
   },
 
   methods: {
@@ -251,12 +268,10 @@ export default {
     },
 
     async updateSuggestions (force = false) {
-      const queries = this.getWordQueries()
-
       this.loading = true
 
-      this.suggestionCounts = await this.getSuggestionCounts(queries, !force)
-      this.suggestions = await this.getSuggestions(queries, !force)
+      this.suggestionCounts = await this.getSuggestionCounts(this.queries, !force)
+      this.suggestions = await this.getSuggestions(this.queries, !force)
 
       this.loading = false
     },
@@ -338,17 +353,14 @@ export default {
         }
       })
       this.filledWords.push({ word, x, y, isVertical })
+      this.$http.get(`https://crossword.stagelab.pro/crossword/clues/find/${word}`)
+        .then((response) => {
+          this.clues.push({ word, data: response.data })
+        })
     },
 
     onLettersUpdate ({ letters }) {
       Object.assign(this.letters, letters)
-    },
-
-    getWordQueries () {
-      return this.words.map((word) => this.$root
-        .getWordCells({ ...word, word: { length: word.length } })
-        .map((idx) => this.letters[idx] || '_')
-        .join(''))
     },
 
     getSuggestionsUrl (query, page = 0) {
@@ -356,7 +368,11 @@ export default {
     },
 
     async getSuggestions (queries, useCache = true) {
-      const suggestions = await Promise.all(queries.unique().map(async (query) => {
+      return Promise.all(queries.map(async (query) => {
+        if (!query.includes('_')) {
+          return { query, data: [] }
+        }
+
         if (useCache) {
           const cached = this.suggestions.find((data) => data.query === query)
 
@@ -366,20 +382,22 @@ export default {
         }
         const url = this.getSuggestionsUrl(query)
 
-        this.log.push(query)
+        this.log.push(url)
 
         const response = await this.$http.get(url)
 
-        this.log.splice(this.log.findIndex((string) => string === query), 1)
+        this.log.splice(this.log.findIndex((string) => string === url), 1)
 
         return { query, data: response.data }
       }))
-
-      return suggestions
     },
 
     async getSuggestionCounts (queries, useCache = true) {
-      const counts = await Promise.all(queries.unique().map(async (query) => {
+      return Promise.all(queries.map(async (query) => {
+        if (!query.includes('_')) {
+          return { query, data: 1 }
+        }
+
         if (useCache) {
           const cached = this.suggestionCounts.find((data) => data.query === query)
 
@@ -392,8 +410,6 @@ export default {
 
         return { query, data: response.data }
       }))
-
-      return counts
     },
   },
 }
@@ -410,6 +426,10 @@ export default {
 
 .toolbox
   padding 20px
+
+.log
+  position absolute
+  right 20px
 
 @media screen and (max-width: 500px)
   .page

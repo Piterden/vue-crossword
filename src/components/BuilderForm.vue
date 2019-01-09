@@ -26,9 +26,10 @@
       <div class="forms-list">
         <word-form
           v-for="(word, index) in horizontalWords"
-          :key="index"
+          :key="`h${index}`"
           :x="word.x"
           :y="word.y"
+          :clues="clues"
           :letters="letters"
           :loading="loading"
           :index="word.index"
@@ -51,9 +52,10 @@
       <div class="forms-list">
         <word-form
           v-for="(word, index) in verticalWords"
-          :key="index"
+          :key="`v${index}`"
           :x="word.x"
           :y="word.y"
+          :clues="clues"
           :letters="letters"
           :loading="loading"
           :length="word.length"
@@ -84,6 +86,7 @@ export default {
 
   props: {
     words: { type: Array, default: () => [] },
+    clues: { type: Array, default: () => [] },
     letters: { type: Object, default: () => ({}) },
     loading: { type: Boolean, default: () => false },
     initWidth: { type: Number, default: () => 1 },
