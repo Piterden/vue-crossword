@@ -4,7 +4,7 @@
 
 A Vue.js based crossword puzzle builder and filler front-end application.
 
-> Built with [CodeSandbox](https://codesandbox.io)
+![1547090130650](preview01.png)
 
 ## Demo
 
