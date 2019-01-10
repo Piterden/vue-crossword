@@ -60,6 +60,7 @@ PR's are appreciated.
 ## Authors
 
 - **Denis Efremov** - *Code|Idea* - [Piterden](https://github.com/Piterden)
+- **mvrlin** - *Help with styles* - [mvrlin](https://github.com/mvrlin)
 
 ## License
 
