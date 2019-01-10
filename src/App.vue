@@ -266,10 +266,13 @@ grid-border = #ccc
     width 50%
     float left
 
-@media screen and (max-width: 500px)
+@media screen and (max-width: 767px)
   #crossword
     .page
-      flex-direction column-reverse
+      flex-direction column
+
+      .page-inner
+        width 100%
 
       .builder-grid
         margin 0 auto

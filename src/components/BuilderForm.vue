@@ -1,6 +1,6 @@
 <template>
   <div class="builder-form page-inner">
-    <div class="controls">
+    <div v-show="changeSizeMode" class="controls">
       <span>Grid Width: {{ width }}</span>
       <input
         ref="sizeWidth"
@@ -21,7 +21,7 @@
       />
     </div>
 
-    <div class="forms-list-wrapper horizontal">
+    <div v-show="!changeSizeMode" class="forms-list-wrapper horizontal">
       <label>Horizontal questions:</label>
       <div class="forms-list">
         <word-form
@@ -48,7 +48,7 @@
       </div>
     </div>
 
-    <div class="forms-list-wrapper vertical">
+    <div v-show="!changeSizeMode" class="forms-list-wrapper vertical">
       <label>Vertical questions:</label>
       <div class="forms-list">
         <word-form
@@ -96,6 +96,7 @@ export default {
     filledWords: { type: Array, default: () => [] },
     suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
+    changeSizeMode: { type: Boolean, default: () => false },
     suggestionCounts: { type: Array, default: () => [] },
   },
 

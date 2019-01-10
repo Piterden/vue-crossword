@@ -13,10 +13,25 @@
         Clear Letters
       </button>
       <br />
+      <button class="btn" @click.prevent="onChangeSizeClick">
+        Change Size
+      </button>
+      <br />
       <button class="btn" @click.prevent="onRefreshSuggestions">
         Refresh Suggestions
       </button>
     </div>
+
+    <builder-grid
+      :words="words"
+      :blanks="blanks"
+      :letters="letters"
+      :grid-width="width"
+      :grid-height="height"
+      :filled-words="filledWords"
+      :focused-cell="focusedCell"
+      @updateblanks="onBlanksUpdate"
+    />
 
     <builder-form
       :clues="clues"
@@ -28,6 +43,7 @@
       :suggestions="suggestions"
       :filled-words="filledWords"
       :focused-cell="focusedCell"
+      :change-size-mode="changeSizeMode"
       :suggestion-counts="suggestionCounts"
       @input="onInputLetter"
       @rebuild="rebuildGrid"
@@ -35,17 +51,6 @@
       @paste-word="onPasteWord"
       @remove-word="onRemoveWord"
       @letters-update="onLettersUpdate"
-    />
-
-    <builder-grid
-      :words="words"
-      :blanks="blanks"
-      :letters="letters"
-      :grid-width="width"
-      :grid-height="height"
-      :filled-words="filledWords"
-      :focused-cell="focusedCell"
-      @updateblanks="onBlanksUpdate"
     />
 
     <div class="log">
@@ -78,6 +83,7 @@ export default {
     filledWords: [],
     suggestions: [],
     focusedCell: '0:0',
+    changeSizeMode: false,
     suggestionCounts: [],
   }),
 
@@ -248,20 +254,32 @@ export default {
     },
 
     blanks () {
+      if (this.changeSizeMode) {
+        return
+      }
       this.updateSuggestions()
     },
 
     queries () {
+      if (this.changeSizeMode) {
+        return
+      }
       this.updateSuggestions()
     },
   },
 
   mounted () {
     this.letters = this.letterCells
-    // this.updateSuggestions()
   },
 
   methods: {
+    onChangeSizeClick () {
+      this.changeSizeMode = !this.changeSizeMode
+      if (!this.changeSizeMode) {
+        this.updateSuggestions()
+      }
+    },
+
     onRemoveWord ({ x, y, isVertical, word }) {
       const index = this.filledWords.findIndex((wordString) => wordString.x === x &&
         wordString.y === y && wordString.isVertical === isVertical)
