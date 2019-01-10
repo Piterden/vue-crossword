@@ -4,7 +4,7 @@
 
 A Vue.js based crossword puzzle builder and filler front-end application.
 
-![1547090130650](preview01.png)
+![1547090130650](https://raw.githubusercontent.com/Piterden/vue-crossword/master/preview01.png)
 
 ## Demo
 
