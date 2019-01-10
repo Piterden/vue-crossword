@@ -1,14 +1,33 @@
-# vue-crossword
+# Vue Crossword
 
 [![Build Status](https://travis-ci.com/Piterden/vue-crossword.svg?branch=master)](https://travis-ci.com/Piterden/vue-crossword)
 
-> A Vue.js project
+A Vue.js based crossword puzzle builder and filler front-end application.
+
+> Built with [CodeSandbox](https://codesandbox.io)
+
+## Demo
+
+[**Russian Words DB Demo**](https://0l3q5ozyl.codesandbox.io/)
+
+## Features
+
+- supports 2-31 symbols words length
+- supports any grid size
+- random symmetric grid generator
+- automatic calculation of required to fill letter cells and clues numeration
+- words suggestions from API depending on length and filled letters
+- clues suggestions for filled words from API
+
+## Usage
+
+
 
 ## Build Setup
 
 ``` bash
 # install dependencies
-npm install
+npm i
 
 # serve with hot reload at localhost:8080
 npm run dev
@@ -29,4 +48,19 @@ npm run e2e
 npm test
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+## Built With
+
+- [VueJS](https://vuejs.org/) - The Progressive JavaScript Framework.
+- [CodeSandbox](https://codesandbox.io) - The online code editor for ...
+
+## Contributing
+
+PR's are appreciated.
+
+## Authors
+
+- **Denis Efremov** - *Code|Idea* - [Piterden](https://github.com/Piterden)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Piterden/chessbot/blob/master/LICENSE.md) file for details
