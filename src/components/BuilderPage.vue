@@ -49,6 +49,7 @@
       @rebuild="rebuildGrid"
       @focus-cell="onFocusCell"
       @paste-word="onPasteWord"
+      @paste-clue="onPasteClue"
       @remove-word="onRemoveWord"
       @letters-update="onLettersUpdate"
     />
@@ -196,13 +197,11 @@ export default {
     },
 
     queries () {
-      return this.words.map((word) => this.$root
-        .getWordCells({
-          ...word,
-          word: { length: word.length },
-          isVertical: word.type === 'vertical',
-        })
-        .map((idx) => this.letters[idx] || '_')
+      return this.words.map((word) => this.$root.getWordCells({
+        ...word,
+        word: { length: word.length },
+        isVertical: word.type === 'vertical',
+      }).map((idx) => this.letters[idx] || '_')
         .join('')).unique()
     },
 
@@ -280,9 +279,13 @@ export default {
       }
     },
 
+    getWordText ({ id, length, ...letters }) {
+      return Object.values(letters).join('')
+    },
+
     onRemoveWord ({ x, y, isVertical, word }) {
-      const index = this.filledWords.findIndex((wordString) => wordString.x === x &&
-        wordString.y === y && wordString.isVertical === isVertical)
+      const index = this.filledWords.findIndex((item) => item.x === x &&
+        item.y === y && item.isVertical === isVertical)
 
       this.filledWords.splice(index, 1)
       const keep = this.$root.getAllWordCells(this.filledWords)
@@ -295,7 +298,7 @@ export default {
           this.letters[cell] = ''
         })
 
-      this.clues.splice(this.clues.findIndex((clue) => clue.word === word), 1)
+      this.clues.splice(this.clues.findIndex((clue) => clue.word === word.word), 1)
     },
 
     onRefreshSuggestions () {
@@ -380,8 +383,11 @@ export default {
       this.focusedCell = `${x}:${y}`
     },
 
-    onPasteWord ({ word, x, y, isVertical }) {
-      word.split('').forEach((letter, index) => {
+    onPasteWord ({ word: { id, length, ...letters }, x, y, isVertical }) {
+      const array = Object.values(letters)
+      const word = array.join('')
+
+      array.forEach((letter, index) => {
         if (isVertical) {
           this.letters[`${x}:${y + index}`] = letter
         }
@@ -389,11 +395,27 @@ export default {
           this.letters[`${x + index}:${y}`] = letter
         }
       })
-      this.filledWords.push({ word, x, y, isVertical })
+      this.filledWords.push({ word, x, y, isVertical, clue: null })
       this.$http.get(`https://crossword.stagelab.pro/crossword/clues/find/${word}`)
         .then((response) => {
-          this.clues.push({ word, data: response.data })
+          this.clues.push({ word, data: response.data.clues })
         })
+    },
+
+    onPasteClue ({ word, clue, x, y, isVertical }) {
+      this.$http.post(
+        'https://crossword.stagelab.pro/crossword/clues/create',
+        { crossword: 1, clue: clue.id }
+      )
+        .then((response) => {
+          const index = this.filledWords.findIndex((item) => item.x === x &&
+            item.y === y && item.isVertical === isVertical)
+
+          if (index !== -1) {
+            this.filledWords[index].clue = response.data.clue
+          }
+        })
+        .catch(console.log)
     },
 
     onLettersUpdate ({ letters }) {
@@ -404,7 +426,7 @@ export default {
       return `https://crossword.stagelab.pro/crossword/words/find/${page}/${query}`
     },
 
-    async getSuggestions (queries, useCache = true) {
+    getSuggestions (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
         if (!query.includes('_')) {
           return { query, data: [] }
@@ -417,24 +439,19 @@ export default {
             return cached
           }
         }
+        this.log.push(`WORDS FOR ${query}`)
+
         const url = this.getSuggestionsUrl(query)
-
-        this.log.push(url)
-
         const response = await this.$http.get(url)
 
         this.log.splice(this.log.findIndex((string) => string === url), 1)
 
-        return { query, data: response.data }
+        return { query, data: response.data.words }
       }))
     },
 
-    async getSuggestionCounts (queries, useCache = true) {
+    getSuggestionCounts (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
-        if (!query.includes('_')) {
-          return { query, data: 1 }
-        }
-
         if (useCache) {
           const cached = this.suggestionCounts.find((data) => data.query === query)
 
@@ -442,10 +459,14 @@ export default {
             return cached
           }
         }
-        const url = `https://crossword.stagelab.pro/crossword/words/count/${query}`
-        const response = await this.$http.get(url)
+        this.log.push(`COUNT FOR ${query}`)
 
-        return { query, data: response.data }
+        const url = `https://crossword.stagelab.pro/crossword/words/count/${query}`
+        const response = await this.$http.get(url).catch(console.log)
+
+        this.log.splice(this.log.findIndex((string) => string === url), 1)
+
+        return { query, count: response.data.count }
       }))
     },
   },

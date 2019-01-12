@@ -6,15 +6,19 @@
 
     <div v-if="suggestionsVisible" class="modal-area suggestions">
       <div class="inner">
-        <a href="#" class="close" @click.prevent="hideSuggestionsModal">
+        <a href="#" class="close" @click.prevent="hideSuggestions">
           X
         </a>
         <ul class="suggested-list">
-          <li v-for="item in suggested" :key="item.id">
+          <li
+            v-for="wordItem in suggested"
+            :key="wordItem.id"
+            :style="{ width: `${length / 2}em` }"
+          >
             <a
               href="#"
-              @click.prevent="pasteWord(getWordText(item))"
-              v-html="getWordHtml(item)"
+              @click.prevent="pasteWord(wordItem)"
+              v-html="getWordHtml(wordItem)"
             ></a>
           </li>
         </ul>
@@ -149,7 +153,7 @@ export default {
 
   computed: {
     suggestionsText () {
-      return this.word && this.ownClues
+      return !this.query.includes('_') && this.ownClues
         ? `Found ${this.ownClues.length} clues`
         : `Found ${this.suggestionsCount} words`
     },
@@ -160,7 +164,11 @@ export default {
     },
 
     word () {
-      return this.answer.every(Boolean) ? this.answer.join('') : ''
+      return this.answer.every(Boolean)
+        ? this.filledWords.find(({ word }) => (
+          word === this.answer.join('')
+        ))
+        : null
     },
 
     query () {
@@ -169,9 +177,16 @@ export default {
         .join('')
     },
 
-    ownClues () {
-      const clues = this.clues.find(({ word }) => word === this.word)
+    ownSuggestions () {
+      const data = this.suggestions.find(({ query }) => query === this.query)
 
+      return data ? data.data : []
+    },
+
+    ownClues () {
+      const clues = this.clues.find(({ word }) => word === this.answer.join(''))
+
+      console.log(clues)
       return clues ? clues.data : []
     },
 
@@ -190,23 +205,19 @@ export default {
       const cells = []
 
       if (this.isVertical) {
-        let i = this.y
         const end = this.length + this.y
 
-        for (i; i < end; i += 1) {
+        for (let i = this.y; i < end; i += 1) {
           cells.push(`${this.x}:${i}`)
         }
-
         return cells
       }
 
-      let i = this.x
       const end = this.length + this.x
 
-      for (i; i < end; i += 1) {
+      for (let i = this.x; i < end; i += 1) {
         cells.push(`${i}:${this.y}`)
       }
-
       return cells
     },
 
@@ -224,13 +235,13 @@ export default {
       const data = this.suggestions.find(({ query }) => query === this.query)
 
       // eslint-disable-next-line no-magic-numbers
-      return data ? data.data.slice(this.page * 50, (this.page + 1) * 50) : []
+      return data ? data.data : []
     },
 
     suggestionsCount () {
       const data = this.suggestionCounts.find(({ query }) => query === this.query)
 
-      return data ? data.data : 0
+      return data ? data.count : 0
     },
 
     cols () {
@@ -260,9 +271,9 @@ export default {
     },
 
     showModal (query) {
-      this.word
-        ? this.showClues()
-        : this.showSuggestionsModal(query)
+      this.answer.includes('')
+        ? this.showSuggestions(query)
+        : this.showClues()
     },
 
     showClues () {
@@ -298,10 +309,10 @@ export default {
         y: this.y,
         isVertical: this.isVertical,
       })
-      this.hideSuggestionsModal()
+      this.hideSuggestions()
     },
 
-    hideSuggestionsModal () {
+    hideSuggestions () {
       this.suggestionsVisible = false
     },
 
@@ -310,11 +321,19 @@ export default {
     },
 
     pasteClue (clue) {
+      this.$emit('paste-clue', {
+        clue,
+        x: this.x,
+        y: this.y,
+        word: this.word,
+        isVertical: this.isVertical,
+      })
+
       this.question = clue.name
       this.hideClues()
     },
 
-    showSuggestionsModal () {
+    showSuggestions () {
       this.suggestionsVisible = true
     },
 
@@ -336,7 +355,7 @@ export default {
             this.$refs.question.focus()
           }
 
-          this.showSuggestionsModal(this.query)
+          this.showSuggestions(this.query)
         })
       }
     },

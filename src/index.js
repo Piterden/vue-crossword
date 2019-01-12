@@ -44,13 +44,13 @@ new Vue({
     },
 
     getWordCells ({ word, x, y, isVertical }) {
-      return new Array(word.length).fill(null)
+      return new Array(word.length || word.word.length).fill(null)
         .map((letter, idx) => isVertical ? `${x}:${y + idx}` : `${x + idx}:${y}`)
     },
 
     getWordLetters ({ word }) {
       return new Array(word.length).fill(null)
-        .map((letter, idx) => word[idx])
+        .map((letter, idx) => word[`letter_${idx + 1}`])
     },
   },
   template: '<App/>',

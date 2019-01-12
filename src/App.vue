@@ -121,6 +121,7 @@ grid-border = #ccc
       position absolute
       width 183%
       top 100%
+      right 0
       background #cacdce
       z-index 10
       padding 20px 0
@@ -138,7 +139,7 @@ grid-border = #ccc
 
         .suggested-list
           li
-            width 120px
+            font-family monospace
 
         .clues-list
           li
