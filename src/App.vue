@@ -157,7 +157,7 @@ grid-border = #ccc
       height 100%
       top 0
       left 0
-      background #ccca
+      background #ffeab6aa
 
   .cell-item
     display inline-flex
@@ -174,7 +174,7 @@ grid-border = #ccc
 
     &.hovered
       input
-        background #aaa
+        background #ffeab6
 
     .word-start
       position absolute
