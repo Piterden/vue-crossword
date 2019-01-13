@@ -17,7 +17,7 @@
           <li
             v-for="wordItem in suggested"
             :key="wordItem.id"
-            :style="{ width: `${length / 2}em` }"
+            :style="{ width: `${length / 1.618}em` }"
           >
             <a
               href="#"
@@ -62,22 +62,9 @@
       </div>
     </div>
 
-    <div>{{ index }}</div>
-
-    <div class="question">
-      <textarea
-        ref="question"
-        v-model="question"
-        type="text"
-        class="textarea"
-        :cols="cols"
-        :rows="rows"
-        @focus="showClues"
-      ></textarea>
-      <div v-if="noClue" class="green-plus">
-        +
-      </div>
-    </div>
+    <span class="index-number">
+      {{ index }}
+    </span>
 
     <div class="words-count">
       <a
@@ -97,30 +84,43 @@
       </a>
     </div>
 
-    <div class="answer-letters">
-      <div
-        v-for="(letter, idx) of cells"
-        :key="idx"
-        class="letter"
-        :class="{ focused: isActive(idx), filled: isFilled(idx) }"
-      >
-        <input
-          v-model="answer[idx]"
-          type="text"
-          size="1"
-          minlength="1"
-          maxlength="1"
-          :data-idx="idx"
-          @blur="onBlur"
-          @focus="onFocus"
-          @input="onInputLetter"
-          @paste.prevent.stop="onPaste"
-        />
+    <div class="question">
+      <textarea
+        v-if="word"
+        ref="question"
+        v-model="question"
+        type="text"
+        class="textarea"
+        :cols="cols"
+        :rows="rows"
+        @focus="showClues"
+      ></textarea>
+      <div class="answer-letters">
+        <div
+          v-for="(letter, idx) of cells"
+          :key="idx"
+          class="letter"
+          :class="{ focused: isActive(idx), filled: isFilled(idx) }"
+        >
+          <input
+            v-model="answer[idx]"
+            type="text"
+            size="1"
+            minlength="1"
+            maxlength="1"
+            :data-idx="idx"
+            @blur="onBlur"
+            @focus="onFocus"
+            @input="onInputLetter"
+            @paste.prevent.stop="onPaste"
+          />
+        </div>
+      </div>
+      <div v-if="noClue" class="green-plus">
+        +
       </div>
     </div>
 
-    <br />
-    <hr />
   </div>
 </template>
 

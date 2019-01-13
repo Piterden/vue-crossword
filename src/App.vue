@@ -17,6 +17,7 @@ export default {
 
 <style lang="stylus">
 grid-border = #ccc
+accent-color = #fff59d
 
 #crossword
   font-family 'Roboto', Helvetica, Arial, sans-serif
@@ -90,6 +91,10 @@ grid-border = #ccc
 
   .word-form
     position relative
+    padding-left 25px
+    border-bottom 1px solid #009688
+    margin-bottom 10px
+    padding-bottom 10px
 
     .letter
       float left
@@ -107,6 +112,7 @@ grid-border = #ccc
 
     .question
       width 100%
+      display inline-flex
 
       .textarea
         margin-top 10px
@@ -122,7 +128,7 @@ grid-border = #ccc
       width 183%
       top 100%
       right 0
-      background #cacdce
+      background accent-color
       z-index 10
       padding 20px 0
 
@@ -151,13 +157,17 @@ grid-border = #ccc
           top -25px
           font-size 2em
 
+    .index-number
+      position absolute
+      right calc(100% - 20px)
+
     .word-form-overlay
       position absolute
       width 100%
       height 100%
       top 0
       left 0
-      background #ffeab6aa
+      background accent-color
 
   .cell-item
     display inline-flex
@@ -174,7 +184,7 @@ grid-border = #ccc
 
     &.hovered
       input
-        background #ffeab6
+        background accent-color
 
     .word-start
       position absolute
