@@ -79,8 +79,8 @@ export default {
   data: () => ({
     log: [],
     clues: [],
-    width: 10,
-    height: 10,
+    width: 11,
+    height: 11,
     blanks: [],
     letters: {},
     loading: false,
