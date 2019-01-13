@@ -18,6 +18,7 @@ export default {
 <style lang="stylus">
 grid-border = #ccc
 accent-color = #fff59d
+danger-color = #e53935
 
 #crossword
   font-family 'Roboto', Helvetica, Arial, sans-serif
@@ -26,7 +27,7 @@ accent-color = #fff59d
   margin 25px
 
   .danger
-    color #e53935
+    color danger-color
 
   ul
     list-style none
@@ -112,7 +113,6 @@ accent-color = #fff59d
 
     .question
       width 100%
-      display inline-flex
 
       .textarea
         margin-top 10px
@@ -123,6 +123,9 @@ accent-color = #fff59d
         color green
         cursor pointer
 
+    .words-count
+      margin-top 4px
+
     .modal-area
       position absolute
       width 183%
@@ -131,6 +134,16 @@ accent-color = #fff59d
       background accent-color
       z-index 10
       padding 20px 0
+
+      &:before
+        content ''
+        position absolute
+        width 30px
+        height 30px
+        background accent-color
+        top -15px
+        right 300px
+        transform rotate(45deg)
 
       > .inner
         position relative
@@ -155,7 +168,10 @@ accent-color = #fff59d
           position absolute
           right 12px
           top -25px
-          font-size 2em
+          font-size 1.2em
+          color danger-color
+          font-weight bold
+          text-decoration none
 
     .index-number
       position absolute

@@ -5,7 +5,7 @@
     @mouseleave="$emit('form-leaved')"
   >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
-      Loading...
+      Loading `{{ query.split('').join(' ') }}`...
     </div>
 
     <div v-if="suggestionsVisible" class="modal-area suggestions">
@@ -66,35 +66,7 @@
       {{ index }}
     </span>
 
-    <div class="words-count">
-      <a
-        href="#"
-        title="Show variants"
-        @click.prevent="showModal(query)"
-        v-text="suggestionsText"
-      ></a>
-      <a
-        v-if="word"
-        class="danger"
-        href="#"
-        title="Remove word"
-        @click.prevent="removeWord"
-      >
-        Remove word
-      </a>
-    </div>
-
     <div class="question">
-      <textarea
-        v-if="word"
-        ref="question"
-        v-model="question"
-        type="text"
-        class="textarea"
-        :cols="cols"
-        :rows="rows"
-        @focus="showClues"
-      ></textarea>
       <div class="answer-letters">
         <div
           v-for="(letter, idx) of cells"
@@ -116,11 +88,41 @@
           />
         </div>
       </div>
+      <div class="clue">
+        <textarea
+          v-if="word"
+          ref="question"
+          v-model="question"
+          type="text"
+          class="textarea"
+          :cols="cols"
+          :rows="rows"
+          @focus="showClues"
+        ></textarea>
+      </div>
       <div v-if="noClue" class="green-plus">
         +
       </div>
+      <div style="clear: both;"></div>
     </div>
 
+    <div class="words-count">
+      <a
+        href="#"
+        title="Show variants"
+        @click.prevent="showModal(query)"
+        v-text="suggestionsText"
+      ></a>
+      <a
+        v-if="word"
+        class="danger"
+        href="#"
+        title="Remove word"
+        @click.prevent="removeWord"
+      >
+        Remove word
+      </a>
+    </div>
   </div>
 </template>
 
