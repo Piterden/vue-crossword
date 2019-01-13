@@ -16,9 +16,12 @@ export default {
 </script>
 
 <style lang="stylus">
-grid-border = #ccc
-accent-color = #fff59d
-danger-color = #e53935
+grid-border-color = #ccc
+bg-accent-color = #fff59d
+bg-filled-color = #dce775
+txt-danger-color = #e53935
+txt-words-color = #f57c00
+txt-clues-color = #388e3c
 
 #crossword
   font-family 'Roboto', Helvetica, Arial, sans-serif
@@ -26,8 +29,12 @@ danger-color = #e53935
   color #2c3e50
   margin 25px
 
+  a
+    color txt-words-color
+    text-decoration none
+
   .danger
-    color danger-color
+    color txt-danger-color
 
   ul
     list-style none
@@ -41,18 +48,18 @@ danger-color = #e53935
     display inline-table
     border-radius .5em
     overflow hidden
-    border 1px solid grid-border
+    border 1px solid grid-border-color
     margin: 0 2em
 
     &.blanks
       input
-        cursor: pointer
+        cursor pointer
 
     .row
       height 40px
 
       &:not(:last-child)
-        border-bottom 1px solid grid-border
+        border-bottom 1px solid grid-border-color
 
       .cell
         display table-cell
@@ -62,7 +69,7 @@ danger-color = #e53935
         height 40px
 
         &:not(:last-child)
-          border-right 1px solid grid-border
+          border-right 1px solid grid-border-color
 
         input
           text-align center
@@ -106,7 +113,8 @@ danger-color = #e53935
         text-align center
 
       &.filled > input
-        background greenyellow
+        background bg-filled-color
+        border 2px solid grid-border-color
 
       &.focused > input
         background #FFEB3B
@@ -130,19 +138,20 @@ danger-color = #e53935
       position absolute
       width 183%
       top 100%
-      right 0
-      background accent-color
+      left -30px
+      background bg-accent-color
       z-index 10
       padding 20px 0
+      box-shadow -2px 3px 15px #d5a569
 
       &:before
         content ''
         position absolute
         width 30px
         height 30px
-        background accent-color
+        background bg-accent-color
         top -15px
-        right 300px
+        left 15px
         transform rotate(45deg)
 
       > .inner
@@ -169,7 +178,7 @@ danger-color = #e53935
           right 12px
           top -25px
           font-size 1.2em
-          color danger-color
+          color txt-danger-color
           font-weight bold
           text-decoration none
 
@@ -183,7 +192,11 @@ danger-color = #e53935
       height 100%
       top 0
       left 0
-      background accent-color
+      background bg-accent-color
+      text-align center
+
+      .inner
+        padding-top 15px
 
   .cell-item
     display inline-flex
@@ -200,7 +213,7 @@ danger-color = #e53935
 
     &.hovered
       input
-        background accent-color
+        background bg-accent-color
 
     .word-start
       position absolute
@@ -218,7 +231,11 @@ danger-color = #e53935
     width 120px
 
   .toolbox
-    padding 20px
+    padding 0 20px
+
+    > button
+    > div
+      display block
 
   .log
     pre
@@ -238,7 +255,8 @@ danger-color = #e53935
       heigth 2
 
       &.filled > div > input
-        background greenyellow
+        background bg-filled-color
+        border 2px solid grid-border-color
 
       &.focused > div > input
         background #FFEB3B
@@ -294,8 +312,12 @@ danger-color = #e53935
       margin-top -11px
 
   .forms-list-wrapper
-    width 50%
     float left
+
+    label
+      margin-bottom 10px
+      display block
+      font-size 1.25em
 
 @media screen and (max-width: 767px)
   #crossword

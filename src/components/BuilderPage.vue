@@ -1,26 +1,40 @@
 <template>
   <div class="page builder-page">
     <div class="toolbox">
-      <button class="btn" @click.prevent="onGenerateGrid">
+      <button
+        class="btn"
+        :class="{ editing: editGridMode }"
+        @click.prevent="onChangeSizeClick"
+      >
+        Edit Grid
+      </button>
+      <button
+        v-if="editGridMode"
+        class="btn"
+        @click.prevent="onGenerateGrid"
+      >
         Generate Grid
       </button>
-      <br />
-      <button class="btn" @click.prevent="onClearGrid">
+      <button
+        v-if="editGridMode"
+        class="btn"
+        @click.prevent="onClearGrid"
+      >
         Clear Grid
       </button>
-      <br />
-      <button class="btn" @click.prevent="onClearLetters">
-        Clear Letters
+      <button
+        class="btn"
+        @click.prevent="onClearWords"
+      >
+        Clear Words
       </button>
-      <br />
-      <button class="btn" @click.prevent="onChangeSizeClick">
-        Change Size
-      </button>
-      <br />
-      <button class="btn" @click.prevent="onRefreshSuggestions">
+      <button
+        v-if="!editGridMode"
+        class="btn"
+        @click.prevent="onRefreshSuggestions"
+      >
         Refresh Suggestions
       </button>
-      <br />
       <div class="log">
         <pre>
           {{ log }}
@@ -50,7 +64,7 @@
       :suggestions="suggestions"
       :filled-words="filledWords"
       :focused-cell="focusedCell"
-      :change-size-mode="changeSizeMode"
+      :change-size-mode="editGridMode"
       :suggestion-counts="suggestionCounts"
       @input="onInputLetter"
       @rebuild="rebuildGrid"
@@ -88,7 +102,7 @@ export default {
     suggestions: [],
     focusedCell: '0:0',
     hoveredWord: '0:0:0',
-    changeSizeMode: false,
+    editGridMode: false,
     suggestionCounts: [],
   }),
 
@@ -257,14 +271,14 @@ export default {
     },
 
     blanks () {
-      if (this.changeSizeMode) {
+      if (this.editGridMode) {
         return
       }
       this.updateSuggestions()
     },
 
     queries () {
-      if (this.changeSizeMode) {
+      if (this.editGridMode) {
         return
       }
       this.updateSuggestions()
@@ -285,8 +299,8 @@ export default {
     },
 
     onChangeSizeClick () {
-      this.changeSizeMode = !this.changeSizeMode
-      if (!this.changeSizeMode) {
+      this.editGridMode = !this.editGridMode
+      if (!this.editGridMode) {
         this.updateSuggestions()
       }
     },
@@ -350,7 +364,7 @@ export default {
       }
     },
 
-    onClearLetters () {
+    onClearWords () {
       const indexes = Object.keys(this.letters)
 
       for (let idx = indexes.length - 1; idx >= 0; idx -= 1) {

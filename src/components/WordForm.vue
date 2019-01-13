@@ -5,7 +5,9 @@
     @mouseleave="$emit('form-leaved')"
   >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
-      Loading `{{ query.split('').join(' ') }}`...
+      <div class="inner">
+        Loading `{{ query.split('').join(' ') }}`
+      </div>
     </div>
 
     <div v-if="suggestionsVisible" class="modal-area suggestions">
@@ -21,6 +23,8 @@
           >
             <a
               href="#"
+              @mouseover="$emit('suggestion-hover', { x, y, isVertical, word })"
+              @mouseleave="$emit('suggestion-leave')"
               @click.prevent="pasteWord(wordItem)"
               v-html="getWordHtml(wordItem)"
             ></a>
@@ -257,7 +261,7 @@ export default {
     rows () {
       return this.question
         // eslint-disable-next-line no-magic-numbers
-        ? parseInt(this.question.length / this.cols * 1.2)
+        ? parseInt(this.question.length / this.cols * 1.618)
         : 1
     },
   },
