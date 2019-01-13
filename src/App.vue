@@ -195,8 +195,8 @@ grid-border = #ccc
     padding 20px
 
   .log
-    // position absolute
-    right 20px
+    pre
+      position absolute
 
   .builder-grid.page-inner
     display block
