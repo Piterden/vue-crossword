@@ -1,5 +1,9 @@
 <template>
-  <div class="word-form">
+  <div
+    class="word-form"
+    @mouseover="$emit('form-hovered', { x, y, isVertical, length })"
+    @mouseleave="$emit('form-leaved')"
+  >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
       Loading...
     </div>

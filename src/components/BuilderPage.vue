@@ -20,6 +20,12 @@
       <button class="btn" @click.prevent="onRefreshSuggestions">
         Refresh Suggestions
       </button>
+      <br />
+      <div class="log">
+        <pre>
+          {{ log }}
+        </pre>
+      </div>
     </div>
 
     <builder-grid
@@ -30,6 +36,7 @@
       :grid-height="height"
       :filled-words="filledWords"
       :focused-cell="focusedCell"
+      :hovered-word="hoveredWord"
       @updateblanks="onBlanksUpdate"
     />
 
@@ -51,14 +58,10 @@
       @paste-word="onPasteWord"
       @paste-clue="onPasteClue"
       @remove-word="onRemoveWord"
+      @form-leaved="onWordLeave"
+      @form-hovered="onWordHover"
       @letters-update="onLettersUpdate"
     />
-
-    <div class="log">
-      <pre>
-        {{ log }}
-      </pre>
-    </div>
   </div>
 </template>
 
@@ -84,6 +87,7 @@ export default {
     filledWords: [],
     suggestions: [],
     focusedCell: '0:0',
+    hoveredWord: '0:0:0',
     changeSizeMode: false,
     suggestionCounts: [],
   }),
@@ -272,6 +276,14 @@ export default {
   },
 
   methods: {
+    onWordLeave () {
+      this.hoveredWord = '0:0:0:0'
+    },
+
+    onWordHover ({ x, y, isVertical, length }) {
+      this.hoveredWord = `${x}:${y}:${Number(isVertical)}:${length}`
+    },
+
     onChangeSizeClick () {
       this.changeSizeMode = !this.changeSizeMode
       if (!this.changeSizeMode) {

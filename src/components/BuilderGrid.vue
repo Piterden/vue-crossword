@@ -13,6 +13,7 @@
             :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
           >
             <cell
+              :class="{ hovered: hoveredCells.includes(`${cellIdx + 1}:${rowIdx + 1}`) }"
               :value="letters[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
@@ -41,13 +42,14 @@ export default {
   components: { Cell },
 
   props: {
-    focusedCell: { type: String, default: () => '0:0' },
-    filledWords: { type: Array, default: () => [] },
-    gridHeight: { type: Number, default: () => 1 },
-    gridWidth: { type: Number, default: () => 1 },
-    letters: { type: Object, default: () => ({}) },
-    blanks: { type: Array, default: () => [] },
     words: { type: Array, default: () => [] },
+    blanks: { type: Array, default: () => [] },
+    letters: { type: Object, default: () => ({}) },
+    gridWidth: { type: Number, default: () => 1 },
+    gridHeight: { type: Number, default: () => 1 },
+    filledWords: { type: Array, default: () => [] },
+    focusedCell: { type: String, default: () => '0:0' },
+    hoveredWord: { type: String, default: () => '0:0:0:0' },
   },
 
   data: () => ({
@@ -58,6 +60,19 @@ export default {
       vertical: false,
     },
   }),
+
+  computed: {
+    hoveredCells () {
+      const [x, y, isVertical, length] = this.hoveredWord.split(':')
+      const acc = []
+
+      for (let idx = 0; idx < length; idx += 1) {
+        acc.push(`${Number(isVertical) ? x : Number(x) + idx}:${Number(isVertical) ? Number(y) + idx : y}`)
+      }
+
+      return acc
+    },
+  },
 
   methods: {
     isTitleCell (x, y) {

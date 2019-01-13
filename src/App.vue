@@ -172,6 +172,10 @@ grid-border = #ccc
       text-align center
       font-size 1.25em
 
+    &.hovered
+      input
+        background #aaa
+
     .word-start
       position absolute
       top 1px
@@ -191,7 +195,7 @@ grid-border = #ccc
     padding 20px
 
   .log
-    position absolute
+    // position absolute
     right 20px
 
   .builder-grid.page-inner
