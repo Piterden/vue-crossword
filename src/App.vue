@@ -22,6 +22,7 @@ bg-filled-color = #dce775
 txt-danger-color = #e53935
 txt-words-color = #f57c00
 txt-clues-color = #388e3c
+btn-border-color = #CE93D8
 
 #crossword
   font-family 'Roboto', Helvetica, Arial, sans-serif
@@ -228,6 +229,17 @@ txt-clues-color = #388e3c
   .btn
     height 50px
     width 120px
+    background bg-accent-color
+    border 3px solid btn-border-color
+    text-transform uppercase
+    font-size 0.8em
+    font-weight bold
+    color txt-clues-color
+    margin-bottom 10px
+    outline none
+
+    &.editing
+      background bg-filled-color
 
   .toolbox
     padding 0 20px
