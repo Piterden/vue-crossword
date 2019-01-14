@@ -142,17 +142,16 @@ txt-clues-color = #388e3c
       background bg-accent-color
       z-index 10
       padding 20px 0
-      box-shadow -2px 3px 15px #d5a569
+      box-shadow 0 3px 10px #d5a569
 
-      &:before
+      &:after
         content ''
+        border-left 20px solid transparent
+        border-right 20px solid transparent
+        border-bottom 20px solid bg-accent-color
         position absolute
-        width 30px
-        height 30px
-        background bg-accent-color
-        top -15px
-        left 15px
-        transform rotate(45deg)
+        top -20px
+        left 20px
 
       > .inner
         position relative
@@ -262,7 +261,7 @@ txt-clues-color = #388e3c
         background #FFEB3B
 
   .page-inner
-    width calc(50% - 30px)
+    width 100%
     margin-right 30px
 
   .button
@@ -312,7 +311,7 @@ txt-clues-color = #388e3c
       margin-top -11px
 
   .forms-list-wrapper
-    float left
+    display inline-grid
 
     label
       margin-bottom 10px

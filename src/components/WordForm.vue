@@ -114,7 +114,7 @@
       <a
         href="#"
         title="Show variants"
-        @click.prevent="showModal(query)"
+        @click.prevent="toggleModal(query)"
         v-text="suggestionsText"
       ></a>
       <a
@@ -278,6 +278,19 @@ export default {
 
       this.$emit('remove-word', ({ x, y, isVertical, word }))
       this.question = ''
+    },
+
+    toggleModal (query) {
+      if (this.answer.includes('')) {
+        this.suggestionsVisible
+          ? this.hideSuggestions()
+          : this.showSuggestions(query)
+      }
+      else {
+        this.cluesVisible
+          ? this.hideClues()
+          : this.showClues(query)
+      }
     },
 
     showModal (query) {
