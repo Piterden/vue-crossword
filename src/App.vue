@@ -235,7 +235,6 @@ btn-border-color = #CE93D8
     font-size 0.8em
     font-weight bold
     color txt-clues-color
-    margin-bottom 10px
     outline none
 
     &.editing
@@ -243,19 +242,21 @@ btn-border-color = #CE93D8
 
   .toolbox
     padding 0 20px
+    text-align center
 
     > button
+      margin 5px auto
+      display block
+
     > div
       display block
 
   .log
     pre
       position absolute
+      text-align left
 
   .builder-grid.page-inner
-    display block
-    float left
-    width 50%
     white-space nowrap
 
     .cell
@@ -273,7 +274,6 @@ btn-border-color = #CE93D8
         background #FFEB3B
 
   .page-inner
-    width 100%
     margin-right 30px
 
   .button

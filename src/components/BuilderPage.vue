@@ -4,34 +4,34 @@
       <button
         class="btn"
         :class="{ editing: editGridMode }"
-        @click.prevent="onChangeSizeClick"
+        @click.prevent="changeSizeClick"
       >
         Edit Grid
       </button>
       <button
         v-if="editGridMode"
         class="btn"
-        @click.prevent="onGenerateGrid"
+        @click.prevent="generateGrid"
       >
         Generate Grid
       </button>
       <button
         v-if="editGridMode"
         class="btn"
-        @click.prevent="onClearGrid"
+        @click.prevent="clearGrid"
       >
         Clear Grid
       </button>
       <button
         class="btn"
-        @click.prevent="onClearWords"
+        @click.prevent="clearWords"
       >
         Clear Words
       </button>
       <button
         v-if="!editGridMode"
         class="btn"
-        @click.prevent="onRefreshSuggestions"
+        @click.prevent="refreshSuggestions"
       >
         Refresh Suggestions
       </button>
@@ -41,18 +41,6 @@
         </pre>
       </div>
     </div>
-
-    <builder-grid
-      :words="words"
-      :blanks="blanks"
-      :letters="letters"
-      :grid-width="width"
-      :grid-height="height"
-      :filled-words="filledWords"
-      :focused-cell="focusedCell"
-      :hovered-word="hoveredWord"
-      @updateblanks="onBlanksUpdate"
-    />
 
     <builder-form
       :clues="clues"
@@ -66,15 +54,27 @@
       :focused-cell="focusedCell"
       :change-size-mode="editGridMode"
       :suggestion-counts="suggestionCounts"
-      @input="onInputLetter"
+      @input="inputLetter"
       @rebuild="rebuildGrid"
-      @focus-cell="onFocusCell"
-      @paste-word="onPasteWord"
-      @paste-clue="onPasteClue"
-      @remove-word="onRemoveWord"
-      @form-leaved="onWordLeave"
-      @form-hovered="onWordHover"
-      @letters-update="onLettersUpdate"
+      @focus-cell="focusCell"
+      @paste-word="pasteWord"
+      @paste-clue="pasteClue"
+      @remove-word="removeWord"
+      @form-leaved="wordLeave"
+      @form-hovered="wordHover"
+      @letters-update="lettersUpdate"
+    />
+
+    <builder-grid
+      :words="words"
+      :blanks="blanks"
+      :letters="letters"
+      :grid-width="width"
+      :grid-height="height"
+      :filled-words="filledWords"
+      :focused-cell="focusedCell"
+      :hovered-word="hoveredWord"
+      @updateblanks="blanksUpdate"
     />
   </div>
 </template>
@@ -290,15 +290,15 @@ export default {
   },
 
   methods: {
-    onWordLeave () {
+    wordLeave () {
       this.hoveredWord = '0:0:0:0'
     },
 
-    onWordHover ({ x, y, isVertical, length }) {
+    wordHover ({ x, y, isVertical, length }) {
       this.hoveredWord = `${x}:${y}:${Number(isVertical)}:${length}`
     },
 
-    onChangeSizeClick () {
+    changeSizeClick () {
       this.editGridMode = !this.editGridMode
       if (!this.editGridMode) {
         this.updateSuggestions()
@@ -309,7 +309,7 @@ export default {
       return Object.values(letters).join('')
     },
 
-    onRemoveWord ({ x, y, isVertical, word }) {
+    removeWord ({ x, y, isVertical, word }) {
       const index = this.filledWords.findIndex((item) => item.x === x &&
         item.y === y && item.isVertical === isVertical)
 
@@ -327,7 +327,7 @@ export default {
       this.clues.splice(this.clues.findIndex((clue) => clue.word === word.word), 1)
     },
 
-    onRefreshSuggestions () {
+    refreshSuggestions () {
       this.suggestions = []
       this.suggestionCounts = []
       this.updateSuggestions(true)
@@ -342,19 +342,19 @@ export default {
       this.loading = false
     },
 
-    onGenerateGrid () {
+    generateGrid () {
       this.blanks = []
       const halfWidth = this.width % 2
-        ? parseInt(this.width / 2) + 1
-        : parseInt(this.width / 2)
+        ? Math.floor(this.width / 2) + 1
+        : Math.floor(this.width / 2)
       const halfHeight = this.height % 2
-        ? parseInt(this.height / 2) + 1
-        : parseInt(this.height / 2)
+        ? Math.floor(this.height / 2) + 1
+        : Math.floor(this.height / 2)
 
       for (let x = 1; x <= halfWidth; x += 1) {
         for (let y = 1; y <= halfHeight; y += 1) {
           // eslint-disable-next-line no-magic-numbers
-          if (parseInt(Math.random() * 1.5)) {
+          if (Math.floor(Math.random() * 1.5)) {
             this.blanks.push(`${x}:${y}`)
             this.blanks.push(`${this.width - x + 1}:${y}`)
             this.blanks.push(`${x}:${this.height - y + 1}`)
@@ -364,7 +364,7 @@ export default {
       }
     },
 
-    onClearWords () {
+    clearWords () {
       const indexes = Object.keys(this.letters)
 
       for (let idx = indexes.length - 1; idx >= 0; idx -= 1) {
@@ -374,7 +374,7 @@ export default {
       this.filledWords = []
     },
 
-    onClearGrid () {
+    clearGrid () {
       this.blanks = []
     },
 
@@ -383,7 +383,7 @@ export default {
       this.height = height
     },
 
-    onBlanksUpdate (id) {
+    blanksUpdate (id) {
       if (!this.blanks.includes(id)) {
         return this.blanks.push(id)
       }
@@ -391,7 +391,7 @@ export default {
       this.blanks = this.blanks.filter((blank) => blank !== id)
     },
 
-    onInputLetter ({ x, y, value }) {
+    inputLetter ({ x, y, value }) {
       this.letters[`${x}:${y}`] = value
     },
 
@@ -405,11 +405,11 @@ export default {
         })
     },
 
-    onFocusCell (x, y) {
+    focusCell (x, y) {
       this.focusedCell = `${x}:${y}`
     },
 
-    onPasteWord ({ word: { id, length, ...letters }, x, y, isVertical }) {
+    pasteWord ({ word: { id, length, ...letters }, x, y, isVertical }) {
       const array = Object.values(letters)
       const word = array.join('')
 
@@ -428,7 +428,7 @@ export default {
         })
     },
 
-    onPasteClue ({ word, clue, x, y, isVertical }) {
+    pasteClue ({ word, clue, x, y, isVertical }) {
       this.$http.post(
         'https://crossword.stagelab.pro/crossword/clues/create',
         { crossword: 1, clue: clue.id }
@@ -444,7 +444,7 @@ export default {
         .catch(console.log)
     },
 
-    onLettersUpdate ({ letters }) {
+    lettersUpdate ({ letters }) {
       Object.assign(this.letters, letters)
     },
 
