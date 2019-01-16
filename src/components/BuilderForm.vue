@@ -7,7 +7,7 @@
         v-model="width"
         type="range"
         size="4"
-        min="1"
+        min="2"
         max="40"
       />
       <span>Grid Height: {{ height }}</span>
@@ -16,7 +16,7 @@
         v-model="height"
         type="range"
         size="4"
-        min="1"
+        min="2"
         max="40"
       />
     </div>
@@ -45,7 +45,7 @@
           @paste-word="(payload) => $emit('paste-word', payload)"
           @form-leaved="(payload) => $emit('form-leaved', payload)"
           @remove-word="(payload) => $emit('remove-word', payload)"
-          @form-hovered="(payload) =>  $emit('form-hovered', payload)"
+          @form-hovered="(payload) => $emit('form-hovered', payload)"
           @letters-update="(payload) => $emit('letters-update', payload)"
         />
       </div>
@@ -87,12 +87,15 @@
 import WordForm from './WordForm'
 
 
+import { MAX_GRID_SIZE } from '../index'
+
 export default {
   name: 'BuilderForm',
 
   components: { WordForm },
 
   props: {
+    max: MAX_GRID_SIZE,
     words: { type: Array, default: () => [] },
     clues: { type: Array, default: () => [] },
     letters: { type: Object, default: () => ({}) },

@@ -153,7 +153,7 @@ export default {
     return {
       page: 0,
       active: null,
-      answer: new Array(this.length).fill(''),
+      answer: Array.from({ length: this.length }).fill(''),
       timeout: null,
       question: '',
       cluesVisible: false,
@@ -203,8 +203,8 @@ export default {
     cells () {
       let i = this.isVertical ? this.x : this.y
 
-      return new Array(this.length).fill(0)
-        .map((cell) => ({
+      return Array.from({ length: this.length })
+        .map(() => ({
           x: this.isVertical ? i++ : this.x, // eslint-disable-line
           y: this.isVertical ? this.y : i++, // eslint-disable-line
           value: '',

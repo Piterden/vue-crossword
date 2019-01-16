@@ -44,14 +44,17 @@ new Vue({
     },
 
     getWordCells ({ word, x, y, isVertical }) {
-      return new Array(word.length || word.word.length).fill(null)
+      return Array.from({ length: word.length || word.word.length })
         .map((letter, idx) => isVertical ? `${x}:${y + idx}` : `${x + idx}:${y}`)
     },
 
     getWordLetters ({ word }) {
-      return new Array(word.length).fill(null)
+      return Array.from({ length: word.length })
         .map((letter, idx) => word[`letter_${idx + 1}`])
     },
   },
-  template: '<App/>',
+
+  template: '<App />',
 })
+
+export const MAX_GRID_SIZE = 40

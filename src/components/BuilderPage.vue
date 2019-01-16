@@ -85,6 +85,7 @@
 import BuilderGrid from './BuilderGrid'
 import BuilderForm from './BuilderForm'
 
+
 export default {
   name: 'BuilderPage',
 
@@ -95,7 +96,6 @@ export default {
     clues: [],
     width: 11,
     height: 11,
-    blanks: [],
     letters: {},
     loading: false,
     filledWords: [],
@@ -104,9 +104,36 @@ export default {
     hoveredWord: '0:0:0',
     editGridMode: false,
     suggestionCounts: [],
+    newBlanks: Array.from({ length: 40 })
+      .map(() => Array.from({ length: 40 })
+        .map(() => 0)),
   }),
 
   computed: {
+    blanks: {
+      get () {
+        return this.newBlanks
+          .flatMap((row, rowIdx) => row
+            .map((col, colIdx) => col ? `${rowIdx + 1}:${colIdx + 1}` : 0)
+            .filter(Boolean))
+      },
+      set (value) {
+        this.newBlanks = this.newBlanks.map((row, rowIdx) => row.map((col, colIdx) => {
+          const index = `${rowIdx + 1}:${colIdx + 1}`
+
+          if (typeof value === 'string') {
+            return Number(index === value)
+          }
+
+          if (Array.isArray(value)) {
+            return Number(value.includes(index))
+          }
+
+          return 0
+        }))
+      },
+    },
+
     horizontalWords () {
       const words = []
       let row = 1
@@ -117,9 +144,7 @@ export default {
           .map((cell) => Number(cell.split(':')[0]))
 
         if (rowBlankCells.length > 0) {
-          let i = 1
-          // eslint-disable-next-line
-          const cols = new Array(this.width).fill(0).map((col) => i++)
+          const cols = Array.from({ length: this.width }).map((el, idx) => idx + 1)
 
           if (cols) {
             `:${cols.join('::')}:`
@@ -167,9 +192,7 @@ export default {
           .map((cell) => Number(cell.split(':')[1]))
 
         if (colBlankCells.length > 0) {
-          let i = 1
-          // eslint-disable-next-line
-          const rows = new Array(this.height).fill(0).map((row) => i++)
+          const rows = Array.from({ length: this.height }).map((el, idx) => idx + 1)
 
           if (rows) {
             `:${rows.join('::')}:`
@@ -384,11 +407,9 @@ export default {
     },
 
     blanksUpdate (id) {
-      if (!this.blanks.includes(id)) {
-        return this.blanks.push(id)
-      }
+      const [x, y] = id.split(':')
 
-      this.blanks = this.blanks.filter((blank) => blank !== id)
+      this.$set(this.newBlanks[x - 1], y - 1, Number(!this.newBlanks[x - 1][y - 1]))
     },
 
     inputLetter ({ x, y, value }) {
