@@ -330,6 +330,9 @@ btn-border-color = #CE93D8
       display block
       font-size 1.25em
 
+  .controls
+    width 300px
+
 @media screen and (max-width: 767px)
   #crossword
     .page
