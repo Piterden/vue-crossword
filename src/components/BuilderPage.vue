@@ -85,7 +85,6 @@
 import BuilderGrid from './BuilderGrid'
 import BuilderForm from './BuilderForm'
 
-
 export default {
   name: 'BuilderPage',
 
@@ -96,6 +95,7 @@ export default {
     clues: [],
     width: 11,
     height: 11,
+    blanks: [],
     letters: {},
     loading: false,
     filledWords: [],
@@ -104,36 +104,9 @@ export default {
     hoveredWord: '0:0:0',
     editGridMode: false,
     suggestionCounts: [],
-    newBlanks: Array.from({ length: 40 })
-      .map(() => Array.from({ length: 40 })
-        .map(() => 0)),
   }),
 
   computed: {
-    blanks: {
-      get () {
-        return this.newBlanks
-          .flatMap((row, rowIdx) => row
-            .map((col, colIdx) => col ? `${rowIdx + 1}:${colIdx + 1}` : 0)
-            .filter(Boolean))
-      },
-      set (value) {
-        this.newBlanks = this.newBlanks.map((row, rowIdx) => row.map((col, colIdx) => {
-          const index = `${rowIdx + 1}:${colIdx + 1}`
-
-          if (typeof value === 'string') {
-            return Number(index === value)
-          }
-
-          if (Array.isArray(value)) {
-            return Number(value.includes(index))
-          }
-
-          return 0
-        }))
-      },
-    },
-
     horizontalWords () {
       const words = []
       let row = 1
@@ -407,9 +380,11 @@ export default {
     },
 
     blanksUpdate (id) {
-      const [x, y] = id.split(':')
+      if (!this.blanks.includes(id)) {
+        return this.blanks.push(id)
+      }
 
-      this.$set(this.newBlanks[x - 1], y - 1, Number(!this.newBlanks[x - 1][y - 1]))
+      this.blanks = this.blanks.filter((blank) => blank !== id)
     },
 
     inputLetter ({ x, y, value }) {
