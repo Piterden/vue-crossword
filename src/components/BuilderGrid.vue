@@ -11,6 +11,7 @@
             v-for="(cell, cellIdx) in gridWidth"
             :key="`${cellIdx + 1}:${rowIdx + 1}`"
             :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
+            :style="getCellStyle(rowIdx, cellIdx)"
           >
             <cell
               :class="{ hovered: hoveredCells.includes(`${cellIdx + 1}:${rowIdx + 1}`) }"
@@ -50,6 +51,7 @@ export default {
     filledWords: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
     hoveredWord: { type: String, default: () => '0:0:0:0' },
+    suggestionCounts: { type: Array, default: () => [] },
   },
 
   data: () => ({
@@ -234,21 +236,21 @@ export default {
       return this.allStartCells().filter((cell) => cell === id)
     },
 
-    getHorizontalWord (id) {
-      id = this.allStartCells('horizontal').includes(id)
-        ? id
-        : this.getHorizontalStartCell(id)
+    // getHorizontalWord (id) {
+    //   id = this.allStartCells('horizontal').includes(id)
+    //     ? id
+    //     : this.getHorizontalStartCell(id)
 
-      return this.collectHorizontalWordCells(this.getHorizontalQuestion(id))
-    },
+    //   return this.collectHorizontalWordCells(this.getHorizontalQuestion(id))
+    // },
 
-    getVerticalWord (id) {
-      id = this.allStartCells('vertical').includes(id)
-        ? id
-        : this.getVerticalStartCell(id)
+    // getVerticalWord (id) {
+    //   id = this.allStartCells('vertical').includes(id)
+    //     ? id
+    //     : this.getVerticalStartCell(id)
 
-      return this.collectVerticalWordCells(this.getVerticalQuestion(id))
-    },
+    //   return this.collectVerticalWordCells(this.getVerticalQuestion(id))
+    // },
 
     getHorizontalStartCell (id) {
       const xy = id.split(':')
@@ -272,43 +274,56 @@ export default {
       return id
     },
 
-    collectHorizontalWordCells (question) {
-      if (!question) {
-        return []
-      }
+    getWordCells (word) {
+      let increment = word.type === 'vertical' ? word.y : word.x
 
-      const cells = []
-      let idx
+      return Array.from({ length: word.length }).map((cell) => {
+        const idx = word.type === 'vertical'
+          ? `${word.x}:${increment}`
+          : `${increment}:${word.y}`
 
-      for (idx = question.x; idx < question.x + question.length; idx += 1) {
-        cells.push(`${idx}:${question.y}`)
-      }
-
-      return cells === [] ? null : cells
+        increment = increment + 1
+        return idx
+      })
     },
 
-    collectVerticalWordCells (question) {
-      if (!question) {
-        return []
-      }
+    // collectHorizontalWordCells (question) {
+    //   if (!question) {
+    //     return []
+    //   }
 
-      const cells = []
-      let idx
+    //   const cells = []
+    //   let idx
 
-      for (idx = question.y; idx < question.y + question.length; idx += 1) {
-        cells.push(`${question.x}:${idx}`)
-      }
+    //   for (idx = question.x; idx < question.x + question.length; idx += 1) {
+    //     cells.push(`${idx}:${question.y}`)
+    //   }
 
-      return cells === [] ? null : cells
-    },
+    //   return cells === [] ? null : cells
+    // },
 
-    getVerticalQuestion (id) {
-      return this.questions.vertical.find((question) => this.exact(question, id))
-    },
+    // collectVerticalWordCells (question) {
+    //   if (!question) {
+    //     return []
+    //   }
 
-    getHorizontalQuestion (id) {
-      return this.questions.horizontal.find((question) => this.exact(question, id))
-    },
+    //   const cells = []
+    //   let idx
+
+    //   for (idx = question.y; idx < question.y + question.length; idx += 1) {
+    //     cells.push(`${question.x}:${idx}`)
+    //   }
+
+    //   return cells === [] ? null : cells
+    // },
+
+    // getVerticalQuestion (id) {
+    //   return this.questions.vertical.find((question) => this.exact(question, id))
+    // },
+
+    // getHorizontalQuestion (id) {
+    //   return this.questions.horizontal.find((question) => this.exact(question, id))
+    // },
 
     exact (question, id) {
       const xy = id.split(':')
@@ -343,6 +358,19 @@ export default {
       //   : true
 
       return classes
+    },
+
+    getCellStyle (row, col) {
+      return {
+        background: this.getCellWeigth(row, col)
+          .toString(16) // eslint-disable-line no-magic-numbers
+          .padStart(6, 'ffffff'), // eslint-disable-line no-magic-numbers
+      }
+    },
+
+    getCellWeigth (x, y) {
+      return this.words.reduce((word) => Array.from({ length: word.length })
+        .map((letter) => word.type === 'vertical'))
     },
 
     allStartCells (direction = null) {

@@ -74,6 +74,7 @@
       :filled-words="filledWords"
       :focused-cell="focusedCell"
       :hovered-word="hoveredWord"
+      :suggestion-counts="suggestionCounts"
       @updateblanks="blanksUpdate"
     />
   </div>
@@ -137,6 +138,13 @@ export default {
                   type: 'horizontal',
                   length,
                   question: '',
+                  query: this.$root.getWordCells({
+                    x: Number(word.match(/^:(\d+)/)[1]),
+                    y: row,
+                    word,
+                    isVertical: false,
+                  }).map((idx) => this.letters[idx] || '_')
+                    .join(''),
                 })
               })
           }
@@ -148,6 +156,13 @@ export default {
             type: 'horizontal',
             length: this.width,
             question: '',
+            query: this.$root.getWordCells({
+              x: 1,
+              y: row,
+              word: { length: this.width },
+              isVertical: false,
+            }).map((idx) => this.letters[idx] || '_')
+              .join(''),
           })
         }
       }
@@ -185,6 +200,13 @@ export default {
                   type: 'vertical',
                   length,
                   question: '',
+                  query: this.$root.getWordCells({
+                    x: col,
+                    y: Number(word.match(/^:(\d+)/)[1]),
+                    word,
+                    isVertical: true,
+                  }).map((idx) => this.letters[idx] || '_')
+                    .join(''),
                 })
               })
           }
@@ -196,6 +218,13 @@ export default {
             type: 'vertical',
             length: this.height,
             question: '',
+            query: this.$root.getWordCells({
+              x: col,
+              y: 1,
+              word: { length: this.height },
+              isVertical: true,
+            }).map((idx) => this.letters[idx] || '_')
+              .join(''),
           })
         }
       }
@@ -211,12 +240,7 @@ export default {
     },
 
     queries () {
-      return this.words.map((word) => this.$root.getWordCells({
-        ...word,
-        word: { length: word.length },
-        isVertical: word.type === 'vertical',
-      }).map((idx) => this.letters[idx] || '_')
-        .join('')).unique()
+      return this.words.map(({ query }) => query).unique()
     },
 
     startCells () {
@@ -338,24 +362,47 @@ export default {
       this.loading = false
     },
 
+    // generateGrid () {
+    //   this.blanks = []
+    //   const halfWidth = this.width % 2
+    //     ? Math.floor(this.width / 2) + 1
+    //     : Math.floor(this.width / 2)
+    //   const halfHeight = this.height % 2
+    //     ? Math.floor(this.height / 2) + 1
+    //     : Math.floor(this.height / 2)
+
+    //   for (let x = 1; x <= halfWidth; x += 1) {
+    //     for (let y = 1; y <= halfHeight; y += 1) {
+    //       // eslint-disable-next-line no-magic-numbers
+    //       if (Math.floor(Math.random() * 1.5)) {
+    //         this.blanks.push(`${x}:${y}`)
+    //         this.blanks.push(`${this.width - x + 1}:${y}`)
+    //         this.blanks.push(`${x}:${this.height - y + 1}`)
+    //         this.blanks.push(`${this.width - x + 1}:${this.height - y + 1}`)
+    //       }
+    //     }
+    //   }
+    // },
+
     generateGrid () {
       this.blanks = []
-      const halfWidth = this.width % 2
-        ? Math.floor(this.width / 2) + 1
-        : Math.floor(this.width / 2)
-      const halfHeight = this.height % 2
-        ? Math.floor(this.height / 2) + 1
-        : Math.floor(this.height / 2)
+      // eslint-disable-next-line no-magic-numbers
+      const blankProbability = 1 / 3
+      const halfWidth = Math.round(this.width / 2)
+      const halfHeight = Math.round(this.height / 2)
 
       for (let x = 1; x <= halfWidth; x += 1) {
         for (let y = 1; y <= halfHeight; y += 1) {
-          // eslint-disable-next-line no-magic-numbers
-          if (Math.floor(Math.random() * 1.5)) {
-            this.blanks.push(`${x}:${y}`)
-            this.blanks.push(`${this.width - x + 1}:${y}`)
-            this.blanks.push(`${x}:${this.height - y + 1}`)
-            this.blanks.push(`${this.width - x + 1}:${this.height - y + 1}`)
+          if (Math.random() > blankProbability) {
+            continue
           }
+
+          this.blanks.push(
+            `${x}:${y}`,
+            `${this.width - x + 1}:${y}`,
+            `${x}:${this.height - y + 1}`,
+            `${this.width - x + 1}:${this.height - y + 1}`,
+          )
         }
       }
     },
