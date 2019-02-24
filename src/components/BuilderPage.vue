@@ -131,17 +131,18 @@ export default {
               .forEach((word) => {
                 const match = word.match(/:\d+:/g)
                 const length = match ? match.length : 0
+                const x = Number(word.match(/^:(\d+)/)[1])
 
                 words.push({
-                  x: Number(word.match(/^:(\d+)/)[1]),
+                  x,
                   y: row,
                   type: 'horizontal',
                   length,
                   question: '',
                   query: this.$root.getWordCells({
-                    x: Number(word.match(/^:(\d+)/)[1]),
+                    x,
                     y: row,
-                    word,
+                    word: { length },
                     isVertical: false,
                   }).map((idx) => this.letters[idx] || '_')
                     .join(''),
@@ -193,17 +194,18 @@ export default {
               .forEach((word) => {
                 const match = word.match(/:\d+:/g)
                 const length = match ? match.length : 0
+                const y = Number(word.match(/^:(\d+)/)[1])
 
                 words.push({
                   x: col,
-                  y: Number(word.match(/^:(\d+)/)[1]),
+                  y,
                   type: 'vertical',
                   length,
                   question: '',
                   query: this.$root.getWordCells({
                     x: col,
-                    y: Number(word.match(/^:(\d+)/)[1]),
-                    word,
+                    y,
+                    word: { length },
                     isVertical: true,
                   }).map((idx) => this.letters[idx] || '_')
                     .join(''),
