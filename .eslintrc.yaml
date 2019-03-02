@@ -132,9 +132,11 @@ rules:
         - x
         - y
         - e
+        - a
+        - b
   id-match:
     - error
-    - "^(([A-Za-z0-9]+){2,})|([A-Z][A-Z_0-9]+)$"
+    - "^(([A-Za-z0-9]+){1,})|([A-Z][A-Z_0-9]+)$"
     -
       properties: false
       onlyDeclarations: true

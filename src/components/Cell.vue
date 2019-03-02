@@ -1,11 +1,15 @@
 <template>
   <div>
     <sup class="word-start">{{ number }}</sup>
-    <input type="text" size="1" minlength="1" maxlength="1"
+    <input
+      type="text"
+      size="1"
+      minlength="1"
+      maxlength="1"
+      readonly
       @click="onClick"
       @focus="onFocus"
       @input="onInput"
-      readonly
     />
   </div>
 </template>

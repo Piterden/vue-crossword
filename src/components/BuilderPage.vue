@@ -31,48 +31,22 @@ export default {
     height: 10,
     blanks: [],
   }),
-
-  methods: {
-    rebuildGrid ({ width, height }) {
-      this.width = width
-      this.height = height
-    },
-
-    onBlanksUpdate (id) {
-      if (!this.blanks.includes(id)) {
-        return this.blanks.push(id)
-      }
-
-      this.blanks = this.blanks.filter((blank) => blank !== id)
-    },
-
-    addIndexes (startCells) {
-      return startCells
-        .reduce((acc, cur) => {
-          if (!acc.find((w) => w.x === cur.x && w.y === cur.y)) {
-            acc.push(cur)
-          }
-
-          return acc
-        }, [])
-        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
-        .map((word, index) => ({ ...word, index: index + 1 }))
-    },
-  },
-
   computed: {
     horizontalWords () {
       const words = []
       let row = 1
 
-      for (row; row <= this.width; row++) {
+      for (row; row <= this.width; row += 1) {
         const rowBlankCells = this.blanks
+          // eslint-disable-next-line no-loop-func
           .filter((cell) => Number(cell.split(':')[1]) === row)
           .map((cell) => Number(cell.split(':')[0]))
 
         if (rowBlankCells.length > 0) {
-          let i = 1
-          const cols = new Array(this.height).fill(0).map((col) => i++)
+          let idx = 1
+          const cols = new Array(this.height).fill(0)
+            // eslint-disable-next-line no-return-assign
+            .map((col) => idx += 1)
 
           if (cols) {
             `:${cols.join('::')}:`
@@ -82,6 +56,7 @@ export default {
 
                 return match ? match.length > 1 : false
               })
+              // eslint-disable-next-line no-loop-func
               .forEach((word) => {
                 const match = word.match(/:\d+:/g)
                 const length = match ? match.length : 0
@@ -95,7 +70,8 @@ export default {
                 })
               })
           }
-        } else {
+        }
+        else {
           words.push({
             x: 1,
             y: row,
@@ -113,14 +89,17 @@ export default {
       const words = []
       let col = 1
 
-      for (col; col <= this.height; col++) {
+      for (col; col <= this.height; col += 1) {
         const colBlankCells = this.blanks
+          // eslint-disable-next-line no-loop-func
           .filter((cell) => Number(cell.split(':')[0]) === col)
           .map((cell) => Number(cell.split(':')[1]))
 
         if (colBlankCells.length > 0) {
-          let i = 1
-          const rows = new Array(this.width).fill(0).map((row) => i++)
+          let idx = 1
+          const rows = new Array(this.width).fill(0)
+            // eslint-disable-next-line no-return-assign
+            .map((row) => idx += 1)
 
           if (rows) {
             `:${rows.join('::')}:`
@@ -130,6 +109,7 @@ export default {
 
                 return match ? match.length > 1 : false
               })
+              // eslint-disable-next-line no-loop-func
               .forEach((word) => {
                 const match = word.match(/:\d+:/g)
                 const length = match ? match.length : 0
@@ -143,7 +123,8 @@ export default {
                 })
               })
           }
-        } else {
+        }
+        else {
           words.push({
             x: col,
             y: 1,
@@ -162,6 +143,36 @@ export default {
         ...this.horizontalWords,
         ...this.verticalWords,
       ])
+    },
+  },
+
+  methods: {
+    rebuildGrid ({ width, height }) {
+      this.width = width
+      this.height = height
+    },
+
+    onBlanksUpdate (id) {
+      if (!this.blanks.includes(id)) {
+        return this.blanks.push(id)
+      }
+
+      this.blanks = this.blanks.filter((blank) => blank !== id)
+    },
+
+    addIndexes (startCells) {
+      return startCells
+        .reduce((acc, cur) => {
+          // eslint-disable-next-line id-match
+          if (!acc.find(({ x, y }) => x === cur.x && y === cur.y)) {
+            acc.push(cur)
+          }
+
+          return acc
+        }, [])
+        // eslint-disable-next-line id-length
+        .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
+        .map((word, index) => ({ ...word, index: index + 1 }))
     },
   },
 }

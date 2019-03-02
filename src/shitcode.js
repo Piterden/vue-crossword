@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 Array.prototype.unique = function () {
   const l = this.length
   const u = {}

@@ -1,16 +1,19 @@
 <template>
   <div class="builder-grid page-inner">
     <div class="inner">
-      <div class="row"
+      <div
         v-for="(row, rowIdx) in gridWidth"
         :key="rowIdx"
+        class="row"
       >
         <div class="inner">
-          <div :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
+          <div
             v-for="(cell, cellIdx) in gridHeight"
             :key="`${cellIdx + 1}:${rowIdx + 1}`"
+            :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
           >
             <cell
+              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
               :number="getNumber(cellIdx + 1, rowIdx + 1)"
@@ -20,7 +23,6 @@
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"
-              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
             />
           </div>
         </div>
@@ -37,6 +39,13 @@ export default {
 
   components: { Cell },
 
+  props: {
+    gridHeight: { type: Number, default: () => 1 },
+    gridWidth: { type: Number, default: () => 1 },
+    blanks: { type: Array, default: () => [] },
+    words: { type: Array, default: () => [] },
+  },
+
   data: () => ({
     answers: {},
     active: {
@@ -46,13 +55,6 @@ export default {
     },
   }),
 
-  props: {
-    gridHeight: { type: Number, default: () => 1 },
-    gridWidth: { type: Number, default: () => 1 },
-    blanks: { type: Array, default: () => [] },
-    words: { type: Array, default: () => [] },
-  },
-
   methods: {
     getTitleCell (x, y) {
       return this.words.find(word => word.x === +x && word.y === +y)
@@ -60,6 +62,7 @@ export default {
 
     getNumber (x, y) {
       const titleCell = this.getTitleCell(x, y)
+
       return titleCell ? titleCell.index : null
     },
 
@@ -107,6 +110,7 @@ export default {
 
     goNextCell ({ id }) {
       const next = this.getNextId(id)
+
       this.active.cell = next
       // next && next.focus() || el.blur()
       document.execCommand('selectAll')
@@ -114,6 +118,7 @@ export default {
 
     goPrevCell ({ id }) {
       const prev = this.getPrevId(id)
+
       this.active.cell = prev
       // prev && prev.focus() || el.blur()
       document.execCommand('selectAll')
@@ -221,7 +226,7 @@ export default {
     },
 
     getWordStartCells (id) {
-      return this.allStartCells().filter(c => c === id)
+      return this.allStartCells().filter((cell) => cell === id)
     },
 
     getHorizontalWord (id) {
@@ -244,7 +249,7 @@ export default {
       const xy = id.split(':')
 
       while (!this.allStartCells('horizontal').includes(id) && xy[0] > 0) {
-        xy[0]--
+        xy[0] -= 1
         id = xy.join(':')
       }
 
@@ -255,7 +260,7 @@ export default {
       const xy = id.split(':')
 
       while (!this.allStartCells('vertical').includes(id) && xy[1] > 0) {
-        xy[1]--
+        xy[1] -= 1
         id = xy.join(':')
       }
 
@@ -268,10 +273,10 @@ export default {
       }
 
       const cells = []
-      let i
+      let idx
 
-      for (i = question.x; i < question.x + question.length; i++) {
-        cells.push(`${i}:${question.y}`)
+      for (idx = question.x; idx < question.x + question.length; idx += 1) {
+        cells.push(`${idx}:${question.y}`)
       }
 
       return cells === [] ? null : cells
@@ -283,10 +288,10 @@ export default {
       }
 
       const cells = []
-      let i
+      let idx
 
-      for (i = question.y; i < question.y + question.length; i++) {
-        cells.push(`${question.x}:${i}`)
+      for (idx = question.y; idx < question.y + question.length; idx += 1) {
+        cells.push(`${question.x}:${idx}`)
       }
 
       return cells === [] ? null : cells
@@ -297,13 +302,12 @@ export default {
     },
 
     getHorizontalQuestion (id) {
-      return this.questions.horizontal.find(question =>
-        this.exact(question, id)
-      )
+      return this.questions.horizontal.find((question) => this.exact(question, id))
     },
 
     exact (question, id) {
       const xy = id.split(':')
+
       return question.x === Number(xy[0]) && question.y === Number(xy[1])
     },
 

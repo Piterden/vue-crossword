@@ -1,16 +1,19 @@
 <template>
   <div class="grid">
     <div class="inner">
-      <div class="row"
+      <div
         v-for="(row, rowIdx) in gridWidth"
         :key="rowIdx"
+        class="row"
       >
         <div class="inner">
-          <div :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
+          <div
             v-for="(cell, cellIdx) in gridHeight"
             :key="`${cellIdx + 1}:${rowIdx + 1}`"
+            :class="['cell', ...getCellClass(rowIdx, cellIdx)]"
           >
             <cell
+              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
               :id="`${cellIdx + 1}:${rowIdx + 1}`"
@@ -19,7 +22,6 @@
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"
-              v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
             />
           </div>
         </div>
@@ -36,6 +38,10 @@ export default {
 
   components: { Cell },
 
+  props: {
+    questions: { type: Object, default: () => ({}) },
+  },
+
   data: () => ({
     answers: {},
     active: {
@@ -45,8 +51,55 @@ export default {
     },
   }),
 
-  props: {
-    questions: { type: Object, default: () => ({}) },
+
+  computed: {
+    gridWidth () {
+      return Math.max(...this.questions.horizontal.map(
+        question => question.x + question.length
+      )) - 1
+    },
+
+    gridHeight () {
+      return Math.max(...this.questions.vertical.map(
+        question => question.y + question.length
+      )) - 1
+    },
+
+    letterCells () {
+      const cells = []
+
+      this.questions.horizontal.forEach(({ x, y, length }) => {
+        for (let idx = x; idx < length + x; idx += 1) {
+          cells.push(`${idx}:${y}`)
+        }
+      })
+
+      this.questions.vertical.forEach(({ x, y, length }) => {
+        for (let idx = y; idx < length + y; idx += 1) {
+          cells.push(`${x}:${idx}`)
+        }
+      })
+
+      return cells
+    },
+
+    questionsCells () {
+      return Array.from(this.startCells)
+        .sort((a, b) => {
+          const aa = a.split(':')
+          const bb = b.split(':')
+
+          return Number(aa[1] + aa[0]) - Number(bb[1] + bb[0])
+        })
+        .unique()
+        .map((cell, idx) => {
+          return { cell: cell, idx: idx + 1 }
+        })
+    },
+
+    startCells () {
+      return this.allStartCells()
+    },
   },
 
   watch: {
@@ -56,7 +109,7 @@ export default {
         let first = document.getElementById(val.word[key])
 
         while (first.value) {
-          key++
+          key += 1
           first = document.getElementById(val.word[key])
         }
 
@@ -126,6 +179,7 @@ export default {
 
     goNextCell ({ id }) {
       const next = this.getNextId(id)
+
       this.active.cell = next
       // next && next.focus() || el.blur()
       document.execCommand('selectAll')
@@ -133,6 +187,7 @@ export default {
 
     goPrevCell ({ id }) {
       const prev = this.getPrevId(id)
+
       this.active.cell = prev
       // prev && prev.focus() || el.blur()
       document.execCommand('selectAll')
@@ -234,7 +289,7 @@ export default {
     },
 
     getWordStartCells (id) {
-      return this.allStartCells().filter(c => c === id)
+      return this.allStartCells().filter((cell) => cell === id)
     },
 
     getHorizontalWord (id) {
@@ -261,7 +316,7 @@ export default {
       const xy = id.split(':')
 
       while (!this.allStartCells('horizontal').includes(id) && xy[0] > 0) {
-        xy[0]--
+        xy[0] -= 1
         id = xy.join(':')
       }
 
@@ -272,7 +327,7 @@ export default {
       const xy = id.split(':')
 
       while (!this.allStartCells('vertical').includes(id) && xy[1] > 0) {
-        xy[1]--
+        xy[1] -= 1
         id = xy.join(':')
       }
 
@@ -285,10 +340,10 @@ export default {
       }
 
       const cells = []
-      let i
+      let idx
 
-      for (i = question.x; i < question.x + question.length; i++) {
-        cells.push(`${i}:${question.y}`)
+      for (idx = question.x; idx < question.x + question.length; idx += 1) {
+        cells.push(`${idx}:${question.y}`)
       }
 
       return cells === [] ? null : cells
@@ -300,10 +355,9 @@ export default {
       }
 
       const cells = []
-      let i
 
-      for (i = question.y; i < question.y + question.length; i++) {
-        cells.push(`${question.x}:${i}`)
+      for (let idx = question.y; idx < question.y + question.length; idx += 1) {
+        cells.push(`${question.x}:${idx}`)
       }
 
       return cells === [] ? null : cells
@@ -323,6 +377,7 @@ export default {
 
     exact (question, id) {
       const xy = id.split(':')
+
       return question.x === Number(xy[0]) && question.y === Number(xy[1])
     },
 
@@ -333,14 +388,8 @@ export default {
       this.letterCells.includes(index)
         ? classes.push('letter')
         : classes.push('blank')
-
-      this.startCells.includes(index)
-        ? classes.push('start')
-        : true
-
-      this.active.word.includes(index)
-        ? classes.push('active')
-        : true
+      this.startCells.includes(index) && classes.push('start')
+      this.active.word.includes(index) && classes.push('active')
 
       return classes
     },
@@ -361,56 +410,6 @@ export default {
       }
 
       return cells
-    },
-  },
-
-  computed: {
-    gridWidth () {
-      return Math.max(...this.questions.horizontal.map(
-        question => question.x + question.length
-      )) - 1
-    },
-
-    gridHeight () {
-      return Math.max(...this.questions.vertical.map(
-        question => question.y + question.length
-      )) - 1
-    },
-
-    letterCells () {
-      const cells = []
-
-      this.questions.horizontal.forEach(q => {
-        for (let i = q.x; i < q.length + q.x; i++) {
-          cells.push(`${i}:${q.y}`)
-        }
-      })
-
-      this.questions.vertical.forEach(q => {
-        for (let i = q.y; i < q.length + q.y; i++) {
-          cells.push(`${q.x}:${i}`)
-        }
-      })
-
-      return cells
-    },
-
-    questionsCells () {
-      return this.startCells
-        .sort((a, b) => {
-          const aa = a.split(':')
-          const bb = b.split(':')
-
-          return Number(aa[1] + aa[0]) - Number(bb[1] + bb[0])
-        })
-        .unique()
-        .map((cell, idx) => {
-          return { cell: cell, idx: idx + 1 }
-        })
-    },
-
-    startCells () {
-      return this.allStartCells()
     },
   },
 }

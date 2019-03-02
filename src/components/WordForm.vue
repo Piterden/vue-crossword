@@ -1,20 +1,28 @@
 <template>
   <div>
     <div class="answer-letters">
-      <div class="letter"
+      <div
         v-for="(letter, idx) of cells"
         :key="idx"
+        class="letter"
       >
-        <input type="text" size="1" minlength="1" maxlength="1"
+        <input
           v-model="answer[index]"
+          type="text"
+          size="1"
+          minlength="1"
+          maxlength="1"
         />
       </div>
     </div>
 
     <div class="question">
-      <textarea type="text" class="textarea" rows="5"
+      <textarea
         v-model="question"
         :placeholder="`${questionNumber}. `"
+        type="text"
+        class="textarea"
+        rows="5"
         @focus="!question ? question = `${questionNumber}. ` : question"
       ></textarea>
     </div>
@@ -25,6 +33,14 @@
 export default {
   name: 'WordForm',
 
+  props: {
+    x: { type: Number, default: () => 0 },
+    y: { type: Number, default: () => 0 },
+    index: { type: Number, default: () => 0 },
+    length: { type: Number, default: () => 0 },
+    isVertical: { type: Boolean, default: () => false },
+  },
+
   data () {
     return {
       question: '',
@@ -34,30 +50,24 @@ export default {
     }
   },
 
-  props: {
-    x: { type: Number, default: () => 0 },
-    y: { type: Number, default: () => 0 },
-    index: { type: Number, default: () => 0 },
-    length: { type: Number, default: () => 0 },
-    isVertical: { type: Boolean, default: () => false },
+  computed: {
+    cells () {
+      let idx = this.isVertical ? this.x : this.y
+
+      return new Array(this.length).fill(0)
+        // eslint-disable-next-line no-return-assign
+        .map((cell) => ({
+          x: this.isVertical ? idx += 1 : this.x,
+          y: this.isVertical ? this.y : idx += 1,
+          value: '',
+        }))
+    },
   },
 
   mounted () {
     this.questionNumber = this.isVertical
       ? this.index - 1
       : this.index
-  },
-
-  computed: {
-    cells () {
-      let i = this.isVertical ? this.x : this.y
-
-      return new Array(this.length).fill(0).map((cell) => ({
-        x: this.isVertical ? i++ : this.x,
-        y: this.isVertical ? this.y : i++,
-        value: '',
-      }))
-    },
   },
 }
 </script>
