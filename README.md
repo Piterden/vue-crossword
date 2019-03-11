@@ -1,6 +1,7 @@
 # Vue Crossword
 
 [![Build Status](https://travis-ci.com/Piterden/vue-crossword.svg?branch=master)](https://travis-ci.com/Piterden/vue-crossword)
+[![awesome-vue](https://img.shields.io/badge/Vue.js-AWESOME-ff69b4.svg)](//github.com/vuejs/awesome-vue)
 
 A Vue.js based crossword puzzle builder and filler front-end application.
 
