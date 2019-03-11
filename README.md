@@ -10,7 +10,7 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 
 [**Russian Words DB Demo**](https://0l3q5ozyl.codesandbox.io/)
 
-## Features
+## Features and ToDo
 
 - [x] Supports 2-31 symbols words lengths.
 - [x] Supports any grid size.
@@ -18,9 +18,6 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 - [x] Automatic calculation of required to fill letter cells and clues numeration.
 - [x] Words suggestions from API depending on length and filled letters.
 - [x] Clues suggestions for filled words from API.
-
-## ToDo
-
 - [ ] User login (OAuth2).
 - [ ] Save built crosswords.
 - [ ] Add and save new words and clues.
@@ -45,7 +42,7 @@ There are a few simple rules:
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 npm i
 
@@ -54,24 +51,13 @@ npm run dev
 
 # build for production with minification
 npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-
-# run unit tests
-npm run unit
-
-# run e2e tests
-npm run e2e
-
-# run all tests
-npm test
 ```
 
 ## Built With
 
 - [VueJS](https://vuejs.org/) - The Progressive JavaScript Framework.
 - [CodeSandbox](https://codesandbox.io) - The online code editor for ...
+- [Words API](https://github.com/Piterden/crosswords-module) - Words API repository.
 
 ## Contributing
 
@@ -84,4 +70,4 @@ PR's are appreciated.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/Piterden/chessbot/blob/master/LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](https://github.com/Piterden/vue-crossword/blob/master/LICENSE) file for details.
