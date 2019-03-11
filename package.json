@@ -1,7 +1,7 @@
 {
   "name": "vue-crossword-app",
   "description": "Some drafts about crossword app.",
-  "version": "0.0.282",
+  "version": "0.0.283",
   "dependencies": {
     "axios": "^0.18.0",
     "vue": "^2.6.7",
@@ -69,7 +69,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "engines": {
-    "node": ">= 8.0.0",
+    "node": ">= 9.0.0",
     "npm": ">= 5.0.0"
   },
   "browserslist": [
