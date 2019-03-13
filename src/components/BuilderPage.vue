@@ -543,7 +543,8 @@ export default {
     },
 
     changeDensity ({ density }) {
-      this.blankProbability = 1 / density
+      // eslint-disable-next-line no-magic-numbers
+      this.blankProbability = 1 / density * 2
     },
   },
 }
