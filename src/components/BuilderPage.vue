@@ -55,6 +55,7 @@
       :change-size-mode="editGridMode"
       :suggestion-counts="suggestionCounts"
       @input="inputLetter"
+      @density="changeDensity"
       @rebuild="rebuildGrid"
       @focus-cell="focusCell"
       @paste-word="pasteWord"
@@ -104,6 +105,8 @@ export default {
     focusedCell: '0:0',
     hoveredWord: '0:0:0',
     editGridMode: false,
+    // eslint-disable-next-line no-magic-numbers
+    blankProbability: 1 / 3,
     suggestionCounts: [],
   }),
 
@@ -388,14 +391,12 @@ export default {
 
     generateGrid () {
       this.blanks = []
-      // eslint-disable-next-line no-magic-numbers
-      const blankProbability = 1 / 3
       const halfWidth = Math.round(this.width / 2)
       const halfHeight = Math.round(this.height / 2)
 
       for (let x = 1; x <= halfWidth; x += 1) {
         for (let y = 1; y <= halfHeight; y += 1) {
-          if (Math.random() > blankProbability) {
+          if (Math.random() > this.blankProbability) {
             continue
           }
 
@@ -539,6 +540,10 @@ export default {
 
         return { query, count: response.data.count }
       }))
+    },
+
+    changeDensity ({ density }) {
+      this.blankProbability = 1 / density
     },
   },
 }

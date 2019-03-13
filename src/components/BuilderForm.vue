@@ -19,6 +19,15 @@
         min="2"
         max="40"
       />
+      <span>Density: 1 / {{ density }}</span>
+      <input
+        ref="sizeHeight"
+        v-model="density"
+        type="range"
+        size="4"
+        min="2"
+        max="40"
+      />
     </div>
 
     <div v-show="!changeSizeMode" class="forms-list-wrapper horizontal">
@@ -106,6 +115,7 @@ export default {
     suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
     changeSizeMode: { type: Boolean, default: () => false },
+    blankProbability: { type: Number, default: () => 1 },
     suggestionCounts: { type: Array, default: () => [] },
   },
 
@@ -113,6 +123,7 @@ export default {
     return {
       width: this.initWidth,
       height: this.initHeight,
+      density: this.blankProbability,
     }
   },
 
@@ -138,6 +149,12 @@ export default {
       this.$emit('rebuild', {
         width: Number(this.width),
         height: Number(value),
+      })
+    },
+
+    density (value) {
+      this.$emit('density', {
+        density: Number(value),
       })
     },
   },
