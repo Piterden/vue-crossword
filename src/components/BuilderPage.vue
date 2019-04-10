@@ -455,11 +455,8 @@ export default {
       this.focusedCell = `${x}:${y}`
     },
 
-    pasteWord ({ word: { id, length, ...letters }, x, y, isVertical }) {
-      const array = Object.values(letters)
-      const word = array.join('')
-
-      array.forEach((letter, index) => {
+    pasteWord ({ word: { id, word }, x, y, isVertical }) {
+      Array.from(word).forEach((letter, index) => {
         if (isVertical) {
           this.letters[`${x}:${y + index}`] = letter
         }
