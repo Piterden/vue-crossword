@@ -143,7 +143,7 @@ export default {
     },
 
     onCellClick ({ id }) {
-      this.$emit('updateblanks', id)
+      // this.$emit('updateblanks', id)
     },
 
     onLeftPress (e) {

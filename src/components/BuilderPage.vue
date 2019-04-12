@@ -17,6 +17,30 @@
       </button>
       <button
         v-if="editGridMode"
+        :class="{ editing: horizontalSym }"
+        @click.prevent="horizontalSymetria"
+        class="btn"
+      >
+        Horizontal Symetria
+      </button>
+      <button
+        v-if="editGridMode"
+        :class="{ editing: verticalSym }"
+        @click.prevent="verticalSymetria"
+        class="btn"
+      >
+        Vertical Symetria
+      </button>
+      <button
+        v-if="editGridMode"
+        :class="{ editing: crossSym }"
+        @click.prevent="crossSymetria"
+        class="btn"
+      >
+        Cross Symetria
+      </button>
+      <button
+        v-if="editGridMode"
         @click.prevent="clearGrid"
         class="btn"
       >
@@ -104,6 +128,9 @@ export default {
     filledWords: [],
     suggestions: [],
     focusedCell: '0:0',
+    crossSym: false,
+    verticalSym: false,
+    horizontalSym: false,
     hoveredWord: '0:0:0',
     editGridMode: false,
     // eslint-disable-next-line no-magic-numbers
@@ -316,6 +343,18 @@ export default {
   },
 
   methods: {
+    crossSymetria (e) {
+      this.crossSym = !this.crossSym
+    },
+
+    verticalSymetria (e) {
+      this.verticalSym = !this.verticalSym
+    },
+
+    horizontalSymetria (e) {
+      this.horizontalSym = !this.horizontalSym
+    },
+
     wordLeave () {
       this.hoveredWord = '0:0:0:0'
     },
@@ -431,10 +470,45 @@ export default {
     },
 
     blanksUpdate (id) {
-      if (!this.blanks.includes(id)) {
-        return this.blanks.push(id)
-      }
+      const [x, y] = id.split(':')
 
+      if (!this.blanks.includes(id)) {
+        this.addBlank(id)
+
+        if (this.crossSym) {
+          this.addBlank(`${this.width - x + 1}:${this.height - y + 1}`)
+        }
+
+        if (this.verticalSym) {
+          this.addBlank(`${this.width - x + 1}:${y}`)
+        }
+
+        if (this.horizontalSym) {
+          this.addBlank(`${x}:${this.height - y + 1}`)
+        }
+      }
+      else {
+        this.removeBlank(id)
+
+        if (this.crossSym) {
+          this.removeBlank(`${this.width - x + 1}:${this.height - y + 1}`)
+        }
+
+        if (this.verticalSym) {
+          this.removeBlank(`${this.width - x + 1}:${y}`)
+        }
+
+        if (this.horizontalSym) {
+          this.removeBlank(`${x}:${this.height - y + 1}`)
+        }
+      }
+    },
+
+    addBlank (id) {
+      this.blanks.push(id)
+    },
+
+    removeBlank (id) {
       this.blanks = this.blanks.filter((blank) => blank !== id)
     },
 

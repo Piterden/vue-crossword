@@ -19,6 +19,7 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 - [x] Automatic calculation of required to fill letter cells and clues numeration.
 - [x] Words suggestions from API depending on length and filled letters.
 - [x] Clues suggestions for filled words from API.
+- [x] Add different types of symmetry to grid generation.
 - [ ] User login (OAuth2).
 - [ ] Save built crosswords.
 - [ ] Add and save new words and clues.
@@ -26,7 +27,6 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 - [ ] Search in clues of suggested words.
 - [ ] Add taxonomy for clues.
 - [ ] Automatic generation of full filled crossword.
-- [ ] Add different types of symmetry to grid generation.
 - [ ] Add analyzer and smart corrector for generated grids (to control words length).
 - [ ] Improve the logic of API queries.
 - [ ] Make a print version.
