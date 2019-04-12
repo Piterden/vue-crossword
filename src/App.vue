@@ -17,8 +17,8 @@ export default {
 
 <style lang="stylus">
 grid-border-color = #ccc
-bg-accent-color = #fff59d
-bg-filled-color = #dce775
+bg-accent-color = #d9d8d4
+bg-filled-color = #eafe2b
 txt-danger-color = #e53935
 txt-words-color = #f57c00
 txt-clues-color = #388e3c
