@@ -493,36 +493,40 @@ export default {
 
     blanksUpdate (id) {
       const [x, y] = id.split(':')
+      const crossIndex = `${this.width - x + 1}:${this.height - y + 1}`
+      const verticalIndex = `${this.width - x + 1}:${y}`
+      const horizontalIndex = `${x}:${this.height - y + 1}`
 
-      if (!this.blanks.includes(id)) {
-        this.addBlank(id)
-
-        if (this.crossSym) {
-          this.addBlank(`${this.width - x + 1}:${this.height - y + 1}`)
-        }
-
-        if (this.verticalSym) {
-          this.addBlank(`${this.width - x + 1}:${y}`)
-        }
-
-        if (this.horizontalSym) {
-          this.addBlank(`${x}:${this.height - y + 1}`)
-        }
-      }
-      else {
+      if (this.blanks.includes(id)) {
         this.removeBlank(id)
 
         if (this.crossSym) {
-          this.removeBlank(`${this.width - x + 1}:${this.height - y + 1}`)
+          this.removeBlank(crossIndex)
         }
 
         if (this.verticalSym) {
-          this.removeBlank(`${this.width - x + 1}:${y}`)
+          this.removeBlank(verticalIndex)
         }
 
         if (this.horizontalSym) {
-          this.removeBlank(`${x}:${this.height - y + 1}`)
+          this.removeBlank(horizontalIndex)
         }
+
+        return
+      }
+
+      this.addBlank(id)
+
+      if (this.crossSym) {
+        this.addBlank(crossIndex)
+      }
+
+      if (this.verticalSym) {
+        this.addBlank(verticalIndex)
+      }
+
+      if (this.horizontalSym) {
+        this.addBlank(horizontalIndex)
       }
     },
 
@@ -568,7 +572,7 @@ export default {
         })
     },
 
-    pasteClue ({ word, clue, x, y, isVertical }) {
+    pasteClue ({ word: { clue, x, y, isVertical } }) {
       this.$http.post(
         'https://crossword.stagelab.pro/crossword/clues/create',
         { crossword: 1, clue: clue.id }
@@ -578,7 +582,7 @@ export default {
             item.y === y && item.isVertical === isVertical)
 
           if (index !== -1) {
-            this.filledWords[index].clue = response.data.clue
+            this.filledWords[index].clue = clue
           }
         })
         .catch(console.log)

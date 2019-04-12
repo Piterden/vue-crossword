@@ -7,7 +7,6 @@
 <script>
 import BuilderPage from './components/BuilderPage'
 
-
 export default {
   name: 'App',
 

@@ -343,14 +343,8 @@ export default {
     },
 
     pasteClue (clue) {
-      this.$emit('paste-clue', {
-        clue,
-        x: this.x,
-        y: this.y,
-        word: this.word,
-        isVertical: this.isVertical,
-      })
-
+      this.word.clue = clue
+      this.$emit('paste-clue', { word: this.word })
       this.question = clue.name
       this.hideClues()
     },
