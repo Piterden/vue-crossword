@@ -21,7 +21,7 @@ bg-accent-color = #d9d8d4
 bg-filled-color = #eafe2b
 txt-danger-color = #e53935
 txt-words-color = #f57c00
-txt-clues-color = #388e3c
+txt-clues-color = #0f3810
 btn-border-color = #CE93D8
 
 #crossword
