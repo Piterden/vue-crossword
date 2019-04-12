@@ -3,6 +3,7 @@
   "description": "Some drafts about crossword app.",
   "version": "0.0.283",
   "dependencies": {
+    "11": "0.0.1",
     "axios": "^0.18.0",
     "vue": "^2.6.7",
     "vue-router": "3.0.1"
@@ -22,8 +23,8 @@
     "copy-webpack-plugin": "^4.6.0",
     "cross-env": "^5.2.0",
     "cross-spawn": "^5.0.1",
-    "css-loader": "^0.28.11",
-    "cssnano": "^3.10.0",
+    "css-loader": "^2.1.1",
+    "cssnano": "^4.1.10",
     "eslint": "^5.14.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-loader": "^2.1.2",

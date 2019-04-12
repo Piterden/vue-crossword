@@ -17,6 +17,14 @@
       </button>
       <button
         v-if="editGridMode"
+        :class="{ editing: allSym }"
+        @click.prevent="allSymetria"
+        class="btn"
+      >
+        All Symetrias
+      </button>
+      <button
+        v-if="editGridMode"
         :class="{ editing: horizontalSym }"
         @click.prevent="horizontalSymetria"
         class="btn"
@@ -128,14 +136,15 @@ export default {
     filledWords: [],
     suggestions: [],
     focusedCell: '0:0',
-    crossSym: false,
-    verticalSym: false,
-    horizontalSym: false,
     hoveredWord: '0:0:0',
     editGridMode: false,
     // eslint-disable-next-line no-magic-numbers
     blankProbability: 1 / 3,
     suggestionCounts: [],
+    allSym: false,
+    crossSym: false,
+    verticalSym: false,
+    horizontalSym: false,
   }),
 
   computed: {
@@ -336,6 +345,15 @@ export default {
       }
       this.updateSuggestions()
     },
+
+    allSym (value) {
+      if (!this.editGridMode) {
+        return
+      }
+      this.crossSym = value
+      this.verticalSym = value
+      this.horizontalSym = value
+    },
   },
 
   mounted () {
@@ -353,6 +371,10 @@ export default {
 
     horizontalSymetria (e) {
       this.horizontalSym = !this.horizontalSym
+    },
+
+    allSymetria (e) {
+      this.allSym = !this.allSym
     },
 
     wordLeave () {
