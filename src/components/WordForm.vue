@@ -1,8 +1,8 @@
 <template>
   <div
-    class="word-form"
     @mouseover="$emit('form-hovered', { x, y, isVertical, length })"
     @mouseleave="$emit('form-leaved')"
+    class="word-form"
   >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
       <div class="inner">
@@ -12,7 +12,7 @@
 
     <div v-if="suggestionsVisible" class="modal-area suggestions">
       <div class="inner">
-        <a href="#" class="close" @click.prevent="hideSuggestions">
+        <a @click.prevent="hideSuggestions" href="#" class="close">
           X
         </a>
         <ul class="suggested-list">
@@ -22,17 +22,17 @@
             :style="{ width: `${length / 1.618}em` }"
           >
             <a
-              href="#"
               @mouseover="$emit('suggestion-hover', { x, y, isVertical, word })"
               @mouseleave="$emit('suggestion-leave')"
               @click.prevent="pasteWord(wordItem)"
               v-html="getWordHtml(wordItem)"
+              href="#"
             ></a>
           </li>
         </ul>
         <div class="controls">
           <div class="prev go-to-page">
-            <a href="#" @click.prevent="prevPage">
+            <a @click.prevent="prevPage" href="#">
               Prev.
             </a>
           </div>
@@ -40,7 +40,7 @@
             Page {{ page + 1 }}
           </div>
           <div class="next go-to-page">
-            <a href="#" @click.prevent="nextPage">
+            <a @click.prevent="nextPage" href="#">
               Next.
             </a>
           </div>
@@ -50,15 +50,15 @@
 
     <div v-if="cluesVisible" class="modal-area clues">
       <div class="inner">
-        <a href="#" class="close" @click.prevent="hideClues">
+        <a @click.prevent="hideClues" href="#" class="close">
           X
         </a>
         <ol class="clues-list">
           <li v-for="clue in ownClues" :key="clue.id">
             <a
-              href="#"
               @click.prevent="pasteClue(clue)"
               v-html="getClueHtml(clue)"
+              href="#"
             ></a>
             <br />
           </li>
@@ -75,33 +75,33 @@
         <div
           v-for="(letter, idx) of cells"
           :key="idx"
-          class="letter"
           :class="{ focused: isActive(idx), filled: isFilled(idx) }"
+          class="letter"
         >
           <input
             v-model="answer[idx]"
-            type="text"
-            size="1"
-            minlength="1"
-            maxlength="1"
             :data-idx="idx"
             @blur="onBlur"
             @focus="onFocus"
             @input="onInputLetter"
             @paste.prevent.stop="onPaste"
+            type="text"
+            size="1"
+            minlength="1"
+            maxlength="1"
           />
         </div>
       </div>
       <div class="clue">
         <textarea
-          v-if="word"
           ref="question"
+          v-if="word"
           v-model="question"
-          type="text"
-          class="textarea"
           :cols="cols"
           :rows="rows"
           @focus="showClues"
+          type="text"
+          class="textarea"
         ></textarea>
       </div>
       <div v-if="noClue" class="green-plus">
@@ -112,17 +112,17 @@
 
     <div class="words-count">
       <a
-        href="#"
-        title="Show variants"
         @click.prevent="toggleModal(query)"
         v-text="suggestionsText"
+        href="#"
+        title="Show variants"
       ></a>
       <a
         v-if="word"
+        @click.prevent="removeWord"
         class="danger"
         href="#"
         title="Remove word"
-        @click.prevent="removeWord"
       >
         Remove word
       </a>
@@ -196,7 +196,6 @@ export default {
     ownClues () {
       const clues = this.clues.find(({ word }) => word === this.answer.join(''))
 
-      console.log(clues)
       return clues ? clues.data : []
     },
 

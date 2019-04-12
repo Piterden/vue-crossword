@@ -25,6 +25,9 @@
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"
+              @cellmouseup="onMouseUp"
+              @cellmousedown="onMouseDown"
+              @cellmouseenter="onMouseEnter"
             />
           </div>
         </div>
@@ -51,16 +54,20 @@ export default {
     filledWords: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
     hoveredWord: { type: String, default: () => '0:0:0:0' },
+    editGridMode: { type: Boolean, default: () => false },
     suggestionCounts: { type: Array, default: () => [] },
   },
 
   data: () => ({
+    dragging: false,
+    toBlank: true,
     answers: {},
     active: {
       cell: '',
       word: [],
       vertical: false,
     },
+    cells: [],
   }),
 
   computed: {
@@ -77,6 +84,48 @@ export default {
   },
 
   methods: {
+    onMouseDown ({ id }) {
+      if (!this.editGridMode) {
+        return
+      }
+      this.cells = []
+      if (id) {
+        this.dragging = true
+        if (!this.cells.includes(id)) {
+          this.cells.push(id)
+        }
+        this.toBlank = !this.blanks.includes(id)
+        this.$emit('updateblanks', id)
+        this.$bus.$emit('changed::ondrag', { id, value: true })
+      }
+    },
+
+    onMouseUp ({ id }) {
+      if (!this.editGridMode) {
+        return
+      }
+      this.dragging = false
+      this.cells.forEach((id) => {
+        this.$bus.$emit('changed::ondrag', { id, value: false })
+      })
+    },
+
+    onMouseEnter ({ id }) {
+      if (!this.editGridMode || !this.dragging) {
+        return
+      }
+
+      if (id) {
+        if (this.toBlank !== this.blanks.includes(id)) {
+          this.$emit('updateblanks', id)
+          this.$bus.$emit('changed::ondrag', { id, value: true })
+          if (!this.cells.includes(id)) {
+            this.cells.push(id)
+          }
+        }
+      }
+    },
+
     isTitleCell (x, y) {
       return this.words.find((word) => word.x === +x && word.y === +y)
     },

@@ -2,36 +2,36 @@
   <div class="page builder-page">
     <div class="toolbox">
       <button
-        class="btn"
         :class="{ editing: editGridMode }"
         @click.prevent="changeSizeClick"
+        class="btn"
       >
         Edit Grid
       </button>
       <button
         v-if="editGridMode"
-        class="btn"
         @click.prevent="generateGrid"
+        class="btn"
       >
         Generate Grid
       </button>
       <button
         v-if="editGridMode"
-        class="btn"
         @click.prevent="clearGrid"
+        class="btn"
       >
         Clear Grid
       </button>
       <button
-        class="btn"
         @click.prevent="clearWords"
+        class="btn"
       >
         Clear Words
       </button>
       <button
         v-if="!editGridMode"
-        class="btn"
         @click.prevent="refreshSuggestions"
+        class="btn"
       >
         Refresh Suggestions
       </button>
@@ -55,13 +55,13 @@
       :change-size-mode="editGridMode"
       :suggestion-counts="suggestionCounts"
       @input="inputLetter"
-      @density="changeDensity"
       @rebuild="rebuildGrid"
       @focus-cell="focusCell"
       @paste-word="pasteWord"
       @paste-clue="pasteClue"
-      @remove-word="removeWord"
+      @density="changeDensity"
       @form-leaved="wordLeave"
+      @remove-word="removeWord"
       @form-hovered="wordHover"
       @letters-update="lettersUpdate"
     />
@@ -75,6 +75,7 @@
       :filled-words="filledWords"
       :focused-cell="focusedCell"
       :hovered-word="hoveredWord"
+      :edit-grid-mode="editGridMode"
       :suggestion-counts="suggestionCounts"
       @updateblanks="blanksUpdate"
     />

@@ -3,13 +3,14 @@
 import Vue from 'vue'
 import './shitcode'
 import App from './App'
-import { http } from './plugins'
+import { http, eventbus } from './plugins'
 
 
 Vue.config.devTools = true
 Vue.config.productionTip = false
 
 Vue.use(http)
+Vue.use(eventbus)
 
 /* eslint-disable no-new */
 new Vue({
