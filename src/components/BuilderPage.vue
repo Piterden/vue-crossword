@@ -72,6 +72,9 @@
           {{ log }}
         </pre>
       </div>
+      <div class="statistics">
+        <pre v-html="statsView"></pre>
+      </div>
     </div>
 
     <builder-form
@@ -148,6 +151,25 @@ export default {
   }),
 
   computed: {
+    statsView () {
+      return Object.keys(this.statistics).map((key) => {
+        const wordLength = Number(key.replace(/^l/, ''))
+        const wordsCount = this.statistics[key].length
+
+        return `${wordLength}-letters words: ${wordsCount} items`
+      })
+        .sort((a, b) => parseInt(a) - parseInt(b))
+        .join('<br>')
+    },
+
+    statistics () {
+      return this.words.reduce((acc, word) => {
+        acc[`l${word.length}`] = acc[`l${word.length}`] || []
+        acc[`l${word.length}`].push(word)
+        return acc
+      }, {})
+    },
+
     horizontalWords () {
       const words = []
       let row = 1
@@ -586,6 +608,30 @@ export default {
           }
         })
         .catch(console.log)
+    },
+
+    saveCrossword (id) {
+      this.$http.post(
+        `https://crossword.stagelab.pro/crossword/edit/${id}`,
+        {
+          words: this.filledWords,
+          blanks: this.blanks,
+          width: this.width,
+          heigth: this.heigth,
+        }
+      )
+    },
+
+    loadCrossword (id) {
+      this.$http.get(`https://crossword.stagelab.pro/crossword/item/${id}`)
+        .then((response) => {
+          const { words, blanks, width, height } = response.data
+
+          this.filledWords = words
+          this.blanks = blanks
+          this.height = height
+          this.width = width
+        })
     },
 
     lettersUpdate ({ letters }) {
