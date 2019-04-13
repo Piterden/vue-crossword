@@ -2,8 +2,11 @@
   <div
     @mouseover="$emit('form-hovered', { x, y, isVertical, length })"
     @mouseleave="$emit('form-leaved')"
+    :class="{
+      next: nextQuery === query,
+      error: suggestionsCount === 0,
+    }"
     class="word-form"
-    :class="{ next: nextQuery === query }"
   >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
       <div class="inner">
