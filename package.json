@@ -41,7 +41,6 @@
     "html-webpack-plugin": "^2.28.0",
     "http-proxy-middleware": "^0.19.1",
     "inject-loader": "^3.0.0",
-    "node-sass": "^4.11.0",
     "opn": "^5.4.0",
     "optimize-css-assets-webpack-plugin": "^2.0.0",
     "ora": "^1.4.0",
