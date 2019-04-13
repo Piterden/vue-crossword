@@ -17,6 +17,7 @@ export default {
 <style lang="stylus">
 grid-border-color = #ccc
 bg-accent-color = #d9d8d4
+bg-error-color = #b71c1c
 bg-filled-color = #eafe2b
 txt-danger-color = #e53935
 txt-words-color = #f57c00
@@ -109,6 +110,9 @@ btn-border-color = #CE93D8
 
     &.nowords
       background txt-danger-color
+
+    &.error
+      background bg-error-color
 
     .letter
       float left
