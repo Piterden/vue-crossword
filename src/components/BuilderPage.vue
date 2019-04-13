@@ -39,10 +39,16 @@
         Clear Grid
       </button>
       <button
-        @click.prevent="clearWords"
+        @click.prevent="newCrossword"
         class="btn"
       >
-        Clear Words
+        Create New Crossword
+      </button>
+      <button
+        @click.prevent="saveCrossword"
+        class="btn"
+      >
+        Save Crossword
       </button>
       <button
         v-if="!editGridMode"
@@ -123,6 +129,7 @@ export default {
     loading: false,
     filledWords: [],
     suggestions: [],
+    crosswordId: null,
     focusedCell: '0:0',
     hoveredWord: '0:0:0',
     editGridMode: false,
@@ -482,16 +489,6 @@ export default {
       }
     },
 
-    clearWords () {
-      const indexes = Object.keys(this.letters)
-
-      for (let idx = indexes.length - 1; idx >= 0; idx -= 1) {
-        this.letters[indexes[idx]] = ''
-      }
-
-      this.filledWords = []
-    },
-
     clearGrid () {
       this.blanks = []
     },
@@ -598,12 +595,39 @@ export default {
         .catch(console.log)
     },
 
+    newCrossword () {
+      this.$http.post(
+        'https://crossword.stagelab.pro/crossword/create',
+        {
+          words: '[]',
+          blanks: '[]',
+          width: this.width,
+          height: this.height,
+        }
+      )
+        .then((response) => {
+          if (!response.success) {
+            return
+          }
+
+          const indexes = Object.keys(this.letters)
+
+          for (let idx = indexes.length - 1; idx >= 0; idx -= 1) {
+            this.letters[indexes[idx]] = ''
+          }
+
+          this.crosswordId = response.data.id
+          this.blanks = JSON.parse(response.data.blanks)
+          this.filledWords = JSON.parse(response.data.words)
+        })
+    },
+
     saveCrossword (id) {
       this.$http.post(
         `https://crossword.stagelab.pro/crossword/edit/${id}`,
         {
-          words: this.filledWords,
-          blanks: this.blanks,
+          words: JSON.stringify(this.filledWords),
+          blanks: JSON.stringify(this.blanks),
           width: this.width,
           heigth: this.heigth,
         }
@@ -615,8 +639,8 @@ export default {
         .then((response) => {
           const { words, blanks, width, height } = response.data
 
-          this.filledWords = words
-          this.blanks = blanks
+          this.filledWords = JSON.parse(words)
+          this.blanks = JSON.parse(blanks)
           this.height = height
           this.width = width
         })
