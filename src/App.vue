@@ -104,6 +104,12 @@ btn-border-color = #CE93D8
     margin-bottom 10px
     padding-bottom 10px
 
+    &.next
+      background #c2e6ea
+
+    &.nowords
+      background txt-danger-color
+
     .letter
       float left
       width 20px

@@ -3,6 +3,7 @@
     @mouseover="$emit('form-hovered', { x, y, isVertical, length })"
     @mouseleave="$emit('form-leaved')"
     class="word-form"
+    :class="{ next: nextQuery === query }"
   >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
       <div class="inner">
@@ -141,6 +142,7 @@ export default {
     clues: { type: Array, default: () => [] },
     length: { type: Number, default: () => 0 },
     letters: { type: Object, default: () => ({}) },
+    nextQuery: { type: String, default: () => '' },
     loading: { type: Boolean, default: () => false },
     isVertical: { type: Boolean, default: () => false },
     filledWords: { type: Array, default: () => [] },

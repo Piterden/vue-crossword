@@ -44,6 +44,7 @@
           :index="word.index"
           :length="word.length"
           :is-vertical="false"
+          :next-query="nextQuery"
           :suggestions="suggestions"
           :filled-words="filledWords"
           :focused-cell="focusedCell"
@@ -74,6 +75,7 @@
           :length="word.length"
           :index="word.index"
           :is-vertical="true"
+          :next-query="nextQuery"
           :suggestions="suggestions"
           :filled-words="filledWords"
           :focused-cell="focusedCell"
@@ -110,6 +112,7 @@ export default {
     letters: { type: Object, default: () => ({}) },
     loading: { type: Boolean, default: () => false },
     initWidth: { type: Number, default: () => 1 },
+    nextQuery: { type: String, default: () => '' },
     initHeight: { type: Number, default: () => 1 },
     filledWords: { type: Array, default: () => [] },
     suggestions: { type: Array, default: () => [] },

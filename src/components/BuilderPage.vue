@@ -17,14 +17,6 @@
       </button>
       <button
         v-if="editGridMode"
-        :class="{ editing: allSym }"
-        @click.prevent="allSymetria"
-        class="btn"
-      >
-        All Symetrias
-      </button>
-      <button
-        v-if="editGridMode"
         :class="{ editing: horizontalSym }"
         @click.prevent="horizontalSymetria"
         class="btn"
@@ -38,14 +30,6 @@
         class="btn"
       >
         Vertical Symetria
-      </button>
-      <button
-        v-if="editGridMode"
-        :class="{ editing: crossSym }"
-        @click.prevent="crossSymetria"
-        class="btn"
-      >
-        Cross Symetria
       </button>
       <button
         v-if="editGridMode"
@@ -84,6 +68,7 @@
       :loading="loading"
       :init-width="width"
       :init-height="height"
+      :next-query="nextQuery"
       :suggestions="suggestions"
       :filled-words="filledWords"
       :focused-cell="focusedCell"
@@ -131,8 +116,8 @@ export default {
   data: () => ({
     log: [],
     clues: [],
-    width: 11,
-    height: 11,
+    width: 15,
+    height: 15,
     blanks: [],
     letters: {},
     loading: false,
@@ -144,10 +129,8 @@ export default {
     // eslint-disable-next-line no-magic-numbers
     blankProbability: 1 / 3,
     suggestionCounts: [],
-    allSym: false,
-    crossSym: false,
-    verticalSym: false,
-    horizontalSym: false,
+    verticalSym: true,
+    horizontalSym: true,
   }),
 
   computed: {
@@ -303,6 +286,16 @@ export default {
       ])
     },
 
+    sortedByCounts () {
+      return Array.from(this.suggestionCounts)
+        .sort((a, b) => a.count - b.count)
+        .filter((obj) => obj && obj.count > 0 && obj.query.includes('_'))
+    },
+
+    nextQuery () {
+      return this.sortedByCounts[0] && this.sortedByCounts[0].query
+    },
+
     queries () {
       return this.words.map(({ query }) => query).unique()
     },
@@ -334,11 +327,10 @@ export default {
         let row = 1
 
         for (row; row <= this.height; row += 1) {
-          const re = new RegExp(`${col}:${row}`)
-
-          if (!this.blanks.find((blank) => blank && blank.match(re))) {
-            cells.push({ x: col, y: row })
+          if (this.blanks.includes(`${col}:${row}`)) {
+            continue
           }
+          cells.push({ x: col, y: row })
         }
       }
 
@@ -383,20 +375,12 @@ export default {
   },
 
   methods: {
-    crossSymetria (e) {
-      this.crossSym = !this.crossSym
-    },
-
     verticalSymetria (e) {
       this.verticalSym = !this.verticalSym
     },
 
     horizontalSymetria (e) {
       this.horizontalSym = !this.horizontalSym
-    },
-
-    allSymetria (e) {
-      this.allSym = !this.allSym
     },
 
     wordLeave () {
@@ -475,21 +459,25 @@ export default {
 
     generateGrid () {
       this.blanks = []
-      const halfWidth = Math.round(this.width / 2)
-      const halfHeight = Math.round(this.height / 2)
+      let fillWidth
+      let fillHeight
 
-      for (let x = 1; x <= halfWidth; x += 1) {
-        for (let y = 1; y <= halfHeight; y += 1) {
+      if (this.horizontalSym && this.verticalSym) {
+        fillWidth = Math.round(this.width / 2)
+        fillHeight = Math.round(this.height / 2)
+      }
+      else {
+        fillWidth = this.horizontalSym ? this.width : Math.round(this.width / 2)
+        fillHeight = this.verticalSym ? this.height : Math.round(this.height / 2)
+      }
+
+      for (let x = 1; x <= fillWidth; x += 1) {
+        for (let y = 1; y <= fillHeight; y += 1) {
           if (Math.random() > this.blankProbability) {
             continue
           }
 
-          this.blanks.push(
-            `${x}:${y}`,
-            `${this.width - x + 1}:${y}`,
-            `${x}:${this.height - y + 1}`,
-            `${this.width - x + 1}:${this.height - y + 1}`,
-          )
+          this.blanksUpdate(`${x}:${y}`)
         }
       }
     },
@@ -515,16 +503,12 @@ export default {
 
     blanksUpdate (id) {
       const [x, y] = id.split(':')
-      const crossIndex = `${this.width - x + 1}:${this.height - y + 1}`
+      const diagonalIndex = `${this.width - x + 1}:${this.height - y + 1}`
       const verticalIndex = `${this.width - x + 1}:${y}`
       const horizontalIndex = `${x}:${this.height - y + 1}`
 
       if (this.blanks.includes(id)) {
         this.removeBlank(id)
-
-        if (this.crossSym) {
-          this.removeBlank(crossIndex)
-        }
 
         if (this.verticalSym) {
           this.removeBlank(verticalIndex)
@@ -534,14 +518,14 @@ export default {
           this.removeBlank(horizontalIndex)
         }
 
+        if (this.verticalSym && this.horizontalSym) {
+          this.removeBlank(diagonalIndex)
+        }
+
         return
       }
 
       this.addBlank(id)
-
-      if (this.crossSym) {
-        this.addBlank(crossIndex)
-      }
 
       if (this.verticalSym) {
         this.addBlank(verticalIndex)
@@ -549,6 +533,10 @@ export default {
 
       if (this.horizontalSym) {
         this.addBlank(horizontalIndex)
+      }
+
+      if (this.verticalSym && this.horizontalSym) {
+        this.addBlank(diagonalIndex)
       }
     },
 
