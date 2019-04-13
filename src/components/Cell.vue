@@ -35,22 +35,10 @@ export default {
     isActive: { type: Boolean, default: () => false },
   },
 
-  data: () => ({
-    changedOnDrag: false,
-  }),
-
   computed: {
     identifier () {
       return `${this.x}:${this.y}`
     },
-  },
-
-  mounted () {
-    this.$bus.$on('changed::ondrag', ({ id, value }) => {
-      if (id === this.identifier) {
-        this.changedOnDrag = value
-      }
-    })
   },
 
   methods: {
