@@ -573,7 +573,7 @@ export default {
         }
       })
       this.filledWords.push({ word, x, y, isVertical, clue: null })
-      this.$http.get(`https://crossword.stagelab.pro/crossword/clues/find/${word}`)
+      this.$http.get(`clues/find/${word}`)
         .then((response) => {
           this.clues.push({ word, data: response.data.clues })
         })
@@ -581,7 +581,7 @@ export default {
 
     pasteClue ({ word: { clue, x, y, isVertical } }) {
       this.$http.post(
-        'https://crossword.stagelab.pro/crossword/clues/create',
+        'clues/create',
         { crossword: 1, clue: clue.id }
       )
         .then((response) => {
@@ -596,13 +596,18 @@ export default {
     },
 
     newCrossword () {
-      this.$http.post(
+      fetch(
         'https://crossword.stagelab.pro/crossword/create',
         {
-          words: '[]',
-          blanks: '[]',
-          width: this.width,
-          height: this.height,
+          method: 'POST',
+          data: {
+            name: 'Test',
+            description: '',
+            words: '[]',
+            blanks: '[]',
+            width: this.width,
+            height: this.height,
+          },
         }
       )
         .then((response) => {
@@ -622,9 +627,9 @@ export default {
         })
     },
 
-    saveCrossword (id) {
+    saveCrossword () {
       this.$http.post(
-        `https://crossword.stagelab.pro/crossword/edit/${id}`,
+        `edit/${this.crosswordId}`,
         {
           words: JSON.stringify(this.filledWords),
           blanks: JSON.stringify(this.blanks),
@@ -635,7 +640,7 @@ export default {
     },
 
     loadCrossword (id) {
-      this.$http.get(`https://crossword.stagelab.pro/crossword/item/${id}`)
+      this.$http.get(`item/${id}`)
         .then((response) => {
           const { words, blanks, width, height } = response.data
 
@@ -651,7 +656,7 @@ export default {
     },
 
     getSuggestionsUrl (query, page = 0) {
-      return `https://crossword.stagelab.pro/crossword/words/find/${page}/${query}`
+      return `words/find/${page}/${query}`
     },
 
     getSuggestions (queries, useCache = true) {
@@ -689,7 +694,7 @@ export default {
         }
         this.log.push(`COUNT FOR ${query}`)
 
-        const url = `https://crossword.stagelab.pro/crossword/words/count/${query}`
+        const url = `words/count/${query}`
         const response = await this.$http.get(url).catch(console.log)
 
         this.log.splice(this.log.findIndex((string) => string === url), 1)
