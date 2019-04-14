@@ -2,7 +2,7 @@ import axios from 'axios'
 
 
 export const http = axios.create({
-  baseURL: 'https://crossword.stagelab.pro/crossword',
+  baseURL: 'https://crossword.live/crossword',
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/x-www-form-urlencoded',

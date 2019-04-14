@@ -597,7 +597,7 @@ export default {
 
     newCrossword () {
       fetch(
-        'https://crossword.stagelab.pro/crossword/create',
+        'https://crossword.live/crossword/create',
         {
           method: 'POST',
           data: {
