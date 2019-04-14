@@ -57,13 +57,13 @@
       >
         Refresh Suggestions
       </button>
+      <div class="statistics">
+        <pre v-html="statsView"></pre>
+      </div>
       <div class="log">
         <pre>
           {{ log }}
         </pre>
-      </div>
-      <div class="statistics">
-        <pre v-html="statsView"></pre>
       </div>
     </div>
 
@@ -628,13 +628,15 @@ export default {
     },
 
     saveCrossword () {
-      this.$http.post(
+      fetch(
         `edit/${this.crosswordId}`,
         {
-          words: JSON.stringify(this.filledWords),
-          blanks: JSON.stringify(this.blanks),
-          width: this.width,
-          heigth: this.heigth,
+          data: {
+            words: JSON.stringify(this.filledWords),
+            blanks: JSON.stringify(this.blanks),
+            width: this.width,
+            heigth: this.heigth,
+          },
         }
       )
     },

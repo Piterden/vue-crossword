@@ -262,7 +262,6 @@ btn-border-color = #CE93D8
 
   .log
     pre
-      position absolute
       text-align left
 
   .builder-grid.page-inner
