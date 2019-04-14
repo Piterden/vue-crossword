@@ -118,15 +118,15 @@ btn-border-color = #CE93D8
       float left
       width 20px
 
-      > input
+      input
         width 17px
         text-align center
 
-      &.filled > input
+      &.filled input
         background bg-filled-color
         border 2px solid grid-border-color
 
-      &.focused > input
+      &.focused input
         background #FFEB3B
 
     .question
@@ -214,15 +214,14 @@ btn-border-color = #CE93D8
     width 40px
     height 40px
 
+    &.hovered > input
+      background bg-accent-color
+
     input
       cursor pointer
       width 100%
       text-align center
       font-size 1.25em
-
-    &.hovered
-      input
-        background bg-accent-color
 
     .word-start
       position absolute
@@ -341,6 +340,15 @@ btn-border-color = #CE93D8
   .controls
     width 300px
 
+  .builder-grid.page-inner
+    .cell.filled > div.hovered > input
+      background bg-accent-color
+
+  .builder-form.page-inner
+    overflow-y auto
+    overflow-x hidden
+    height 96vh
+
 @media screen and (max-width: 767px)
   #crossword
     .page
@@ -348,6 +356,7 @@ btn-border-color = #CE93D8
 
       .page-inner
         width 100%
+
 
       .builder-grid
         margin 0 auto

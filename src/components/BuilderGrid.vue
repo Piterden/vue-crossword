@@ -384,9 +384,6 @@ export default {
       const classes = []
       const index = `${col + 1}:${row + 1}`
 
-      // this.letterCells.includes(index)
-      //   ? classes.push('letter')
-      //   : classes.push('blank')
       this.blanks.includes(index)
         ? classes.push('blank')
         : classes.push('letter')
@@ -398,13 +395,6 @@ export default {
       if (index === this.focusedCell) {
         classes.push('focused')
       }
-      // this.startCells.includes(index)
-      //   ? classes.push('start')
-      //   : true
-
-      // this.active.word.includes(index)
-      //   ? classes.push('active')
-      //   : true
 
       return classes
     },

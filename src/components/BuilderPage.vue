@@ -51,6 +51,12 @@
         Save Crossword
       </button>
       <button
+        @click.prevent="saveGrid"
+        class="btn"
+      >
+        Save Grid
+      </button>
+      <button
         v-if="!editGridMode"
         @click.prevent="refreshSuggestions"
         class="btn"
@@ -572,10 +578,10 @@ export default {
           this.letters[`${x + index}:${y}`] = letter
         }
       })
-      this.filledWords.push({ word, x, y, isVertical, clue: null })
       this.$http.get(`clues/find/${word}`)
         .then((response) => {
           this.clues.push({ word, data: response.data.clues })
+          this.filledWords.push({ word, x, y, isVertical, clue: response.data.clues[0] })
         })
     },
 
@@ -651,6 +657,30 @@ export default {
           this.height = height
           this.width = width
         })
+    },
+
+    saveGrid () {
+      fetch(
+        'https://crossword.live/crossword/grid/create',
+        {
+          method: 'POST',
+          data: {
+            name: 'Test',
+            blanks: JSON.stringify(this.blanks.sort()),
+          },
+        }
+      )
+        .then((response) => {
+          if (!response.success) {
+            return
+          }
+
+          this.loadGrid(response.data)
+        })
+    },
+
+    loadGrid (blanks) {
+      this.blanks = blanks
     },
 
     lettersUpdate ({ letters }) {
