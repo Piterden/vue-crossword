@@ -64,7 +64,12 @@
         Refresh Suggestions
       </button>
       <div class="statistics">
-        <pre v-html="statsView"></pre>
+        <pre
+          v-html="statsView.replace(
+            /^\s*(2-letters words: \d+ items)/,
+            '<span class=\'red\'>$1</span>'
+          )"
+        ></pre>
       </div>
       <div class="log">
         <pre>
@@ -85,6 +90,7 @@
       :filled-words="filledWords"
       :focused-cell="focusedCell"
       :change-size-mode="editGridMode"
+      :two-letter-words="twoLetterWords"
       :suggestion-counts="suggestionCounts"
       @input="inputLetter"
       @rebuild="rebuildGrid"
@@ -108,6 +114,7 @@
       :focused-cell="focusedCell"
       :hovered-word="hoveredWord"
       :edit-grid-mode="editGridMode"
+      :two-letter-words="twoLetterWords"
       :suggestion-counts="suggestionCounts"
       @updateblanks="blanksUpdate"
     />
@@ -297,6 +304,16 @@ export default {
         ...this.horizontalWords,
         ...this.verticalWords,
       ])
+    },
+
+    twoLetterWords () {
+      return this.words.filter(({ length }) => length === 2)
+        .flatMap(({ x, y, length, type }) => this.$root.getWordCells({
+          x,
+          y,
+          isVertical: type === 'vertical',
+          word: { length },
+        }))
     },
 
     sortedByCounts () {
@@ -661,9 +678,13 @@ export default {
 
     saveGrid () {
       fetch(
-        'https://crossword.live/crossword/grid/create',
+        'https://crossword.live/crossword/grids/create',
         {
           method: 'POST',
+          // mode: 'cors',
+          // headers: {
+          //   'Content-Type': 'application/json',
+          // },
           data: {
             name: 'Test',
             blanks: JSON.stringify(this.blanks.sort()),
@@ -675,7 +696,10 @@ export default {
             return
           }
 
-          this.loadGrid(response.data)
+          this.loadGrid(response.data.data)
+        })
+        .catch((error) => {
+          console.log(error)
         })
     },
 

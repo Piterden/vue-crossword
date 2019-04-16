@@ -14,7 +14,10 @@
             :style="getCellStyle(rowIdx, cellIdx)"
           >
             <cell
-              :class="{ hovered: hoveredCells.includes(`${cellIdx + 1}:${rowIdx + 1}`) }"
+              :class="{
+                hovered: hoveredCells.includes(`${cellIdx + 1}:${rowIdx + 1}`),
+                red: twoLetterWords.includes(`${cellIdx + 1}:${rowIdx + 1}`),
+              }"
               :value="letters[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
@@ -55,6 +58,7 @@ export default {
     focusedCell: { type: String, default: () => '0:0' },
     hoveredWord: { type: String, default: () => '0:0:0:0' },
     editGridMode: { type: Boolean, default: () => false },
+    twoLetterWords: { type: Array, default: () => [] },
     suggestionCounts: { type: Array, default: () => [] },
   },
 

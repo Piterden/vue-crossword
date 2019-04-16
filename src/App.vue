@@ -45,6 +45,10 @@ btn-border-color = #CE93D8
       display inline-block
       margin-right 20px
 
+  .red
+    background red
+    color white
+
   .grid
     display inline-table
     border-radius .5em
@@ -128,6 +132,7 @@ btn-border-color = #CE93D8
 
       &.focused input
         background #FFEB3B
+
 
     .question
       width 100%
@@ -216,6 +221,9 @@ btn-border-color = #CE93D8
 
     &.hovered > input
       background bg-accent-color
+
+    &.red > input
+      background bg-error-color
 
     input
       cursor pointer

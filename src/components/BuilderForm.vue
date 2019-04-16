@@ -1,7 +1,7 @@
 <template>
   <div class="builder-form page-inner">
     <div v-show="changeSizeMode" class="controls">
-      <span>Grid Width: {{ width }}</span>
+      <span>Grid Width: <input v-model="width" type="number" /></span>
       <input
         ref="sizeWidth"
         v-model="width"
@@ -10,7 +10,7 @@
         min="2"
         max="40"
       />
-      <span>Grid Height: {{ height }}</span>
+      <span>Grid Height: <input v-model="height" type="number" /></span>
       <input
         ref="sizeHeight"
         v-model="height"
@@ -19,7 +19,7 @@
         min="2"
         max="40"
       />
-      <span>Density: 1 / {{ density }}</span>
+      <span>Density: 1 / <input v-model="density" type="number" /></span>
       <input
         ref="sizeHeight"
         v-model="density"
@@ -117,6 +117,7 @@ export default {
     filledWords: { type: Array, default: () => [] },
     suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
+    twoLetterWords: { type: Array, default: () => [] },
     changeSizeMode: { type: Boolean, default: () => false },
     // eslint-disable-next-line no-magic-numbers
     blankProbability: { type: Number, default: () => 4 },
