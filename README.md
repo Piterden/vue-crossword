@@ -9,7 +9,8 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 
 ## Demo
 
-[**Russian Words DB Demo**](https://0l3q5ozyl.codesandbox.io/)
+[**App in codesandbox.io**](https://codesandbox.io/s/github/simplehit/vue-crossword/tree/master/)
+[**Russian Words DB Demo**](https://rjyxpq63on.codesandbox.io/)
 
 ## Features and ToDo
 
