@@ -676,31 +676,32 @@ export default {
         })
     },
 
-    saveGrid () {
-      fetch(
+    async saveGrid () {
+      const params = {
+        name: 'Test',
+        blanks: JSON.stringify(this.blanks.sort()),
+      }
+
+      const response = await fetch(
         'https://crossword.live/crossword/grids/create',
         {
           method: 'POST',
-          // mode: 'cors',
-          // headers: {
-          //   'Content-Type': 'application/json',
-          // },
-          data: {
-            name: 'Test',
-            blanks: JSON.stringify(this.blanks.sort()),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
           },
+          body: Object.keys(params)
+            .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
+            .join('&'),
         }
       )
-        .then((response) => {
-          if (!response.success) {
-            return
-          }
-
-          this.loadGrid(response.data.data)
-        })
         .catch((error) => {
           console.log(error)
         })
+
+      if (response.success) {
+        this.loadGrid(response.data.data)
+      }
     },
 
     loadGrid (blanks) {
