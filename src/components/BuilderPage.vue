@@ -76,6 +76,15 @@
           {{ log }}
         </pre>
       </div>
+      <div v-if="editGridMode" class="grid-list">
+        <ul>
+          <li v-for="grid in grids">
+            ID {{ grid.id }}
+            name {{ grid.name }}
+            blanks {{ grid.blanks }}
+          </li>
+        </ul>
+      </div>
     </div>
 
     <builder-form
@@ -135,6 +144,7 @@ export default {
   data: () => ({
     log: [],
     clues: [],
+    grids: [],
     width: 15,
     height: 15,
     blanks: [],
@@ -400,8 +410,14 @@ export default {
     },
   },
 
-  mounted () {
+  async mounted () {
     this.letters = this.letterCells
+
+    const response = await fetch('https://crossword.live/crossword/grids')
+
+    if (response && response.success) {
+      this.grids = response.data.grids
+    }
   },
 
   methods: {
@@ -664,16 +680,18 @@ export default {
       )
     },
 
-    loadCrossword (id) {
-      this.$http.get(`item/${id}`)
-        .then((response) => {
-          const { words, blanks, width, height } = response.data
+    async loadCrossword (id) {
+      const response = await fetch(`https://crossword.live/crossword/${id}`)
+        .catch(console.log)
 
-          this.filledWords = JSON.parse(words)
-          this.blanks = JSON.parse(blanks)
-          this.height = height
-          this.width = width
-        })
+      if (response && response.success) {
+        const { words, blanks, width, height } = response.data
+
+        this.filledWords = JSON.parse(words)
+        this.blanks = JSON.parse(blanks)
+        this.height = height
+        this.width = width
+      }
     },
 
     async saveGrid () {
@@ -704,8 +722,13 @@ export default {
       }
     },
 
-    loadGrid (blanks) {
-      this.blanks = blanks
+    async loadGrid (id) {
+      const response = await fetch(`https://crossword.live/crossword/grids/${id}`)
+        .catch(console.log)
+
+      if (response && response.success) {
+        this.blanks = response.data.blanks
+      }
     },
 
     lettersUpdate ({ letters }) {
