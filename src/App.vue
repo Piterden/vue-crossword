@@ -42,7 +42,6 @@ btn-border-color = #CE93D8
     text-align left
 
     li
-      display inline-block
       margin-right 20px
 
   .red
@@ -265,7 +264,8 @@ btn-border-color = #CE93D8
       display block
 
     > div
-      display block
+      display flex
+      flex-direction column
 
   .log
     pre
@@ -356,6 +356,23 @@ btn-border-color = #CE93D8
     overflow-y auto
     overflow-x hidden
     height 96vh
+
+  .grid-list
+    .grid-preview
+      margin-bottom 10px
+
+      .col
+        float left
+        margin 0
+
+      .cell
+        margin 0 0 -1px -1px
+        width 10px
+        height 10px
+        border 1px solid
+
+        &.blank
+          background #000
 
 @media screen and (max-width: 767px)
   #crossword

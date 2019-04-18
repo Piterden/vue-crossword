@@ -77,13 +77,12 @@
         </pre>
       </div>
       <div v-if="editGridMode" class="grid-list">
-        <ul>
-          <li v-for="grid in grids">
-            ID {{ grid.id }}
-            name {{ grid.name }}
-            blanks {{ grid.blanks }}
-          </li>
-        </ul>
+        <grid-preview
+          v-for="grid in grids"
+          :key="grid.id"
+          :grid="grid"
+          @loadgrid="loadGrid"
+        />
       </div>
     </div>
 
@@ -135,11 +134,12 @@
 
 import BuilderGrid from './BuilderGrid'
 import BuilderForm from './BuilderForm'
+import GridPreview from './GridPreview'
 
 export default {
   name: 'BuilderPage',
 
-  components: { BuilderForm, BuilderGrid },
+  components: { BuilderForm, BuilderGrid, GridPreview },
 
   data: () => ({
     log: [],
@@ -414,9 +414,10 @@ export default {
     this.letters = this.letterCells
 
     const response = await fetch('https://crossword.live/crossword/grids')
+    const json = await response.json()
 
-    if (response && response.success) {
-      this.grids = response.data.grids
+    if (json && json.success) {
+      this.grids = json.data.grids
     }
   },
 
@@ -480,28 +481,6 @@ export default {
 
       this.loading = false
     },
-
-    // generateGrid () {
-    //   this.blanks = []
-    //   const halfWidth = this.width % 2
-    //     ? Math.floor(this.width / 2) + 1
-    //     : Math.floor(this.width / 2)
-    //   const halfHeight = this.height % 2
-    //     ? Math.floor(this.height / 2) + 1
-    //     : Math.floor(this.height / 2)
-
-    //   for (let x = 1; x <= halfWidth; x += 1) {
-    //     for (let y = 1; y <= halfHeight; y += 1) {
-    //       // eslint-disable-next-line no-magic-numbers
-    //       if (Math.floor(Math.random() * 1.5)) {
-    //         this.blanks.push(`${x}:${y}`)
-    //         this.blanks.push(`${this.width - x + 1}:${y}`)
-    //         this.blanks.push(`${x}:${this.height - y + 1}`)
-    //         this.blanks.push(`${this.width - x + 1}:${this.height - y + 1}`)
-    //       }
-    //     }
-    //   }
-    // },
 
     generateGrid () {
       this.blanks = []
@@ -722,12 +701,11 @@ export default {
       }
     },
 
-    async loadGrid (id) {
-      const response = await fetch(`https://crossword.live/crossword/grids/${id}`)
-        .catch(console.log)
+    loadGrid (id) {
+      const grid = this.grids.find((grid) => grid.id === id)
 
-      if (response && response.success) {
-        this.blanks = response.data.blanks
+      if (grid && grid.blanks) {
+        this.blanks = JSON.parse(grid.blanks)
       }
     },
 
