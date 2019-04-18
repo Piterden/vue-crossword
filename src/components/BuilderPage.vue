@@ -99,6 +99,7 @@
       :focused-cell="focusedCell"
       :change-size-mode="editGridMode"
       :two-letter-words="twoLetterWords"
+      :three-letter-words="threeLetterWords"
       :suggestion-counts="suggestionCounts"
       @input="inputLetter"
       @rebuild="rebuildGrid"
@@ -124,6 +125,7 @@
       :hovered-word="hoveredWord"
       :edit-grid-mode="editGridMode"
       :two-letter-words="twoLetterWords"
+      :three-letter-words="threeLetterWords"
       :suggestion-counts="suggestionCounts"
       @updateblanks="blanksUpdate"
     />
@@ -319,6 +321,17 @@ export default {
 
     twoLetterWords () {
       return this.words.filter(({ length }) => length === 2)
+        .flatMap(({ x, y, length, type }) => this.$root.getWordCells({
+          x,
+          y,
+          isVertical: type === 'vertical',
+          word: { length },
+        }))
+    },
+
+    threeLetterWords () {
+      // eslint-disable-next-line no-magic-numbers
+      return this.words.filter(({ length }) => length === 3)
         .flatMap(({ x, y, length, type }) => this.$root.getWordCells({
           x,
           y,

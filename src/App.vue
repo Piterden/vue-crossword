@@ -44,6 +44,9 @@ btn-border-color = #CE93D8
     li
       margin-right 20px
 
+  .yellow
+    background #F9A825
+
   .red
     background red
     color white
@@ -216,7 +219,7 @@ btn-border-color = #CE93D8
     position relative
     cursor pointer
     width 40px
-    height 40px
+    height 35px
 
     &.hovered > input
       background bg-accent-color
@@ -229,13 +232,16 @@ btn-border-color = #CE93D8
       width 100%
       text-align center
       font-size 1.25em
+      background transparent
+      border 1px solid #000
 
     .word-start
       position absolute
-      top 1px
-      right 2px
-      font-size 10px
-      color blue
+      top 2px
+      right 3px
+      font-size 0.75em
+      font-weight bold
+      color #1fb1f3
 
   .builder-page
     display flex
@@ -276,10 +282,10 @@ btn-border-color = #CE93D8
 
     .cell
       display inline-flex
-      margin -2px -1px
+      margin -2px -1px -2px 0px
       padding 0
-      width 30px
-      heigth 2
+      width 32px
+      height 38px
 
       &.filled > div > input
         background bg-filled-color
@@ -305,7 +311,7 @@ btn-border-color = #CE93D8
 
   .cell.blank > div input
     background #000
-    border none
+    border 1px solid transparent
 
   input[type=range]
     -webkit-appearance none

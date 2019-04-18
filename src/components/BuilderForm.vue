@@ -117,6 +117,7 @@ export default {
     suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
     twoLetterWords: { type: Array, default: () => [] },
+    threeLetterWords: { type: Array, default: () => [] },
     changeSizeMode: { type: Boolean, default: () => false },
     // eslint-disable-next-line no-magic-numbers
     blankProbability: { type: Number, default: () => 4 },

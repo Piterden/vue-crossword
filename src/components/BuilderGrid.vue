@@ -17,6 +17,7 @@
               :class="{
                 hovered: hoveredCells.includes(`${cellIdx + 1}:${rowIdx + 1}`),
                 red: twoLetterWords.includes(`${cellIdx + 1}:${rowIdx + 1}`),
+                yellow: threeLetterWords.includes(`${cellIdx + 1}:${rowIdx + 1}`),
               }"
               :value="letters[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
@@ -405,11 +406,11 @@ export default {
     },
 
     getCellStyle (row, col) {
-      return {
-        background: this.getCellWeigth(row, col)
-          .toString(16) // eslint-disable-line no-magic-numbers
-          .padStart(6, 'ffffff'), // eslint-disable-line no-magic-numbers
-      }
+      // return {
+      //   background: this.getCellWeigth(row, col)
+      //     .toString(16) // eslint-disable-line no-magic-numbers
+      //     .padStart(6, 'ffffff'), // eslint-disable-line no-magic-numbers
+      // }
     },
 
     getCellWeigth (x, y) {
