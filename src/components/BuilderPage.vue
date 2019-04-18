@@ -102,6 +102,7 @@
       :suggestion-counts="suggestionCounts"
       @input="inputLetter"
       @rebuild="rebuildGrid"
+      @changesize="changeSize"
       @focus-cell="focusCell"
       @paste-word="pasteWord"
       @paste-clue="pasteClue"
@@ -517,6 +518,15 @@ export default {
     rebuildGrid ({ width, height }) {
       this.width = width
       this.height = height
+    },
+
+    changeSize ({ width, height }) {
+      if (width && this.width !== width) {
+        this.width = width
+      }
+      if (height && this.height !== height) {
+        this.height = height
+      }
     },
 
     blanksUpdate (id) {

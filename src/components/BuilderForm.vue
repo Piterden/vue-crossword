@@ -1,19 +1,19 @@
 <template>
   <div class="builder-form page-inner">
     <div v-show="changeSizeMode" class="controls">
-      <span>Grid Width: <input v-model="size.width" type="number" /></span>
+      <span>Grid Width: <input v-model="width" type="number" /></span>
       <input
         ref="sizeWidth"
-        v-model="size.width"
+        v-model="width"
         type="range"
         size="4"
         min="2"
         max="40"
       />
-      <span>Grid Height: <input v-model="size.height" type="number" /></span>
+      <span>Grid Height: <input v-model="height" type="number" /></span>
       <input
         ref="sizeHeight"
-        v-model="size.height"
+        v-model="height"
         type="range"
         size="4"
         min="2"
@@ -142,20 +142,31 @@ export default {
   },
 
   watch: {
+    width (value) {
+      this.$emit('changesize', { width: value })
+    },
+
+    height (value) {
+      this.$emit('changesize', { height: value })
+    },
+
     density (value) {
       this.$emit('density', {
         density: Number(value),
       })
     },
 
-    size (value) {
-      this.width = value.width
-      this.height = value.height
+    size: {
+      handler ({ width, height }) {
+        this.width = width
+        this.height = height
 
-      this.$emit('rebuild', {
-        width: Number(this.width),
-        height: Number(this.height),
-      })
+        this.$emit('rebuild', {
+          width: Number(this.width),
+          height: Number(this.height),
+        })
+      },
+      deep: true,
     },
   },
 }
