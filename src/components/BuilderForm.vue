@@ -1,19 +1,19 @@
 <template>
   <div class="builder-form page-inner">
     <div v-show="changeSizeMode" class="controls">
-      <span>Grid Width: <input v-model="width" type="number" /></span>
+      <span>Grid Width: <input v-model="size.width" type="number" /></span>
       <input
         ref="sizeWidth"
-        v-model="width"
+        v-model="size.width"
         type="range"
         size="4"
         min="2"
         max="40"
       />
-      <span>Grid Height: <input v-model="height" type="number" /></span>
+      <span>Grid Height: <input v-model="size.height" type="number" /></span>
       <input
         ref="sizeHeight"
-        v-model="height"
+        v-model="size.height"
         type="range"
         size="4"
         min="2"
@@ -107,13 +107,12 @@ export default {
 
   props: {
     max: MAX_GRID_SIZE,
+    size: { type: Object, default: () => [1, 1] },
     words: { type: Array, default: () => [] },
     clues: { type: Array, default: () => [] },
     letters: { type: Object, default: () => ({}) },
     loading: { type: Boolean, default: () => false },
-    initWidth: { type: Number, default: () => 1 },
     nextQuery: { type: String, default: () => '' },
-    initHeight: { type: Number, default: () => 1 },
     filledWords: { type: Array, default: () => [] },
     suggestions: { type: Array, default: () => [] },
     focusedCell: { type: String, default: () => '0:0' },
@@ -126,8 +125,8 @@ export default {
 
   data () {
     return {
-      width: this.initWidth,
-      height: this.initHeight,
+      width: this.size.width,
+      height: this.size.height,
       density: this.blankProbability,
     }
   },
@@ -143,23 +142,19 @@ export default {
   },
 
   watch: {
-    width (value) {
-      this.$emit('rebuild', {
-        width: Number(value),
-        height: Number(this.height),
-      })
-    },
-
-    height (value) {
-      this.$emit('rebuild', {
-        width: Number(this.width),
-        height: Number(value),
-      })
-    },
-
     density (value) {
       this.$emit('density', {
         density: Number(value),
+      })
+    },
+
+    size (value) {
+      this.width = value.width
+      this.height = value.height
+
+      this.$emit('rebuild', {
+        width: Number(this.width),
+        height: Number(this.height),
       })
     },
   },

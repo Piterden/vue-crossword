@@ -87,11 +87,11 @@
     </div>
 
     <builder-form
+      :size="{ width, height }"
       :clues="clues"
       :words="words"
       :letters="letters"
       :loading="loading"
-      :init-width="width"
       :init-height="height"
       :next-query="nextQuery"
       :suggestions="suggestions"
@@ -410,18 +410,21 @@ export default {
     },
   },
 
-  async mounted () {
+  mounted () {
     this.letters = this.letterCells
-
-    const response = await fetch('https://crossword.live/crossword/grids')
-    const json = await response.json()
-
-    if (json && json.success) {
-      this.grids = json.data.grids
-    }
+    this.updateGrids()
   },
 
   methods: {
+    async updateGrids () {
+      const response = await fetch('https://crossword.live/crossword/grids')
+      const json = await response.json()
+
+      if (json && json.success) {
+        this.grids = json.data.grids
+      }
+    },
+
     verticalSymetria (e) {
       this.verticalSym = !this.verticalSym
     },
@@ -653,7 +656,7 @@ export default {
             words: JSON.stringify(this.filledWords),
             blanks: JSON.stringify(this.blanks),
             width: this.width,
-            heigth: this.heigth,
+            height: this.height,
           },
         }
       )
@@ -696,15 +699,21 @@ export default {
           console.log(error)
         })
 
-      if (response.success) {
-        this.loadGrid(response.data.data)
+      const json = await response.json()
+
+      if (json && json.success) {
+        this.loadGrid(json.data.grid)
       }
     },
 
-    loadGrid (id) {
-      const grid = this.grids.find((grid) => grid.id === id)
-
+    loadGrid ({ grid, width, height }) {
       if (grid && grid.blanks) {
+        if (width && this.width !== width) {
+          this.width = width
+        }
+        if (height && this.height !== height) {
+          this.height = height
+        }
         this.blanks = JSON.parse(grid.blanks)
       }
     },

@@ -1,5 +1,5 @@
 <template>
-  <div @click="$emit('loadgrid', grid.id)" class="grid-preview">
+  <div @click="$emit('loadgrid', { grid, width, height })" class="grid-preview">
     <div v-for="(col, colIdx) in cols" :key="colIdx" class="col">
       <div
         v-for="(row, rowIdx) in rows"
