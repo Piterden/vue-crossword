@@ -1,10 +1,10 @@
 <template>
-  <div @click="$emit('loadgrid', { grid, width, height })" class="grid-preview">
+  <div @click="$emit('loadgrid', { grid })" class="grid-preview">
     <div v-for="(col, colIdx) in cols" :key="colIdx" class="col">
       <div
         v-for="(row, rowIdx) in rows"
         :key="rowIdx"
-        :class="{ blank: JSON.parse(grid.blanks).includes(`${col}:${row}`) }"
+        :class="{ blank: blanks.includes(`${col}:${row}`) }"
         class="cell"
       ></div>
     </div>
@@ -20,8 +20,12 @@ export default {
   },
 
   computed: {
+    blanks () {
+      return JSON.parse(this.grid.blanks)
+    },
+
     width () {
-      return Math.max(...this.grid.blanks.match(/\d+(?=:)/g))
+      return this.grid.width
     },
 
     cols () {
@@ -29,7 +33,7 @@ export default {
     },
 
     height () {
-      return Math.max(...this.grid.blanks.match(/(?<=:)\d+/g))
+      return this.grid.height
     },
 
     rows () {

@@ -689,6 +689,8 @@ export default {
     async saveGrid () {
       const params = {
         name: 'Test',
+        width: this.width,
+        height: this.height,
         blanks: JSON.stringify(this.blanks.sort()),
       }
 
@@ -717,13 +719,13 @@ export default {
       }
     },
 
-    loadGrid ({ grid, width, height }) {
+    loadGrid (grid) {
       if (grid && grid.blanks) {
-        if (width && this.width !== width) {
-          this.width = width
+        if (grid.width && this.width !== grid.width) {
+          this.width = grid.width
         }
-        if (height && this.height !== height) {
-          this.height = height
+        if (grid.height && this.height !== grid.height) {
+          this.height = grid.height
         }
         this.blanks = JSON.parse(grid.blanks)
       }
