@@ -76,14 +76,20 @@
           {{ log }}
         </pre>
       </div>
-      <div v-if="editGridMode" class="grid-list">
-        <grid-preview
-          v-for="grid in grids"
-          :key="grid.id"
-          :grid="grid"
-          @loadgrid="loadGrid"
-        />
-      </div>
+      <transition name="slide-left">
+        <div
+          v-if="editGridMode"
+          class="grid-list"
+          transition="slide-left"
+        >
+          <grid-preview
+            v-for="grid in grids"
+            :key="grid.id"
+            :grid="grid"
+            @loadgrid="loadGrid"
+          />
+        </div>
+      </transition>
     </div>
 
     <builder-form
@@ -114,21 +120,23 @@
       @letters-update="lettersUpdate"
     />
 
-    <builder-grid
-      :words="words"
-      :blanks="blanks"
-      :letters="letters"
-      :grid-width="width"
-      :grid-height="height"
-      :filled-words="filledWords"
-      :focused-cell="focusedCell"
-      :hovered-word="hoveredWord"
-      :edit-grid-mode="editGridMode"
-      :two-letter-words="twoLetterWords"
-      :three-letter-words="threeLetterWords"
-      :suggestion-counts="suggestionCounts"
-      @updateblanks="blanksUpdate"
-    />
+    <transition name="slide-right">
+      <builder-grid
+        :words="words"
+        :blanks="blanks"
+        :letters="letters"
+        :grid-width="width"
+        :grid-height="height"
+        :filled-words="filledWords"
+        :focused-cell="focusedCell"
+        :hovered-word="hoveredWord"
+        :edit-grid-mode="editGridMode"
+        :two-letter-words="twoLetterWords"
+        :three-letter-words="threeLetterWords"
+        :suggestion-counts="suggestionCounts"
+        @updateblanks="blanksUpdate"
+      />
+    </transition>
   </div>
 </template>
 

@@ -1,96 +1,102 @@
 <template>
   <div class="builder-form page-inner">
-    <div v-show="changeSizeMode" class="controls">
-      <span>Grid Width: <input v-model="width" type="number" /></span>
-      <input
-        ref="sizeWidth"
-        v-model="width"
-        type="range"
-        size="4"
-        min="2"
-        max="40"
-      />
-      <span>Grid Height: <input v-model="height" type="number" /></span>
-      <input
-        ref="sizeHeight"
-        v-model="height"
-        type="range"
-        size="4"
-        min="2"
-        max="40"
-      />
-      <span>Density: 1 / <input v-model="density" type="number" /></span>
-      <input
-        ref="sizeHeight"
-        v-model="density"
-        type="range"
-        size="4"
-        min="4"
-        max="40"
-      />
-    </div>
-
-    <div v-show="!changeSizeMode" class="forms-list-wrapper horizontal">
-      <label>Horizontal questions:</label>
-      <div class="forms-list">
-        <word-form
-          v-for="(word, index) in horizontalWords"
-          :key="`h${index}`"
-          :x="word.x"
-          :y="word.y"
-          :clues="clues"
-          :letters="letters"
-          :loading="loading"
-          :index="word.index"
-          :length="word.length"
-          :is-vertical="false"
-          :next-query="nextQuery"
-          :suggestions="suggestions"
-          :filled-words="filledWords"
-          :focused-cell="focusedCell"
-          :suggestion-counts="suggestionCounts"
-          @input="(payload) => $emit('input', payload)"
-          @focus-cell="(x, y) => $emit('focus-cell', x, y)"
-          @paste-clue="(payload) => $emit('paste-clue', payload)"
-          @paste-word="(payload) => $emit('paste-word', payload)"
-          @form-leaved="(payload) => $emit('form-leaved', payload)"
-          @remove-word="(payload) => $emit('remove-word', payload)"
-          @form-hovered="(payload) => $emit('form-hovered', payload)"
-          @letters-update="(payload) => $emit('letters-update', payload)"
+    <transition name="slide-right" mode="in-out">
+      <div v-show="changeSizeMode" class="controls">
+        <span>Grid Width: <input v-model="width" type="number" /></span>
+        <input
+          ref="sizeWidth"
+          v-model="width"
+          type="range"
+          size="4"
+          min="2"
+          max="40"
+        />
+        <span>Grid Height: <input v-model="height" type="number" /></span>
+        <input
+          ref="sizeHeight"
+          v-model="height"
+          type="range"
+          size="4"
+          min="2"
+          max="40"
+        />
+        <span>Density: 1 / <input v-model="density" type="number" /></span>
+        <input
+          ref="sizeHeight"
+          v-model="density"
+          type="range"
+          size="4"
+          min="4"
+          max="40"
         />
       </div>
-    </div>
+    </transition>
 
-    <div v-show="!changeSizeMode" class="forms-list-wrapper vertical">
-      <label>Vertical questions:</label>
-      <div class="forms-list">
-        <word-form
-          v-for="(word, index) in verticalWords"
-          :key="`v${index}`"
-          :x="word.x"
-          :y="word.y"
-          :clues="clues"
-          :letters="letters"
-          :loading="loading"
-          :length="word.length"
-          :index="word.index"
-          :is-vertical="true"
-          :next-query="nextQuery"
-          :suggestions="suggestions"
-          :filled-words="filledWords"
-          :focused-cell="focusedCell"
-          :suggestion-counts="suggestionCounts"
-          @input="(payload) => $emit('input', payload)"
-          @focus-cell="(x, y) => $emit('focus-cell', x, y)"
-          @paste-clue="(payload) => $emit('paste-clue', payload)"
-          @paste-word="(payload) => $emit('paste-word', payload)"
-          @form-leaved="(payload) => $emit('form-leaved', payload)"
-          @remove-word="(payload) => $emit('remove-word', payload)"
-          @form-hovered="(payload) => $emit('form-hovered', payload)"
-          @letters-update="(payload) => $emit('letters-update', payload)"
-        />
+    <transition name="slide-right" mode="out-in">
+      <div v-show="!changeSizeMode" class="forms-list-wrapper horizontal">
+        <label>Horizontal questions:</label>
+        <div class="forms-list">
+          <word-form
+            v-for="(word, index) in horizontalWords"
+            :key="`h${index}`"
+            :x="word.x"
+            :y="word.y"
+            :clues="clues"
+            :letters="letters"
+            :loading="loading"
+            :index="word.index"
+            :length="word.length"
+            :is-vertical="false"
+            :next-query="nextQuery"
+            :suggestions="suggestions"
+            :filled-words="filledWords"
+            :focused-cell="focusedCell"
+            :suggestion-counts="suggestionCounts"
+            @input="(payload) => $emit('input', payload)"
+            @focus-cell="(x, y) => $emit('focus-cell', x, y)"
+            @paste-clue="(payload) => $emit('paste-clue', payload)"
+            @paste-word="(payload) => $emit('paste-word', payload)"
+            @form-leaved="(payload) => $emit('form-leaved', payload)"
+            @remove-word="(payload) => $emit('remove-word', payload)"
+            @form-hovered="(payload) => $emit('form-hovered', payload)"
+            @letters-update="(payload) => $emit('letters-update', payload)"
+          />
+        </div>
       </div>
-    </div>
+    </transition>
+
+    <transition name="slide-left" mode="out-in">
+      <div v-show="!changeSizeMode" class="forms-list-wrapper vertical">
+        <label>Vertical questions:</label>
+        <div class="forms-list">
+          <word-form
+            v-for="(word, index) in verticalWords"
+            :key="`v${index}`"
+            :x="word.x"
+            :y="word.y"
+            :clues="clues"
+            :letters="letters"
+            :loading="loading"
+            :length="word.length"
+            :index="word.index"
+            :is-vertical="true"
+            :next-query="nextQuery"
+            :suggestions="suggestions"
+            :filled-words="filledWords"
+            :focused-cell="focusedCell"
+            :suggestion-counts="suggestionCounts"
+            @input="(payload) => $emit('input', payload)"
+            @focus-cell="(x, y) => $emit('focus-cell', x, y)"
+            @paste-clue="(payload) => $emit('paste-clue', payload)"
+            @paste-word="(payload) => $emit('paste-word', payload)"
+            @form-leaved="(payload) => $emit('form-leaved', payload)"
+            @remove-word="(payload) => $emit('remove-word', payload)"
+            @form-hovered="(payload) => $emit('form-hovered', payload)"
+            @letters-update="(payload) => $emit('letters-update', payload)"
+          />
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 

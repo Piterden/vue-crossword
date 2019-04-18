@@ -33,7 +33,7 @@ export default {
     },
 
     cols () {
-      return Array.from({ length: this.height }).map((item, idx) => idx + 1)
+      return Array.from({ length: this.width }).map((item, idx) => idx + 1)
     },
 
     height () {
@@ -41,7 +41,7 @@ export default {
     },
 
     rows () {
-      return Array.from({ length: this.width }).map((item, idx) => idx + 1)
+      return Array.from({ length: this.height }).map((item, idx) => idx + 1)
     },
   },
 }

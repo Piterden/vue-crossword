@@ -273,6 +273,17 @@ btn-border-color = #CE93D8
       display flex
       flex-direction column
 
+      &.grid-list
+        position absolute
+        right 30px
+        top 30px
+        height 90%
+        overflow-y auto
+        background #fff
+        flex-wrap wrap
+        flex-direction row
+        width 33%
+
   .log
     pre
       text-align left
@@ -366,6 +377,7 @@ btn-border-color = #CE93D8
   .grid-list
     .grid-preview
       margin-bottom 10px
+      margin-right 10px
 
       .col
         float left
@@ -388,7 +400,20 @@ btn-border-color = #CE93D8
       .page-inner
         width 100%
 
-
       .builder-grid
         margin 0 auto
+
+.slide-left-enter-active
+.slide-left-leave-active
+.slide-right-enter-active
+.slide-right-leave-active
+  transition transform .5s linear
+
+.slide-left-enter
+.slide-left-leave-to
+  transform translate3d(100%, 0, 0)
+
+.slide-right-enter
+.slide-right-leave-to
+  transform translate3d(-100%, 0, 0)
 </style>
