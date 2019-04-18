@@ -713,6 +713,7 @@ export default {
 
       if (json && json.success) {
         this.loadGrid(json.data.grid)
+        this.updateGrids()
       }
     },
 

@@ -21,19 +21,19 @@ export default {
 
   computed: {
     width () {
-      return Math.max(...this.grid.blanks.match(/(?<=:)\d+/g))
-    },
-
-    cols () {
-      return Array.from({ length: this.width }).map((item, idx) => idx + 1)
-    },
-
-    height () {
       return Math.max(...this.grid.blanks.match(/\d+(?=:)/g))
     },
 
-    rows () {
+    cols () {
       return Array.from({ length: this.height }).map((item, idx) => idx + 1)
+    },
+
+    height () {
+      return Math.max(...this.grid.blanks.match(/(?<=:)\d+/g))
+    },
+
+    rows () {
+      return Array.from({ length: this.width }).map((item, idx) => idx + 1)
     },
   },
 }
