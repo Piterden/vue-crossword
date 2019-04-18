@@ -279,10 +279,30 @@ btn-border-color = #CE93D8
         top 30px
         height 90%
         overflow-y auto
-        background #fff
+        background-color white
         flex-wrap wrap
         flex-direction row
         width 33%
+        justify-content space-around
+        align-content flex-start
+        align-items center
+
+        .grid-preview
+          margin-bottom 10px
+          margin-right 10px
+
+          .col
+            float left
+            margin 0
+
+          .cell
+            margin 0 0 -1px -1px
+            width 10px
+            height 10px
+            border 1px solid
+
+            &.blank
+              background #000
 
   .log
     pre
@@ -373,24 +393,6 @@ btn-border-color = #CE93D8
     overflow-y auto
     overflow-x hidden
     height 96vh
-
-  .grid-list
-    .grid-preview
-      margin-bottom 10px
-      margin-right 10px
-
-      .col
-        float left
-        margin 0
-
-      .cell
-        margin 0 0 -1px -1px
-        width 10px
-        height 10px
-        border 1px solid
-
-        &.blank
-          background #000
 
 @media screen and (max-width: 767px)
   #crossword
