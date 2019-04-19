@@ -246,6 +246,8 @@ btn-border-color = #CE93D8
   .builder-page
     display flex
     flex-direction row
+    width 70%
+    flex-wrap wrap-reverse
 
   .btn
     height 50px
@@ -326,7 +328,8 @@ btn-border-color = #CE93D8
         background #FFEB3B
 
   .page-inner
-    margin-right 30px
+    margin-right 20px
+    margin-bottom 20px
 
   .button
     display flex
