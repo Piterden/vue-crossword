@@ -99,6 +99,7 @@
       :letters="letters"
       :loading="loading"
       :init-height="height"
+      :grid-name="gridName"
       :next-query="nextQuery"
       :suggestions="suggestions"
       :filled-words="filledWords"
@@ -110,6 +111,7 @@
       @input="inputLetter"
       @rebuild="rebuildGrid"
       @changesize="changeSize"
+      @changename="changeName"
       @focus-cell="focusCell"
       @paste-word="pasteWord"
       @paste-clue="pasteClue"
@@ -125,6 +127,7 @@
         :words="words"
         :blanks="blanks"
         :letters="letters"
+        :grid-name="gridName"
         :grid-width="width"
         :grid-height="height"
         :filled-words="filledWords"
@@ -161,12 +164,13 @@ export default {
     blanks: [],
     letters: {},
     loading: false,
+    gridName: '',
     filledWords: [],
     suggestions: [],
     crosswordId: null,
     focusedCell: '0:0',
     hoveredWord: '0:0:0',
-    editGridMode: false,
+    editGridMode: true,
     // eslint-disable-next-line no-magic-numbers
     blankProbability: 1 / 3,
     suggestionCounts: [],
@@ -438,6 +442,10 @@ export default {
   },
 
   methods: {
+    changeName ({ name }) {
+      this.gridName = name
+    },
+
     async updateGrids () {
       const response = await fetch('https://crossword.live/crossword/grids')
       const json = await response.json()
@@ -710,6 +718,7 @@ export default {
     async saveGrid () {
       const params = {
         name: 'Test',
+        description: this.statsView,
         width: this.width,
         height: this.height,
         blanks: JSON.stringify(this.blanks.sort()),

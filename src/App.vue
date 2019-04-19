@@ -288,11 +288,11 @@ btn-border-color = #CE93D8
         align-items center
 
         .grid-preview
-          margin-bottom 10px
-          margin-right 10px
+          margin 0 5px 10px 5px
+          display grid
+          cursor pointer
 
           .col
-            float left
             margin 0
 
           .cell

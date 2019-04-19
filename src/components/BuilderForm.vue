@@ -2,7 +2,25 @@
   <div class="builder-form page-inner">
     <transition name="slide-right" mode="in-out">
       <div v-show="changeSizeMode" class="controls">
-        <span>Grid Width: <input v-model="width" type="number" /></span>
+        <div class="grid-name-field">
+          Grid Name:
+          <input
+            v-model="name"
+            type="text"
+            maxlength="40"
+          />
+        </div>
+
+        <span>
+          Grid Width:
+          <input
+            v-model="width"
+            type="number"
+            maxlength="3"
+            min="2"
+            max="40"
+          />
+        </span>
         <input
           ref="sizeWidth"
           v-model="width"
@@ -11,7 +29,17 @@
           min="2"
           max="40"
         />
-        <span>Grid Height: <input v-model="height" type="number" /></span>
+
+        <span>
+          Grid Height:
+          <input
+            v-model="height"
+            type="number"
+            maxlength="3"
+            min="2"
+            max="40"
+          />
+        </span>
         <input
           ref="sizeHeight"
           v-model="height"
@@ -20,7 +48,17 @@
           min="2"
           max="40"
         />
-        <span>Density: 1 / <input v-model="density" type="number" /></span>
+
+        <span>
+          Density: 1 /
+          <input
+            v-model="density"
+            type="number"
+            maxlength="3"
+            min="4"
+            max="40"
+          />
+        </span>
         <input
           ref="sizeHeight"
           v-model="density"
@@ -112,12 +150,12 @@ export default {
   components: { WordForm },
 
   props: {
-    max: MAX_GRID_SIZE,
-    size: { type: Object, default: () => [1, 1] },
+    size: { type: Object, default: () => ({}) },
     words: { type: Array, default: () => [] },
     clues: { type: Array, default: () => [] },
     letters: { type: Object, default: () => ({}) },
     loading: { type: Boolean, default: () => false },
+    gridName: { type: String, default: () => '' },
     nextQuery: { type: String, default: () => '' },
     filledWords: { type: Array, default: () => [] },
     suggestions: { type: Array, default: () => [] },
@@ -132,6 +170,8 @@ export default {
 
   data () {
     return {
+      max: MAX_GRID_SIZE,
+      name: '',
       width: this.size.width,
       height: this.size.height,
       density: this.blankProbability,
@@ -149,6 +189,10 @@ export default {
   },
 
   watch: {
+    name (value) {
+      this.$emit('changename', { name: value })
+    },
+
     width (value) {
       this.$emit('changesize', { width: value })
     },
@@ -175,6 +219,17 @@ export default {
       },
       deep: true,
     },
+  },
+
+  async mounted () {
+    const response = await fetch(
+      'https://project-names.herokuapp.com/names',
+      {
+        mode: 'no-cors',
+      }
+    )
+
+    this.name = await response.text()
   },
 }
 </script>
