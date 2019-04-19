@@ -7,10 +7,10 @@
     }"
     class="grid-preview"
   >
-    <div v-for="(col, colIdx) in cols" :key="colIdx" class="col">
+    <div v-for="col in cols" :key="col" class="col">
       <div
-        v-for="(row, rowIdx) in rows"
-        :key="rowIdx"
+        v-for="row in rows"
+        :key="row"
         :class="{ blank: blanks.includes(`${col}:${row}`) }"
         class="cell"
       ></div>

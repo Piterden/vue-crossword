@@ -248,6 +248,7 @@ btn-border-color = #CE93D8
     flex-direction row
     width 70%
     flex-wrap wrap-reverse
+    align-items end
 
   .btn
     height 50px
@@ -387,6 +388,7 @@ btn-border-color = #CE93D8
 
   .controls
     width 300px
+    margin-left 50px
 
   .builder-grid.page-inner
     .cell.filled > div.hovered > input

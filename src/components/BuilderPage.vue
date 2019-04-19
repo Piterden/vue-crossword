@@ -6,7 +6,7 @@
         @click.prevent="changeSizeClick"
         class="btn"
       >
-        Edit Grid
+        {{ editGridMode ? 'Fill Words' : 'Edit Grid' }}
       </button>
       <button
         v-if="editGridMode"
