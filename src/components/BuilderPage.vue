@@ -716,8 +716,15 @@ export default {
     },
 
     async saveGrid () {
+      const name = await fetch(
+        'https://project-names.herokuapp.com/names',
+        {
+          mode: 'no-cors',
+          method: 'GET',
+        }
+      )
       const params = {
-        name: 'Test',
+        name,
         description: this.statsView,
         width: this.width,
         height: this.height,
