@@ -25,6 +25,7 @@ txt-clues-color = #0f3810
 btn-border-color = #CE93D8
 
 #crossword
+  min-width 970px
   font-family 'Roboto', Helvetica, Arial, sans-serif
   text-align left
   color #2c3e50
