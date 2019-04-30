@@ -11,7 +11,8 @@ Object.keys(baseWebpackConfig.entry).forEach(function (name) {
   baseWebpackConfig.entry[name] = ['./build/dev-client'].concat(baseWebpackConfig.entry[name])
 })
 
-module.exports = merge(baseWebpackConfig, {
+const output = merge(baseWebpackConfig, {
+  mode: 'development',
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap }),
   },
@@ -33,3 +34,7 @@ module.exports = merge(baseWebpackConfig, {
     new FriendlyErrorsPlugin(),
   ],
 })
+
+console.log(output.module.rules)
+
+module.exports = output
