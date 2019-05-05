@@ -42,19 +42,19 @@ export default {
   },
 
   methods: {
-    onMouseEnter (e) {
+    onMouseEnter () {
       this.$emit('cellmouseenter', { id: this.identifier })
     },
 
-    onMouseDown (e) {
+    onMouseDown () {
       this.$emit('cellmousedown', { id: this.identifier })
     },
 
-    onMouseUp (e) {
+    onMouseUp () {
       this.$emit('cellmouseup', { id: this.identifier })
     },
 
-    onClick (e) {
+    onClick () {
       this.$emit('cellclick', { id: this.identifier })
     },
 

@@ -106,7 +106,7 @@ export default {
       }
     },
 
-    onMouseUp ({ id }) {
+    onMouseUp () {
       if (!this.editGridMode) {
         return
       }
@@ -143,12 +143,13 @@ export default {
     },
 
     onKeyUp (e) {
-      e.target.value.match(/[A-Za-zА-Яа-я]/)
-        ? this.goNext(e.target)
-        : (e.currentTarget.value = '')
+      if (e.target.value.match(/[A-Za-zА-Яа-я]/)) {
+        return this.goNext(e.target)
+      }
+      e.currentTarget.value = ''
     },
 
-    onCellClick ({ id }) {
+    onCellClick () {
       // this.$emit('updateblanks', id)
     },
 
@@ -336,7 +337,7 @@ export default {
     getWordCells (word) {
       let increment = word.type === 'vertical' ? word.y : word.x
 
-      return Array.from({ length: word.length }).map((cell) => {
+      return Array.from({ length: word.length }).map(() => {
         const idx = word.type === 'vertical'
           ? `${word.x}:${increment}`
           : `${increment}:${word.y}`
@@ -394,9 +395,7 @@ export default {
       const classes = []
       const index = `${col + 1}:${row + 1}`
 
-      this.blanks.includes(index)
-        ? classes.push('blank')
-        : classes.push('letter')
+      classes.push(this.blanks.includes(index) ? 'blank' : 'letter')
 
       if (this.$root.getAllWordCells(this.filledWords).includes(index)) {
         classes.push('filled')
@@ -409,17 +408,9 @@ export default {
       return classes
     },
 
-    getCellStyle (row, col) {
-      // return {
-      //   background: this.getCellWeigth(row, col)
-      //     .toString(16) // eslint-disable-line no-magic-numbers
-      //     .padStart(6, 'ffffff'), // eslint-disable-line no-magic-numbers
-      // }
-    },
-
-    getCellWeigth (x, y) {
+    getCellWeigth () {
       return this.words.reduce((word) => Array.from({ length: word.length })
-        .map((letter) => word.type === 'vertical'))
+        .map(() => word.type === 'vertical'))
     },
 
     allStartCells (direction = null) {

@@ -286,21 +286,30 @@ export default {
 
     toggleModal (query) {
       if (this.answer.includes('')) {
-        this.suggestionsVisible
-          ? this.hideSuggestions()
-          : this.showSuggestions(query)
+        if (this.suggestionsVisible) {
+          this.hideSuggestions()
+        }
+        else {
+          this.showSuggestions(query)
+        }
       }
       else {
-        this.cluesVisible
-          ? this.hideClues()
-          : this.showClues(query)
+        if (this.cluesVisible) {
+          this.hideClues()
+        }
+        else {
+          this.showClues(query)
+        }
       }
     },
 
     showModal (query) {
-      this.answer.includes('')
-        ? this.showSuggestions(query)
-        : this.showClues()
+      if (this.answer.includes('')) {
+        this.showSuggestions(query)
+      }
+      else {
+        this.showClues()
+      }
     },
 
     showClues () {
@@ -319,14 +328,8 @@ export default {
       this.page += 1
     },
 
-    getWordText ({ id, length, ...letters }) {
-      return Object.values(letters)
-        .map((letter) => letter.replace(/<.+?>/g, ''))
-        .join('')
-    },
-
-    getWordHtml ({ id, length, ...letters }) {
-      return Object.values(letters).join('')
+    getWordHtml ({ word }) {
+      return word
     },
 
     pasteWord (word) {

@@ -455,11 +455,11 @@ export default {
       }
     },
 
-    verticalSymetria (e) {
+    verticalSymetria () {
       this.verticalSym = !this.verticalSym
     },
 
-    horizontalSymetria (e) {
+    horizontalSymetria () {
       this.horizontalSym = !this.horizontalSym
     },
 
@@ -476,10 +476,6 @@ export default {
       if (!this.editGridMode) {
         this.updateSuggestions()
       }
-    },
-
-    getWordText ({ id, length, ...letters }) {
-      return Object.values(letters).join('')
     },
 
     removeWord ({ x, y, isVertical, word }) {
@@ -623,7 +619,7 @@ export default {
       this.focusedCell = `${x}:${y}`
     },
 
-    pasteWord ({ word: { id, word }, x, y, isVertical }) {
+    pasteWord ({ word: { word }, x, y, isVertical }) {
       Array.from(word).forEach((letter, index) => {
         if (isVertical) {
           this.letters[`${x}:${y + index}`] = letter
@@ -644,7 +640,7 @@ export default {
         'clues/create',
         { crossword: 1, clue: clue.id }
       )
-        .then((response) => {
+        .then(() => {
           const index = this.filledWords.findIndex((item) => item.x === x &&
             item.y === y && item.isVertical === isVertical)
 

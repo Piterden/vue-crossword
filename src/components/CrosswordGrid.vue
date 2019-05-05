@@ -116,9 +116,10 @@ export default {
 
   methods: {
     onKeyUp (e) {
-      e.target.value.match(/[A-Za-zА-Яа-я]/)
-        ? this.goNext(e.target)
-        : e.currentTarget.value = ''
+      if (e.target.value.match(/[A-Za-zА-Яа-я]/)) {
+        return this.goNext(e.target)
+      }
+      e.currentTarget.value = ''
     },
 
     onCellClick ({ id }) {
@@ -361,12 +362,15 @@ export default {
       const classes = []
       const index = `${col + 1}:${row + 1}`
 
-      this.letterCells.includes(index)
-        ? classes.push('letter')
-        : classes.push('blank')
+      classes.push(this.letterCells.includes(index) ? 'letter': 'blank')
 
-      this.startCells.includes(index) && classes.push('start')
-      this.active.word.includes(index) && classes.push('active')
+      if (this.startCells.includes(index)) {
+        classes.push('start')
+      }
+
+      if (this.active.word.includes(index)) {
+        classes.push('active')
+      }
 
       return classes
     },
