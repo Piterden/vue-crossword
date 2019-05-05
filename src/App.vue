@@ -249,7 +249,7 @@ btn-border-color = #CE93D8
     flex-direction row
     width 70%
     flex-wrap wrap-reverse
-    align-items end
+    align-items flex-end
 
   .btn
     height 50px

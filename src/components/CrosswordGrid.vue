@@ -191,8 +191,12 @@ export default {
     activateWord (key) {
       let dir
 
-      if (this.isHorizontal(key)) dir = 'horizontal'
-      if (this.isVertical(key)) dir = 'vertical'
+      if (this.isHorizontal(key)) {
+        dir = 'horizontal'
+      }
+      if (this.isVertical(key)) {
+        dir = 'vertical'
+      }
 
       return this.updateData(key, dir)
     },

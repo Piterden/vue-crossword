@@ -1,8 +1,8 @@
 root: true
 parser: vue-eslint-parser
 extends:
-  - 'plugin:vue/recommended'
-  - 'standard'
+  - 'plugin:vue/essential'
+  - 'eslint:recommended'
 env:
   es6: true
   node: true

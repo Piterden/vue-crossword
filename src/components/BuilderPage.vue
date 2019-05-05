@@ -3,63 +3,63 @@
     <div class="toolbox">
       <button
         :class="{ editing: editGridMode }"
-        @click.prevent="changeSizeClick"
         class="btn"
+        @click.prevent="changeSizeClick"
       >
         {{ editGridMode ? 'Fill Words' : 'Edit Grid' }}
       </button>
       <button
         v-if="editGridMode"
-        @click.prevent="generateGrid"
         class="btn"
+        @click.prevent="generateGrid"
       >
         Generate Grid
       </button>
       <button
         v-if="editGridMode"
         :class="{ editing: horizontalSym }"
-        @click.prevent="horizontalSymetria"
         class="btn"
+        @click.prevent="horizontalSymetria"
       >
         Horizontal Symetria
       </button>
       <button
         v-if="editGridMode"
         :class="{ editing: verticalSym }"
-        @click.prevent="verticalSymetria"
         class="btn"
+        @click.prevent="verticalSymetria"
       >
         Vertical Symetria
       </button>
       <button
         v-if="editGridMode"
-        @click.prevent="clearGrid"
         class="btn"
+        @click.prevent="clearGrid"
       >
         Clear Grid
       </button>
       <button
-        @click.prevent="newCrossword"
         class="btn"
+        @click.prevent="newCrossword"
       >
         Create New Crossword
       </button>
       <button
-        @click.prevent="saveCrossword"
         class="btn"
+        @click.prevent="saveCrossword"
       >
         Save Crossword
       </button>
       <button
-        @click.prevent="saveGrid"
         class="btn"
+        @click.prevent="saveGrid"
       >
         Save Grid
       </button>
       <button
         v-if="!editGridMode"
-        @click.prevent="refreshSuggestions"
         class="btn"
+        @click.prevent="refreshSuggestions"
       >
         Refresh Suggestions
       </button>

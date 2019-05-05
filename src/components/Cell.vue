@@ -1,23 +1,23 @@
 <template>
   <div
+    class="cell-item"
     @mouseup="onMouseUp"
     @mousedown="onMouseDown"
     @mouseenter="onMouseEnter"
-    class="cell-item"
   >
     <sup class="word-start">
       {{ number }}
     </sup>
     <input
       v-model="value"
-      @click="onClick"
-      @focus="onFocus"
-      @input="onInput"
       type="text"
       size="1"
       minlength="1"
       maxlength="1"
       readonly
+      @click="onClick"
+      @focus="onFocus"
+      @input="onInput"
     />
   </div>
 </template>

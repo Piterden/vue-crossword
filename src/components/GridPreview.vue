@@ -1,11 +1,11 @@
 <template>
   <div
-    @click="$emit('loadgrid', grid)"
     :style="{
       minWidth: `${width * 10}px`,
       gridTemplateColumns: Array.from({ length: width }).fill('11px').join(' '),
     }"
     class="grid-preview"
+    @click="$emit('loadgrid', grid)"
   >
     <div v-for="col in cols" :key="col" class="col">
       <div

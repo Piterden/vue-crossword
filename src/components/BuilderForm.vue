@@ -142,7 +142,7 @@
 import WordForm from './WordForm'
 
 
-import { MAX_GRID_SIZE } from '../index'
+import { MAX_GRID_SIZE } from '../main'
 
 export default {
   name: 'BuilderForm',
