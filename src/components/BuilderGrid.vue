@@ -408,6 +408,14 @@ export default {
       return classes
     },
 
+    getCellStyle () {
+      // return {
+      //   background: this.getCellWeigth(row, col)
+      //     .toString(16) // eslint-disable-line no-magic-numbers
+      //     .padStart(6, 'ffffff'), // eslint-disable-line no-magic-numbers
+      // }
+    },
+
     getCellWeigth () {
       return this.words.reduce((word) => Array.from({ length: word.length })
         .map(() => word.type === 'vertical'))
