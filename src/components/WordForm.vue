@@ -271,7 +271,7 @@ export default {
   },
 
   watch: {
-    query (query) {
+    query () {
       this.answer = Object.values(this.ownLetters)
     },
   },
