@@ -1,7 +1,6 @@
 # Vue Crossword
 
-[![Build Status](https://travis-ci.com/Piterden/vue-crossword.svg?branch=master)](https://travis-ci.com/Piterden/vue-crossword)
-[![awesome-vue](https://img.shields.io/badge/Vue.js-AWESOME-ff69b4.svg)](//github.com/vuejs/awesome-vue)
+![Travis (.com) branch](https://img.shields.io/travis/com/Piterden/vue-crossword/master.svg?style=for-the-badge)[![awesome-vue](https://img.shields.io/static/v1.svg?label=Vue.JS&message=AWESOME&logo=vue.js&style=for-the-badge&color=ff69b4)](//github.com/vuejs/awesome-vue) [![GitHub stars](https://img.shields.io/github/stars/Piterden/vue-crossword.svg?style=for-the-badge)](https://github.com/Piterden/vue-crossword/stargazers) [![GitHub forks](https://img.shields.io/github/forks/Piterden/vue-crossword.svg?style=for-the-badge)](https://github.com/Piterden/vue-crossword/network) [![GitHub license](https://img.shields.io/github/license/Piterden/vue-crossword.svg?style=for-the-badge)](https://github.com/Piterden/vue-crossword/blob/master/LICENSE)
 
 A Vue.js based crossword puzzle builder and filler front-end application.
 
@@ -9,9 +8,7 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 
 ## Demo
 
-[**App in codesandbox.io**](https://codesandbox.io/s/github/simplehit/vue-crossword/tree/master/)
-
-[**Russian Words DB Demo**](https://rjyxpq63on.codesandbox.io/)
+[**DEMO** _Russian Words Database_](https://piterden.github.io/vue-crossword)
 
 ## Features and ToDo
 
@@ -22,6 +19,7 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 - [x] Words suggestions from API depending on length and filled letters.
 - [x] Clues suggestions for filled words from API.
 - [x] Add different types of symmetry to grid generation.
+- [x] Add analyzer and smart corrector for generated grids (to control words length).
 - [ ] User login (OAuth2).
 - [ ] Save built crosswords.
 - [ ] Add and save new words and clues.
@@ -29,7 +27,6 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 - [ ] Search in clues of suggested words.
 - [ ] Add taxonomy for clues.
 - [ ] Automatic generation of full filled crossword.
-- [ ] Add analyzer and smart corrector for generated grids (to control words length).
 - [ ] Improve the logic of API queries.
 - [ ] Make a print version.
 - [ ] Fix mobile version.
@@ -50,10 +47,13 @@ There are a few simple rules:
 npm i
 
 # serve with hot reload at localhost:8080
-npm run dev
+npm run serve
 
 # build for production with minification
 npm run build
+
+# lint project
+npm run lint
 ```
 
 ## Built With
@@ -74,3 +74,8 @@ PR's are appreciated.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](https://github.com/Piterden/vue-crossword/blob/master/LICENSE) file for details.
+
+## Donate
+
+![Keybase BTC](https://img.shields.io/keybase/btc/piterden.svg?style=for-the-badge)
+
