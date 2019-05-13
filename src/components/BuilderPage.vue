@@ -143,8 +143,10 @@
   </div>
 </template>
 
-<script>
+<script lang="es6">
 /* eslint-disable no-loop-func */
+import nouns from '../resources/nouns'
+import adjectives from '../resources/adjectives'
 
 import BuilderGrid from './BuilderGrid'
 import BuilderForm from './BuilderForm'
@@ -711,17 +713,23 @@ export default {
       }
     },
 
+    getRandomInt (max) {
+      return Math.floor(Math.random() * Math.floor(max))
+    },
+
+    generateName () {
+      // eslint-disable-next-line no-magic-numbers
+      const index = this.getRandomInt(10000)
+      const nounIndex = this.getRandomInt(nouns.length)
+      const adjectiveIndex = this.getRandomInt(adjectives.length)
+
+      // eslint-disable-next-line no-magic-numbers
+      return `${nouns[nounIndex]}-${adjectives[adjectiveIndex]}-${String(index).padStart(5, '0')}`
+    },
+
     async saveGrid () {
-      const nameResponse = await fetch(
-        'https://project-names.herokuapp.com/names',
-        {
-          mode: 'no-cors',
-          method: 'GET',
-        }
-      )
-      const name = await nameResponse.json()
       const params = {
-        name,
+        name: this.generateName(),
         description: this.statsView,
         width: this.width,
         height: this.height,
@@ -762,6 +770,7 @@ export default {
           this.height = grid.height
         }
         this.blanks = JSON.parse(grid.blanks)
+        this.gridName = grid.name
       }
     },
 
