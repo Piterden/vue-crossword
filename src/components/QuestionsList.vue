@@ -1,7 +1,5 @@
 <template>
-  <div class="questions-list">
-
-  </div>
+  <div class="questions-list"></div>
 </template>
 
 <script>

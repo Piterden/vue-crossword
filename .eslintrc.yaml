@@ -1,8 +1,8 @@
 root: true
 parser: vue-eslint-parser
 extends:
-  - 'plugin:vue/recommended'
-  - 'standard'
+  - 'plugin:vue/essential'
+  - 'eslint:recommended'
 env:
   es6: true
   node: true
@@ -136,7 +136,7 @@ rules:
         - b
   id-match:
     - error
-    - "^(([A-Za-z0-9]+){1,})|([A-Z][A-Z_0-9]+)$"
+    - "^(([A-Za-z0-9]+){2,})|([A-Z][A-Z_0-9]+)|x|y|a|b|i|e$"
     -
       properties: false
       onlyDeclarations: true
@@ -168,7 +168,6 @@ rules:
       maxEOF: 1
   one-var-declaration-per-line:
     - error
-    - always
   quote-props:
     - error
     - as-needed
@@ -187,9 +186,9 @@ rules:
   spaced-comment:
     - error
     - always
-  # arrow-body-style:
-  #   - error
-  #   - as-needed
+  arrow-body-style:
+    - error
+    - as-needed
   arrow-spacing:
     - error
   generator-star-spacing:
@@ -273,7 +272,3 @@ rules:
       svg: always
       math: always
   vue/no-v-html: off
-  vue/use-v-on-exact: off
-  vue/multiline-html-element-content-newline: off
-  vue/singleline-html-element-content-newline: off
-  vue/html-indent: off

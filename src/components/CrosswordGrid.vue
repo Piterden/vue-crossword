@@ -16,9 +16,8 @@
               v-model="answers[`${cellIdx + 1}:${rowIdx + 1}`]"
               :x="cellIdx + 1"
               :y="rowIdx + 1"
-              :id="`${cellIdx + 1}:${rowIdx + 1}`"
               :is-active="active.cell === `${cellIdx + 1}:${rowIdx + 1}`"
-              @keyup="onKeyUp"
+              @keyup.exact="onKeyUp"
               @keyup.left.up="onLeftPress"
               @cellclick="onCellClick"
               @cellinput="goNextCell"
@@ -32,6 +31,7 @@
 
 <script>
 import Cell from './Cell'
+
 
 export default {
   name: 'CrosswordGrid',
@@ -121,9 +121,10 @@ export default {
 
   methods: {
     onKeyUp (e) {
-      e.target.value.match(/[A-Za-zА-Яа-я]/)
-        ? this.goNext(e.target)
-        : e.currentTarget.value = ''
+      if (e.target.value.match(/[A-Za-zА-Яа-я]/)) {
+        return this.goNext(e.target)
+      }
+      e.currentTarget.value = ''
     },
 
     onCellClick ({ id }) {
@@ -196,8 +197,12 @@ export default {
     activateWord (key) {
       let dir
 
-      if (this.isHorizontal(key)) dir = 'horizontal'
-      if (this.isVertical(key)) dir = 'vertical'
+      if (this.isHorizontal(key)) {
+        dir = 'horizontal'
+      }
+      if (this.isVertical(key)) {
+        dir = 'vertical'
+      }
 
       return this.updateData(key, dir)
     },
@@ -257,35 +262,19 @@ export default {
     },
 
     isVertical (cell) {
-      return !this.allStartCells('horizontal').includes(
-        this.getHorizontalStartCell(cell)
-      ) && this.allStartCells('vertical').includes(
-        this.getVerticalStartCell(cell)
-      )
+      return !this.allStartCells('horizontal').includes(this.getHorizontalStartCell(cell)) && this.allStartCells('vertical').includes(this.getVerticalStartCell(cell))
     },
 
     isHorizontal (id) {
-      return !this.allStartCells('vertical').includes(
-        this.getVerticalStartCell(id)
-      ) && this.allStartCells('horizontal').includes(
-        this.getHorizontalStartCell(id)
-      )
+      return !this.allStartCells('vertical').includes(this.getVerticalStartCell(id)) && this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
     },
 
     isBoth (id) {
-      return this.allStartCells('vertical').includes(
-        this.getVerticalStartCell(id)
-      ) && this.allStartCells('horizontal').includes(
-        this.getHorizontalStartCell(id)
-      )
+      return this.allStartCells('vertical').includes(this.getVerticalStartCell(id)) && this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
     },
 
     isNeither (id) {
-      return !this.allStartCells('vertical').includes(
-        this.getVerticalStartCell(id)
-      ) && !this.allStartCells('horizontal').includes(
-        this.getHorizontalStartCell(id)
-      )
+      return !this.allStartCells('vertical').includes(this.getVerticalStartCell(id)) && !this.allStartCells('horizontal').includes(this.getHorizontalStartCell(id))
     },
 
     getWordStartCells (id) {
@@ -297,9 +286,7 @@ export default {
         ? id
         : this.getHorizontalStartCell(id)
 
-      return this.collectHorizontalWordCells(
-        this.getHorizontalQuestion(id)
-      )
+      return this.collectHorizontalWordCells(this.getHorizontalQuestion(id))
     },
 
     getVerticalWord (id) {
@@ -307,9 +294,7 @@ export default {
         ? id
         : this.getVerticalStartCell(id)
 
-      return this.collectVerticalWordCells(
-        this.getVerticalQuestion(id)
-      )
+      return this.collectVerticalWordCells(this.getVerticalQuestion(id))
     },
 
     getHorizontalStartCell (id) {
@@ -364,15 +349,11 @@ export default {
     },
 
     getVerticalQuestion (id) {
-      return this.questions.vertical.find(
-        question => this.exact(question, id)
-      )
+      return this.questions.vertical.find((question) => this.exact(question, id))
     },
 
     getHorizontalQuestion (id) {
-      return this.questions.horizontal.find(
-        question => this.exact(question, id)
-      )
+      return this.questions.horizontal.find((question) => this.exact(question, id))
     },
 
     exact (question, id) {
@@ -398,13 +379,13 @@ export default {
       const cells = []
 
       if (!direction || direction === 'horizontal') {
-        this.questions.horizontal.forEach(question => {
+        this.questions.horizontal.forEach((question) => {
           cells.push(`${question.x}:${question.y}`)
         })
       }
 
       if (!direction || direction === 'vertical') {
-        this.questions.vertical.forEach(question => {
+        this.questions.vertical.forEach((question) => {
           cells.push(`${question.x}:${question.y}`)
         })
       }
