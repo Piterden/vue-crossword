@@ -28,3 +28,13 @@ export default {
   },
 }
 </script>
+
+<style lang="stylus">
+ul
+  list-style none
+  text-align left
+
+  li
+    display inline-block
+    margin-right 20px
+</style>

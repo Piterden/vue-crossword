@@ -18,6 +18,7 @@ parserOptions:
 globals:
   BigInt: true
 rules:
+  no-unused-expressions: off
   require-yield:
     - off
   no-extra-parens:
@@ -78,8 +79,6 @@ rules:
   no-sequences:
     - error
   no-throw-literal:
-    - error
-  no-unused-expressions:
     - error
   no-useless-call:
     - error

@@ -21,10 +21,9 @@ export default {
   props: {
     x: { type: Number, required: true },
     y: { type: Number, required: true },
-    value: { type: String, default: () => '' },
-    number: { type: Number, default: () => 0 },
     isBlank: { type: Boolean, default: () => false },
     isActive: { type: Boolean, default: () => false },
+    number: { type: Number, default: () => 0 },
   },
 
   computed: {
@@ -34,18 +33,6 @@ export default {
   },
 
   methods: {
-    onMouseEnter () {
-      this.$emit('cellmouseenter', { id: this.identifier })
-    },
-
-    onMouseDown () {
-      this.$emit('cellmousedown', { id: this.identifier })
-    },
-
-    onMouseUp () {
-      this.$emit('cellmouseup', { id: this.identifier })
-    },
-
     onClick () {
       this.$emit('cellclick', { id: this.identifier })
     },
@@ -62,3 +49,23 @@ export default {
   },
 }
 </script>
+
+<style lang="stylus" scoped>
+div
+  display inline-flex
+  position relative
+  cursor pointer
+  width 40px
+  height 40px
+
+  input
+    cursor pointer
+    width 100%
+
+  .word-start
+    position absolute
+    top 1px
+    right 2px
+    font-size 10px
+    color blue
+</style>
