@@ -247,7 +247,6 @@ btn-border-color = #CE93D8
   .builder-page
     display flex
     flex-direction row
-    width 70%
     flex-wrap wrap-reverse
     align-items flex-end
 
@@ -328,6 +327,9 @@ btn-border-color = #CE93D8
 
       &.focused > div > input
         background #FFEB3B
+
+      &.error > div > input
+        background red
 
   .page-inner
     margin-right 20px

@@ -100,7 +100,7 @@
         <textarea
           v-if="word"
           ref="question"
-          v-model="question"
+          v-model="word.clue.name"
           :cols="cols"
           :rows="rows"
           type="text"

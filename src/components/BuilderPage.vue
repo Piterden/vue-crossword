@@ -63,6 +63,14 @@
       >
         Refresh Suggestions
       </button>
+      <button
+        v-if="!editGridMode"
+        :class="{ editing: autoFillMode }"
+        class="btn"
+        @click.prevent="toggleAutoFill"
+      >
+        Auto Fill
+      </button>
       <div class="statistics">
         <pre
           v-html="statsView.replace(
@@ -135,6 +143,7 @@
         :hovered-word="hoveredWord"
         :edit-grid-mode="editGridMode"
         :two-letter-words="twoLetterWords"
+        :impossible-words="impossibleWords"
         :three-letter-words="threeLetterWords"
         :suggestion-counts="suggestionCounts"
         @updateblanks="blanksUpdate"
@@ -172,6 +181,7 @@ export default {
     crosswordId: null,
     focusedCell: '0:0',
     hoveredWord: '0:0:0',
+    autoFillMode: false,
     editGridMode: true,
     // eslint-disable-next-line no-magic-numbers
     blankProbability: 1 / 3,
@@ -333,6 +343,21 @@ export default {
       ])
     },
 
+    impossibleWords () {
+      const emptyQueries = this.suggestionCounts
+        .filter(({ count }) => count === 0)
+        .map(({ query }) => query)
+        .unique()
+
+      return this.words.filter(({ query }) => emptyQueries.includes(query))
+        .flatMap(({ x, y, length, type }) => this.$root.getWordCells({
+          x,
+          y,
+          isVertical: type === 'vertical',
+          word: { length },
+        }))
+    },
+
     twoLetterWords () {
       return this.words.filter(({ length }) => length === 2)
         .flatMap(({ x, y, length, type }) => this.$root.getWordCells({
@@ -444,6 +469,29 @@ export default {
   },
 
   methods: {
+    toggleAutoFill () {
+      this.autoFillMode = !this.autoFillMode
+      if (this.autoFillMode) {
+        this.autoFill()
+      }
+    },
+
+    autoFill () {
+      const current = this.suggestions
+        .find(({ query }) => query === this.nextQuery)
+      const word = current.data[this.getRandomInt(current.data.length - 1)]
+      const place = this.words
+        .find(({ query }) => query === this.nextQuery)
+
+      if (!place) {
+        return this.toggleAutoFill()
+      }
+
+      const { x, y, type } = place
+
+      this.pasteWord({ word, x, y, isVertical: type === 'vertical' })
+    },
+
     changeName ({ name }) {
       this.gridName = name
     },
@@ -511,6 +559,10 @@ export default {
       this.suggestions = await this.getSuggestions(this.queries, !force)
 
       this.loading = false
+
+      if (this.autoFillMode) {
+        return this.autoFill()
+      }
     },
 
     generateGrid () {
@@ -630,27 +682,43 @@ export default {
           this.letters[`${x + index}:${y}`] = letter
         }
       })
-      this.$http.get(`clues/find/${word}`)
-        .then((response) => {
-          this.clues.push({ word, data: response.data.clues })
-          this.filledWords.push({ word, x, y, isVertical, clue: response.data.clues[0] })
-        })
+      return new Promise((resolve, reject) => {
+        this.$http.get(`clues/find/${word}`)
+          .then((response) => {
+            this.clues.push({ word, data: response.data.clues })
+            this.filledWords.push({
+              word,
+              x,
+              y,
+              isVertical,
+              clue: response.data.clues[this.getRandomInt(response.data.clues.length - 1)],
+            })
+            // this.pasteClue({ word: {
+            //   clue: response.data.clues[this.getRandomInt(response.data.clues.length - 1)],
+            //   x,
+            //   y,
+            //   isVertical,
+            // } })
+            resolve()
+          })
+          .catch(reject)
+      })
     },
 
     pasteClue ({ word: { clue, x, y, isVertical } }) {
-      this.$http.post(
-        'clues/create',
-        { crossword: 1, clue: clue.id }
-      )
-        .then(() => {
-          const index = this.filledWords.findIndex((item) => item.x === x &&
-            item.y === y && item.isVertical === isVertical)
+      const index = this.filledWords.findIndex((item) => item.x === x &&
+        item.y === y && item.isVertical === isVertical)
 
-          if (index !== -1) {
-            this.filledWords[index].clue = clue
-          }
-        })
-        .catch(console.log)
+      if (index !== -1) {
+        this.filledWords[index].clue = clue
+      }
+      // this.$http.post(
+      //   'clues/create',
+      //   { crossword: 1, clue: clue.id }
+      // )
+      //   .then(() => {
+      //   })
+      //   .catch(console.log)
     },
 
     newCrossword () {

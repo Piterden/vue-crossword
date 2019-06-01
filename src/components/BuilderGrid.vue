@@ -60,6 +60,7 @@ export default {
     hoveredWord: { type: String, default: () => '0:0:0:0' },
     editGridMode: { type: Boolean, default: () => false },
     twoLetterWords: { type: Array, default: () => [] },
+    impossibleWords: { type: Array, default: () => [] },
     threeLetterWords: { type: Array, default: () => [] },
     suggestionCounts: { type: Array, default: () => [] },
   },
@@ -403,6 +404,10 @@ export default {
 
       if (index === this.focusedCell) {
         classes.push('focused')
+      }
+
+      if (this.impossibleWords.includes(index)) {
+        classes.push('error')
       }
 
       return classes
