@@ -1,16 +1,22 @@
 <template>
   <div id="crossword">
+    <profile-area :user="user" />
     <builder-page />
   </div>
 </template>
 
 <script>
 import BuilderPage from './components/BuilderPage'
+import ProfileArea from './components/ProfileArea'
 
 export default {
   name: 'App',
 
-  components: { BuilderPage },
+  components: { BuilderPage, ProfileArea },
+
+  props: {
+    user: { type: Object, default: () => null },
+  },
 }
 </script>
 
