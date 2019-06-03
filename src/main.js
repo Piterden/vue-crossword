@@ -1,21 +1,42 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import VueGoogleApi from 'vue-google-api'
+
 import './shitcode'
 import App from './App'
 import { http, eventbus } from './plugins'
-
 
 Vue.config.devTools = true
 Vue.config.productionTip = false
 
 Vue.use(http)
 Vue.use(eventbus)
+Vue.use(VueGoogleApi, {
+  scope: 'profile',
+  discoveryDocs: ['https://people.googleapis.com/$discovery/rest'],
+})
 
 /* eslint-disable no-new */
 new Vue({
   el: '#crossword',
+
   components: { App },
+
+  data: () => ({
+    user: null,
+  }),
+
+  mounted () {
+    this.$bus.$on('user::update', (user) => {
+      this.user = user
+    })
+
+    this.$bus.$on('user::clear', () => {
+      this.user = null
+    })
+  },
+
   methods: {
     serialize (obj, prefix) {
       let str = []
@@ -55,7 +76,7 @@ new Vue({
     },
   },
 
-  template: '<App />',
+  template: '<App :user="user" />',
 })
 
 export const MAX_GRID_SIZE = 40

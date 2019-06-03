@@ -1,6 +1,6 @@
 {
-  "name": "boiler",
-  "version": "0.1.1",
+  "name": "vue-crossword",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -10,7 +10,8 @@
   "dependencies": {
     "axios": "^0.18.1",
     "core-js": "^2.6.9",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-google-api": "^0.2.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.8.0",
