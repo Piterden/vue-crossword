@@ -94,9 +94,7 @@
             @focus-cell="(x, y) => $emit('focus-cell', x, y)"
             @paste-clue="(payload) => $emit('paste-clue', payload)"
             @paste-word="(payload) => $emit('paste-word', payload)"
-            @form-leaved="(payload) => $emit('form-leaved', payload)"
             @remove-word="(payload) => $emit('remove-word', payload)"
-            @form-hovered="(payload) => $emit('form-hovered', payload)"
             @letters-update="(payload) => $emit('letters-update', payload)"
           />
         </div>
@@ -127,9 +125,7 @@
             @focus-cell="(x, y) => $emit('focus-cell', x, y)"
             @paste-clue="(payload) => $emit('paste-clue', payload)"
             @paste-word="(payload) => $emit('paste-word', payload)"
-            @form-leaved="(payload) => $emit('form-leaved', payload)"
             @remove-word="(payload) => $emit('remove-word', payload)"
-            @form-hovered="(payload) => $emit('form-hovered', payload)"
             @letters-update="(payload) => $emit('letters-update', payload)"
           />
         </div>
@@ -139,8 +135,11 @@
 </template>
 
 <script>
+// @form-leaved="(payload) => $emit('form-leaved', payload)"
+// @form-hovered="(payload) => $emit('form-hovered', payload)"
+// @form-leaved="(payload) => $emit('form-leaved', payload)"
+// @form-hovered="(payload) => $emit('form-hovered', payload)"
 import WordForm from './WordForm'
-
 
 import { MAX_GRID_SIZE } from '../main'
 

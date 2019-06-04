@@ -5,8 +5,6 @@
       error: suggestionsCount === 0,
     }"
     class="word-form"
-    @mouseover="$emit('form-hovered', { x, y, isVertical, length })"
-    @mouseleave="$emit('form-leaved')"
   >
     <div v-if="loading && !suggested.length" class="word-form-overlay">
       <div class="inner">
@@ -135,6 +133,8 @@
 </template>
 
 <script>
+// @mouseover="$emit('form-hovered', { x, y, isVertical, length })"
+// @mouseleave="$emit('form-leaved')"
 export default {
   name: 'WordForm',
 
