@@ -24,7 +24,7 @@ export default {
 grid-border-color = #ccc
 bg-accent-color = #d9d8d4cc
 bg-error-color = #b71c1cdd
-bg-filled-color = #eafe2bdd
+bg-filled-color = #eafe2b85
 txt-danger-color = #e53935
 txt-words-color = #f57c00
 txt-clues-color = #0f3810
