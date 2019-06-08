@@ -858,6 +858,7 @@ export default {
         if ('caches' in window && useCache) {
           const cache = await caches.open('words')
 
+          this.log.push(`WORDS FOR ${query}`)
           response = await cache.match(url)
 
           if (response) {
@@ -867,17 +868,19 @@ export default {
 
           response = await fetch(url)
           await cache.put(url, response)
-          this.log.push(`WORDS FOR ${query}`)
 
           response = await cache.match(url)
           response = await response.json()
+
+          this.log = []
           return { query, data: response.words }
         }
 
-        response = await fetch(url)
         this.log.push(`WORDS FOR ${query}`)
-
+        response = await fetch(url)
         response = await response.json()
+
+        this.log = []
         return { query, data: response.words }
       }))
     },
@@ -890,6 +893,7 @@ export default {
         if ('caches' in window && useCache) {
           const cache = await caches.open('words')
 
+          this.log.push(`COUNT FOR ${query}`)
           response = await cache.match(url)
 
           if (response) {
@@ -899,17 +903,19 @@ export default {
 
           response = await fetch(url)
           await cache.put(url, response)
-          this.log.push(`COUNT FOR ${query}`)
 
           response = await cache.match(url)
           response = await response.json()
+
+          this.log = []
           return { query, count: response.count }
         }
 
-        response = await fetch(url)
         this.log.push(`COUNT FOR ${query}`)
-
+        response = await fetch(url)
         response = await response.json()
+
+        this.log = []
         return { query, count: response.count }
       }))
     },
