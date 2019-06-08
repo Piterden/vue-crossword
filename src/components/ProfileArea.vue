@@ -3,13 +3,13 @@
     <div v-if="user" class="profile">
       <img :src="user.image" :alt="user.name" />
       <span>Signed in as {{ user.name }}.</span>
-      <button @click="signOut">Sign Out</button>
     </div>
-    <button v-else @click="signIn">Sign In</button>
   </div>
 </template>
 
 <script>
+// <button @click="signOut">Sign Out</button>
+// <button v-else @click="signIn">Sign In</button>
 export default {
   name: 'ProfileArea',
 
@@ -18,11 +18,11 @@ export default {
   },
 
   async mounted () {
-    const result = await this.$gapi.isSignedIn()
+    // const result = await this.$gapi.isSignedIn()
 
-    if (result) {
-      this.signIn()
-    }
+    // if (result) {
+    //   this.signIn()
+    // }
   },
 
   methods: {

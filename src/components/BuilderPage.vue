@@ -852,45 +852,65 @@ export default {
 
     getSuggestions (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
-        if (!query.includes('_')) {
-          return { query, data: [] }
-        }
+        let response
+        const url = `https://crossword.live/crossword/words/find/0/${query}`
 
-        if (useCache) {
-          const cached = this.suggestions.find((data) => data.query === query)
+        if ('caches' in window && useCache) {
+          const cache = await caches.open('words')
 
-          if (cached) {
-            return cached
+          response = await cache.match(url)
+
+          if (response) {
+            response = await response.json()
+            return { query, data: response.words }
           }
+
+          response = await fetch(url)
+          await cache.put(url, response)
+          this.log.push(`WORDS FOR ${query}`)
+
+          response = await cache.match(url)
+          response = await response.json()
+          return { query, data: response.words }
         }
+
+        response = await fetch(url)
         this.log.push(`WORDS FOR ${query}`)
 
-        const url = this.getSuggestionsUrl(query)
-        const response = await this.$http.get(url)
-
-        this.log.splice(this.log.findIndex((string) => string === url), 1)
-
-        return { query, data: response.data.words }
+        response = await response.json()
+        return { query, data: response.words }
       }))
     },
 
     getSuggestionCounts (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
-        if (useCache) {
-          const cached = this.suggestionCounts.find((data) => data.query === query)
+        let response
+        const url = `https://crossword.live/crossword/words/count/${query}`
 
-          if (cached) {
-            return cached
+        if ('caches' in window && useCache) {
+          const cache = await caches.open('words')
+
+          response = await cache.match(url)
+
+          if (response) {
+            response = await response.json()
+            return { query, count: response.count }
           }
+
+          response = await fetch(url)
+          await cache.put(url, response)
+          this.log.push(`COUNT FOR ${query}`)
+
+          response = await cache.match(url)
+          response = await response.json()
+          return { query, count: response.count }
         }
+
+        response = await fetch(url)
         this.log.push(`COUNT FOR ${query}`)
 
-        const url = `words/count/${query}`
-        const response = await this.$http.get(url).catch(console.log)
-
-        this.log.splice(this.log.findIndex((string) => string === url), 1)
-
-        return { query, count: response.data.count }
+        response = await response.json()
+        return { query, count: response.count }
       }))
     },
 
