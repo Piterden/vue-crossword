@@ -683,7 +683,7 @@ export default {
         }
       })
       return new Promise((resolve, reject) => {
-        this.$http.get(`clues/find/${word}`)
+        fetch(`clues/find/${word}`)
           .then((response) => {
             this.clues.push({ word, data: response.data.clues })
             this.filledWords.push({
