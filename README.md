@@ -33,6 +33,10 @@ A Vue.js based crossword puzzle builder and filler front-end application.
 
 ## Usage
 
+1. Find a grid with only white and black squares.
+2. Press `Fill words`.
+3. Press `Auto fill`.
+
 There are a few simple rules:
 
 - Generated forms of vertical and horizontal questions allow you to fill cells inside them with letters.
