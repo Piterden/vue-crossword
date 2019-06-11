@@ -113,7 +113,7 @@ btn-border-color = #CE93D8
 
   .word-form
     position relative
-    padding-left 25px
+    padding-left 35px
     border-bottom 1px solid #009688
     margin-bottom 10px
     padding-bottom 10px
@@ -207,7 +207,7 @@ btn-border-color = #CE93D8
 
     .index-number
       position absolute
-      right calc(100% - 20px)
+      right calc(100% - 30px)
 
     .word-form-overlay
       position absolute
@@ -314,6 +314,8 @@ btn-border-color = #CE93D8
               background #000
 
   .log
+    position absolute
+
     pre
       text-align left
 
@@ -340,6 +342,7 @@ btn-border-color = #CE93D8
   .page-inner
     margin-right 20px
     margin-bottom 20px
+    padding 0 10px
 
   .button
     display flex
