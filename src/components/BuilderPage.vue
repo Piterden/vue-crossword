@@ -466,6 +466,28 @@ export default {
   mounted () {
     this.letters = this.letterCells
     this.updateGrids()
+
+    if (window.location.search && window.location.search !== '?') {
+      const { width, height, blanks } = window.location.search
+        .replace('?', '')
+        .split('&')
+        .reduce((acc, cur) => {
+          const splitted = cur.split('=')
+
+          acc[splitted[0]] = splitted[1]
+          return acc
+        }, {})
+
+      if (width) {
+        this.width = width
+      }
+      if (height) {
+        this.height = height
+      }
+      if (blanks) {
+        this.blanks = blanks.split(',')
+      }
+    }
   },
 
   methods: {
@@ -839,6 +861,12 @@ export default {
         }
         this.blanks = JSON.parse(grid.blanks)
         this.gridName = grid.name
+
+        window.history.replaceState(
+          '',
+          document.title,
+          `${window.location.origin}${window.location.pathname}?width=${this.width}&height=${this.height}&blanks=${this.blanks.join()}`,
+        )
       }
     },
 
