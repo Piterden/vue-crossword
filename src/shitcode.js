@@ -1,14 +1,16 @@
 /* eslint-disable */
 
 Array.prototype.unique = function () {
+  const l = this.length
   const u = {}
   const a = []
-  
-  this.forEach((i) => {
-    if (u.hasOwnProperty(i)) return
-    a.push(i)
-    u[i] = 1
-  })
+  let i
+
+  for (i = 0; i < l; i++) {
+    if (u.hasOwnProperty(this[i])) continue
+    a.push(this[i])
+    u[this[i]] = 1
+  }
 
   return a
 }

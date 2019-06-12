@@ -673,7 +673,7 @@ export default {
       this.focusedCell = `${x}:${y}`
     },
 
-    async pasteWord ({ word: { word }, x, y, isVertical }) {
+    pasteWord ({ word: { word }, x, y, isVertical }) {
       Array.from(word).forEach((letter, index) => {
         if (isVertical) {
           this.letters[`${x}:${y + index}`] = letter
@@ -682,22 +682,27 @@ export default {
           this.letters[`${x + index}:${y}`] = letter
         }
       })
-      const { clues } = await fetch(`clues/find/${word}`).then(resp => resp.json())
-
-      this.clues.push({ word, data: clues })
-      this.filledWords.push({
-        word,
-        x,
-        y,
-        isVertical,
-        clue: clues[this.getRandomInt(clues.length - 1)],
+      return new Promise((resolve, reject) => {
+        this.$http.get(`clues/find/${word}`)
+          .then((response) => {
+            this.clues.push({ word, data: response.data.clues })
+            this.filledWords.push({
+              word,
+              x,
+              y,
+              isVertical,
+              clue: response.data.clues[this.getRandomInt(response.data.clues.length - 1)],
+            })
+            // this.pasteClue({ word: {
+            //   clue: response.data.clues[this.getRandomInt(response.data.clues.length - 1)],
+            //   x,
+            //   y,
+            //   isVertical,
+            // } })
+            resolve()
+          })
+          .catch(reject)
       })
-      // this.pasteClue({ word: {
-      //   clue: response.data.clues[this.getRandomInt(response.data.clues.length - 1)],
-      //   x,
-      //   y,
-      //   isVertical,
-      // } })
     },
 
     pasteClue ({ word: { clue, x, y, isVertical } }) {
