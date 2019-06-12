@@ -74,6 +74,7 @@ PR's are appreciated.
 
 - **Denis Efremov** - *Code|Idea* - [Piterden](https://github.com/Piterden)
 - **mvrlin** - *Help with styles* - [mvrlin](https://github.com/mvrlin)
+- **kolay** - *Code|Improvements* - [kolay-v](https://github.com/kolay-v)
 
 ## License
 
