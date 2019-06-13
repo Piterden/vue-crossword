@@ -11,7 +11,11 @@
       <button
         v-if="editGridMode"
         class="btn"
-        @click.prevent="generateGrid"
+        @click.prevent="generateGrid(
+          horizontalSym,
+          verticalSym,
+          blankProbability
+        )"
       >
         Generate Grid
       </button>
@@ -578,6 +582,9 @@ export default {
       this.loading = true
 
       this.suggestionCounts = await this.getSuggestionCounts(this.queries, !force)
+        .catch((error) => {
+
+        })
       this.suggestions = await this.getSuggestions(this.queries, !force)
 
       this.loading = false

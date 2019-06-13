@@ -14,6 +14,10 @@ class Crossword extends BaseClass {
 
     this.letters = {}
   }
+
+  inputLetter ({ x, y, value }) {
+    this.letters[`${x}:${y}`] = value
+  }
 }
 
 export default Crossword
