@@ -189,6 +189,27 @@ class Grid extends BaseClass {
       .sort((a, b) => a.y === b.y ? a.x - b.x : a.y - b.y)
       .map((word, index) => ({ ...word, index: index + 1 }))
   }
+
+  letterCells () {
+    const cells = []
+    let col = 1
+
+    for (col; col <= this.width; col += 1) {
+      let row = 1
+
+      for (row; row <= this.height; row += 1) {
+        if (this.blanks.includes(`${col}:${row}`)) {
+          continue
+        }
+        cells.push({ x: col, y: row })
+      }
+    }
+
+    return cells.reduce((acc, { x, y }) => {
+      acc[`${x}:${y}`] = ''
+      return acc
+    }, {})
+  }
 }
 
 export default Grid
