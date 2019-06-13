@@ -5,12 +5,13 @@ import VueGoogleApi from 'vue-google-api'
 
 import './shitcode'
 import App from './App'
-import { http, eventbus } from './plugins'
+import { http, eventbus, builder } from './plugins'
 
 Vue.config.devTools = true
 Vue.config.productionTip = false
 
 Vue.use(http)
+Vue.use(builder)
 Vue.use(eventbus)
 Vue.use(VueGoogleApi, {
   scope: 'profile',
