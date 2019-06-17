@@ -11,7 +11,11 @@
       <button
         v-if="editGridMode"
         class="btn"
-        @click.prevent="generateGrid"
+        @click.prevent="generateGrid(
+          horizontalSym,
+          verticalSym,
+          blankProbability
+        )"
       >
         Generate Grid
       </button>
@@ -176,6 +180,7 @@ export default {
     letters: {},
     loading: false,
     gridName: '',
+    prevWord: null,
     filledWords: [],
     suggestions: [],
     crosswordId: null,
@@ -578,8 +583,16 @@ export default {
       this.loading = true
 
       this.suggestionCounts = await this.getSuggestionCounts(this.queries, !force)
-      this.suggestions = await this.getSuggestions(this.queries, !force)
+        .catch((error) => {
+          console.log(error)
+        })
 
+      if (this.suggestionCounts.some(({ count }) => count === 0)) {
+        this.removeWord(this.prevWord)
+        return this.autoFill()
+      }
+
+      this.suggestions = await this.getSuggestions(this.queries, !force)
       this.loading = false
 
       if (this.autoFillMode) {
@@ -696,13 +709,11 @@ export default {
     },
 
     pasteWord ({ word: { word }, x, y, isVertical }) {
+      this.prevWord = { x, y, isVertical, word: { word } }
       Array.from(word).forEach((letter, index) => {
-        if (isVertical) {
-          this.letters[`${x}:${y + index}`] = letter
-        }
-        else {
-          this.letters[`${x + index}:${y}`] = letter
-        }
+        const key = isVertical ? `${x}:${y + index}` : `${x + index}:${y}`
+
+        this.letters[key] = letter
       })
       return new Promise((resolve, reject) => {
         this.$http.get(`clues/find/${word}`)
