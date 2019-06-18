@@ -182,7 +182,6 @@ export default {
     gridName: '',
     prevWord: null,
     filledWords: [],
-    removeCount: 0,
     suggestions: [],
     crosswordId: null,
     focusedCell: '0:0',
@@ -385,14 +384,14 @@ export default {
         }))
     },
 
-    sortedCounts () {
+    sortedByCounts () {
       return Array.from(this.suggestionCounts)
         .sort((a, b) => a.count - b.count)
         .filter((obj) => obj && obj.count > 0 && obj.query.includes('_'))
     },
 
     nextQuery () {
-      return this.sortedCounts[0] && this.sortedCounts[0].query
+      return this.sortedByCounts[0] && this.sortedByCounts[0].query
     },
 
     queries () {
@@ -589,15 +588,7 @@ export default {
         })
 
       if (suggestionCounts.some(({ count }) => count === 0)) {
-        // eslint-disable-next-line no-magic-numbers
-        if (this.removeCount === 0 || this.removeCount > 20) {
-          this.prevWord = this.filledWords.pop()
-          this.removeCount = 0
-        }
-
         this.removeWord(this.prevWord)
-        this.removeCount += 1
-
         return this.autoFill()
       }
 
@@ -720,6 +711,8 @@ export default {
     },
 
     pasteWord ({ word: { word }, x, y, isVertical }) {
+      this.prevWord = { x, y, isVertical, word: { word } }
+
       Array.from(word).forEach((letter, index) => {
         const key = isVertical ? `${x}:${y + index}` : `${x + index}:${y}`
 
