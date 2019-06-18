@@ -602,8 +602,8 @@ export default {
       }
 
       this.suggestionCounts = suggestionCounts
-
       this.suggestions = await this.getSuggestions(this.queries, !force)
+      this.removeCount = 0
       this.loading = false
 
       if (this.autoFillMode) {
