@@ -96,7 +96,7 @@
       </div>
       <div class="clue">
         <textarea
-          v-if="word"
+          v-if="word && word.clue"
           ref="question"
           v-model="word.clue.name"
           :cols="cols"
