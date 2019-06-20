@@ -710,9 +710,8 @@ export default {
       this.focusedCell = `${x}:${y}`
     },
 
-    pasteWord ({ word: { word }, x, y, isVertical }) {
+    async pasteWord ({ word: { word }, x, y, isVertical }) {
       this.prevWord = { x, y, isVertical, word: { word } }
-
       Array.from(word).forEach((letter, index) => {
         const key = isVertical ? `${x}:${y + index}` : `${x + index}:${y}`
 
@@ -720,17 +719,41 @@ export default {
       })
 
       const index = this.filledWords.push({ word, x, y, isVertical })
+      const url = `https://crossword.live/crossword/clues/find/${word}`
+      let response
 
-      return new Promise((resolve, reject) => {
-        this.$http.get(`clues/find/${word}`)
-          .then((response) => {
-            this.clues.push({ word, data: response.data.clues })
-            this.filledWords[index - 1].clue = response.data
-              .clues[this.getRandomInt(response.data.clues.length - 1)]
-            resolve()
-          })
-          .catch(reject)
-      })
+      if ('caches' in window) {
+        const cache = await caches.open('clues')
+
+        response = await cache.match(url)
+
+        if (response) {
+          response = await response.json()
+          this.clues.push({ word, data: response.clues })
+          this.filledWords[index - 1].clue = response.clues[
+            this.getRandomInt(response.clues.length - 1)
+          ]
+        }
+
+        response = await fetch(url)
+        await cache.put(url, response)
+
+        response = await cache.match(url)
+        response = await response.json()
+
+        this.clues.push({ word, data: response.clues })
+        this.filledWords[index - 1].clue = response.clues[
+          this.getRandomInt(response.clues.length - 1)
+        ]
+      }
+
+      response = await fetch(url)
+      response = await response.json()
+
+      this.clues.push({ word, data: response.clues })
+      this.filledWords[index - 1].clue = response.clues[
+        this.getRandomInt(response.clues.length - 1)
+      ]
     },
 
     pasteClue ({ word: { clue, x, y, isVertical } }) {
@@ -925,7 +948,7 @@ export default {
         const url = `https://crossword.live/crossword/words/count/${query}`
 
         if ('caches' in window && useCache) {
-          const cache = await caches.open('words')
+          const cache = await caches.open('counts')
 
           this.log.push(`COUNT FOR ${query}`)
           response = await cache.match(url)
