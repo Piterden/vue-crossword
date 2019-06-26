@@ -1,18 +1,18 @@
 /* eslint-disable */
 
 Array.prototype.unique = function () {
-  const u = {}
-  const a = []
+  const unique = {}
+  const array = []
 
-  this.forEach(i => {
-    if (u.hasOwnProperty(i)) {
+  this.forEach((key) => {
+    if (unique.hasOwnProperty(key)) {
       return
     }
-    a.push(i)
-    u[i] = 1
+    array.push(key)
+    unique[key] = 1
   })
 
-  return a
+  return array
 }
 
 String.prototype.capitalize = function () {
