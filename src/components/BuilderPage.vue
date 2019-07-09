@@ -2,6 +2,14 @@
   <div class="page builder-page">
     <div class="toolbox">
       <button
+        v-if="editGridMode"
+        :class="{ editing: editGridMode }"
+        class="btn"
+        @click.prevent="switchLang"
+      >
+        {{ this.lang }}
+      </button>
+      <button
         :class="{ editing: editGridMode }"
         class="btn"
         @click.prevent="changeSizeClick"
@@ -172,6 +180,7 @@ export default {
 
   data: () => ({
     log: [],
+    lang: 'ru',
     clues: [],
     grids: [],
     width: 15,
@@ -395,7 +404,9 @@ export default {
     },
 
     queries () {
-      return this.words.map(({ query }) => query).unique()
+      return this.words.map(({ query }) => query.match(/^[A-Z]+$/) ? null : query)
+        .filter(Boolean)
+        .unique()
     },
 
     startCells () {
@@ -436,6 +447,10 @@ export default {
         acc[`${x}:${y}`] = ''
         return acc
       }, {})
+    },
+
+    locale () {
+      return this.lang === 'en' ? 'en/' : ''
     },
   },
 
@@ -496,6 +511,10 @@ export default {
   },
 
   methods: {
+    switchLang () {
+      this.lang = this.lang === 'en' ? 'ru' : 'en'
+    },
+
     toggleAutoFill () {
       this.autoFillMode = !this.autoFillMode
       if (this.autoFillMode) {
@@ -506,6 +525,11 @@ export default {
     autoFill () {
       const current = this.suggestions
         .find(({ query }) => query === this.nextQuery)
+
+      if (!current) {
+        return
+      }
+
       const word = current.data[this.getRandomInt(current.data.length - 1)]
       const place = this.words
         .find(({ query }) => query === this.nextQuery)
@@ -595,6 +619,8 @@ export default {
       this.suggestionCounts = suggestionCounts
 
       this.suggestions = await this.getSuggestions(this.queries, !force)
+      this.suggestions = this.suggestions.filter(Boolean)
+
       this.loading = false
 
       if (this.autoFillMode) {
@@ -719,7 +745,7 @@ export default {
       })
 
       const index = this.filledWords.push({ word, x, y, isVertical })
-      const url = `https://crossword.live/crossword/clues/find/${word}`
+      const url = `https://crossword.live/crossword/clues/${this.locale}find/${word}`
       let response
 
       if ('caches' in window) {
@@ -909,8 +935,11 @@ export default {
 
     getSuggestions (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
+        if (!query.includes('_')) {
+          return
+        }
         let response
-        const url = `https://crossword.live/crossword/words/find/0/${query}`
+        const url = `https://crossword.live/crossword/words/${this.locale}find/0/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('words')
@@ -920,7 +949,7 @@ export default {
 
           if (response) {
             response = await response.json()
-            return { query, data: response.words }
+            return { query, data: response.words.filter(Boolean) }
           }
 
           response = await fetch(url)
@@ -930,7 +959,7 @@ export default {
           response = await response.json()
 
           this.log = []
-          return { query, data: response.words }
+          return { query, data: response.words.filter(Boolean) }
         }
 
         this.log.push(`WORDS FOR ${query}`)
@@ -938,14 +967,14 @@ export default {
         response = await response.json()
 
         this.log = []
-        return { query, data: response.words }
+        return { query, data: response.words.filter(Boolean) }
       }))
     },
 
     getSuggestionCounts (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
         let response
-        const url = `https://crossword.live/crossword/words/count/${query}`
+        const url = `https://crossword.live/crossword/words/${this.locale}count/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('counts')
