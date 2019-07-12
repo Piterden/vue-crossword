@@ -613,7 +613,7 @@ export default {
 
       if (suggestionCounts.some(({ count }) => count === 0)) {
         this.removeWord(this.prevWord)
-        return this.autoFill()
+        await this.waitForRestart()
       }
 
       this.suggestionCounts = suggestionCounts
@@ -626,6 +626,14 @@ export default {
       if (this.autoFillMode) {
         return this.autoFill()
       }
+    },
+
+    waitForRestart (timeout = 1000) { // eslint-disable-line no-magic-numbers
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(this.autoFill())
+        }, timeout)
+      })
     },
 
     generateGrid () {
