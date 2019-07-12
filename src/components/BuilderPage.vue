@@ -752,7 +752,7 @@ export default {
         this.letters[key] = letter
       })
 
-      const index = this.filledWords.push({ word, x, y, isVertical })
+      this.filledWords.push({ word, x, y, isVertical })
       const url = `https://crossword.live/crossword/clues/${this.locale}find/${word}`
       let response
 
@@ -764,7 +764,7 @@ export default {
         if (response) {
           response = await response.json()
           this.clues.push({ word, data: response.clues })
-          this.filledWords[index - 1].clue = response.clues[
+          this.filledWords[this.filledWords.length - 1].clue = response.clues[
             this.getRandomInt(response.clues.length - 1)
           ]
         }
@@ -776,7 +776,7 @@ export default {
         response = await response.json()
 
         this.clues.push({ word, data: response.clues })
-        this.filledWords[index - 1].clue = response.clues[
+        this.filledWords[this.filledWords.length - 1].clue = response.clues[
           this.getRandomInt(response.clues.length - 1)
         ]
       }
@@ -785,7 +785,7 @@ export default {
       response = await response.json()
 
       this.clues.push({ word, data: response.clues })
-      this.filledWords[index - 1].clue = response.clues[
+      this.filledWords[this.filledWords.length - 1].clue = response.clues[
         this.getRandomInt(response.clues.length - 1)
       ]
     },
@@ -981,6 +981,9 @@ export default {
 
     getSuggestionCounts (queries, useCache = true) {
       return Promise.all(queries.map(async (query) => {
+        if (!query.includes('_')) {
+          return { query, count: 1 }
+        }
         let response
         const url = `https://crossword.live/crossword/words/${this.locale}count/${query}`
 
