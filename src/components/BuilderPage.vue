@@ -534,9 +534,9 @@ export default {
       const place = this.words
         .find(({ query }) => query === this.nextQuery)
 
-      if (!place) {
-        return this.toggleAutoFill()
-      }
+      // if (!place) {
+      //   return this.toggleAutoFill()
+      // }
 
       const { x, y, type } = place
 
