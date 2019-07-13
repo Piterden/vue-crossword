@@ -664,6 +664,8 @@ export default {
 
     clearGrid () {
       this.blanks = []
+      this.letters = {}
+      this.filledWords = []
     },
 
     rebuildGrid ({ width, height }) {
