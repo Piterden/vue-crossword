@@ -141,8 +141,6 @@
 // @form-hovered="(payload) => $emit('form-hovered', payload)"
 import WordForm from './WordForm'
 
-import { MAX_GRID_SIZE } from '../main'
-
 export default {
   name: 'BuilderForm',
 
@@ -169,7 +167,7 @@ export default {
 
   data () {
     return {
-      max: MAX_GRID_SIZE,
+      max: 40,
       name: '',
       width: this.size.width,
       height: this.size.height,

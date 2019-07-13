@@ -534,9 +534,9 @@ export default {
       const place = this.words
         .find(({ query }) => query === this.nextQuery)
 
-      // if (!place) {
-      //   return this.toggleAutoFill()
-      // }
+      if (!place) {
+        return this.toggleAutoFill()
+      }
 
       const { x, y, type } = place
 
@@ -614,6 +614,7 @@ export default {
       if (suggestionCounts.some(({ count }) => count === 0)) {
         this.removeWord(this.prevWord)
         await this.waitForRestart()
+        return
       }
 
       this.suggestionCounts = suggestionCounts
