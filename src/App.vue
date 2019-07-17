@@ -134,6 +134,7 @@ btn-border-color = #CE93D8
       input
         width 17px
         text-align center
+        text-transform uppercase
 
       &.filled input
         background bg-filled-color
@@ -241,6 +242,7 @@ btn-border-color = #CE93D8
       font-size 1.25em
       background transparent
       border 1px solid #000
+      text-transform uppercase
 
     .word-start
       position absolute
