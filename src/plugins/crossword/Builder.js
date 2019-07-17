@@ -11,6 +11,16 @@ class Builder extends BaseClass {
 
   constructor () {
     super(...arguments)
+
+    this.crossword = null
+  }
+
+  createCrossword (grid) {
+    this.crossword = new this.Crossword(grid)
+  }
+
+  createGrid (...args) {
+    return new this.Grid(...args)
   }
 }
 

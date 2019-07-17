@@ -1,5 +1,6 @@
 import BaseClass from 'constructor-decorator'
 
+import Cell from './Cell'
 import Word from './Word'
 
 class Grid extends BaseClass {
@@ -14,14 +15,33 @@ class Grid extends BaseClass {
 
   constructor () {
     super(...arguments)
+
+    this.Cell = Cell
+    this.Word = Word
+  }
+
+  get cells () {
+    return Array.from(
+      { length: this.width },
+      (col, idx) => idx + 1,
+    )
+      .flatMap(
+        (col) => Array.from(
+          { length: this.height },
+          (row, idx) => new this.Cell(idx + 1, col),
+        )
+      )
+      .filter((cell) => !this.blanks.find((blank) => `${blank}` === `${cell}`))
   }
 
   addBlank (id) {
-    this.blanks.push(id)
+    const [x, y] = id.split(':')
+
+    this.blanks.push(new this.Cell(+x, +y))
   }
 
   removeBlank (id) {
-    this.blanks = this.blanks.filter((blank) => blank !== id)
+    this.blanks = this.blanks.filter((blank) => `${blank}` !== id)
   }
 
   blanksUpdate (id) {
@@ -30,7 +50,7 @@ class Grid extends BaseClass {
     const verticalIndex = `${this.width - x + 1}:${y}`
     const horizontalIndex = `${x}:${this.height - y + 1}`
 
-    if (this.blanks.includes(id)) {
+    if (this.blanks.find((blank) => `${blank}` !== id)) {
       this.removeBlank(id)
 
       if (this.verticalSym) {
@@ -110,7 +130,7 @@ class Grid extends BaseClass {
     const words = []
     let row = 1
 
-    for (row; row <= isVertical ? this.width : this.height; row += 1) {
+    for (row; row <= (isVertical ? this.width : this.height); row += 1) {
       const rowBlankCells = this.blanks
         // eslint-disable-next-line no-loop-func
         .filter((cell) => Number(cell.split(':')[isVertical ? 0 : 1]) === row)
@@ -118,7 +138,7 @@ class Grid extends BaseClass {
 
       if (rowBlankCells.length > 0) {
         const cols = Array.from({
-          length: isVertical ? this.height : this.width,
+          length: (isVertical ? this.height : this.width),
         }).map((el, idx) => idx + 1)
 
         if (cols) {
@@ -135,51 +155,48 @@ class Grid extends BaseClass {
               const length = match ? match.length : 0
               const x = Number(word.match(/^:(\d+)/)[1])
 
-              words.push(new Word(
+              words.push([
                 isVertical ? row : x,
                 isVertical ? x : row,
                 length,
                 isVertical,
-              ))
+              ])
             })
         }
       }
       else {
-        words.push(new Word(
+        words.push([
           isVertical ? row : 1,
           isVertical ? 1 : row,
           isVertical ? this.height : this.width,
-          isVertical
-        ))
+          isVertical,
+        ])
       }
     }
 
     return words
   }
 
-  words () {
+  get words () {
     return this.addIndexes([
       ...this.singleDirectionWords(true),
       ...this.singleDirectionWords(false),
-    ])
+    ]).map((arr) => new this.Word(...arr))
   }
 
   addIndexes (words) {
     return words
       .map((word) => {
-        const { index } = this.startCells
-          .find(({ x, y }) => word.x === x && word.y === y)
+        const { index } = this.startCells(words)
+          .find(({ x, y }) => word[0] === x && word[1] === y)
 
-        return { ...word, index }
+        return [...word, index]
       })
   }
 
-  startCells () {
-    return [
-      ...this.singleDirectionWords(true),
-      ...this.singleDirectionWords(false),
-    ]
-      .map(({ x, y }) => ({ x, y }))
+  startCells (words) {
+    return words
+      .map(([x, y]) => ({ x, y }))
       .reduce((acc, cur) => {
         if (!acc.find(({ x, y }) => x === cur.x && y === cur.y)) {
           acc.push(cur)
@@ -190,26 +207,26 @@ class Grid extends BaseClass {
       .map((word, index) => ({ ...word, index: index + 1 }))
   }
 
-  letterCells () {
-    const cells = []
-    let col = 1
+  // letterCells () {
+  //   const cells = []
+  //   let col = 1
 
-    for (col; col <= this.width; col += 1) {
-      let row = 1
+  //   for (col; col <= this.width; col += 1) {
+  //     let row = 1
 
-      for (row; row <= this.height; row += 1) {
-        if (this.blanks.includes(`${col}:${row}`)) {
-          continue
-        }
-        cells.push({ x: col, y: row })
-      }
-    }
+  //     for (row; row <= this.height; row += 1) {
+  //       if (this.blanks.includes(`${col}:${row}`)) {
+  //         continue
+  //       }
+  //       cells.push({ x: col, y: row })
+  //     }
+  //   }
 
-    return cells.reduce((acc, { x, y }) => {
-      acc[`${x}:${y}`] = ''
-      return acc
-    }, {})
-  }
+  //   return cells.reduce((acc, { x, y }) => {
+  //     acc[`${x}:${y}`] = ''
+  //     return acc
+  //   }, {})
+  // }
 }
 
 export default Grid

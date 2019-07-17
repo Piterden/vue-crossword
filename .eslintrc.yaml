@@ -241,7 +241,7 @@ rules:
     -
       allowAllPropertiesOnSameLine: true
   no-magic-numbers:
-    - error
+    - warn
     -
       ignore:
         - -1

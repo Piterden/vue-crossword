@@ -13,13 +13,14 @@ class Word extends BaseClass {
     }
   }
 
-  constructor () {
-    super(...arguments)
+  constructor (...args) {
+    super(...args)
 
     this.clues = []
+    this.word = ''
   }
 
-  get query () {
+  get cells () {
     return getWordCells(this)
   }
 }
