@@ -16,14 +16,12 @@ class Grid extends BaseClass {
   constructor (width, height, blanks, name) {
     super(width, height, blanks, name)
 
-    this.Cell = Cell
-    this.Word = Word
-    this.cells = new Map(Array.from({ length: this.width }, (col, idx) => idx + 1)
+    this.cells = new Map(Array.from({ length: this.height }, (col, idx) => idx + 1)
       .flatMap((col) => Array.from(
-        { length: this.height },
-        (row, idx) => [`${idx + 1}:${col}`, new this.Cell(idx + 1, col)],
+        { length: this.width },
+        (row, idx) => [`${idx + 1}:${col}`, new Cell(idx + 1, col)],
       )))
-    this.blanks = this.blanks.map(this.getCell)
+    this.blanks = this.blanks.map((id) => this.cells.get(id))
   }
 
   getCell (id) {
@@ -32,6 +30,12 @@ class Grid extends BaseClass {
 
   addBlank (id) {
     this.blanks.push(this.getCell(id))
+  }
+
+  addBlanks (...ids) {
+    ids.forEach((id) => {
+      this.addBlank(id)
+    })
   }
 
   removeBlank (id) {
@@ -175,7 +179,7 @@ class Grid extends BaseClass {
     return this.addIndexes([
       ...this.singleDirectionWords(true),
       ...this.singleDirectionWords(false),
-    ]).map((arr) => new this.Word(...arr))
+    ]).map((arr) => new Word(...arr))
   }
 
   addIndexes (words) {

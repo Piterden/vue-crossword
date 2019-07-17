@@ -11,8 +11,22 @@ class Crossword extends BaseClass {
 
   constructor () {
     super(...arguments)
+  }
 
-    this.letters = {}
+  get horizontalWords () {
+    return this.createWordsMap(
+      this.grid.words.filter(({ isVertical }) => !isVertical)
+    )
+  }
+
+  get verticalWords () {
+    return this.createWordsMap(
+      this.grid.words.filter(({ isVertical }) => isVertical)
+    )
+  }
+
+  createWordsMap (words) {
+    return new Map(words.map((word) => [word.index, word]))
   }
 
   inputLetter ({ x, y, value }) {
