@@ -10,6 +10,7 @@ class Word extends BaseClass {
       y: Number,
       length: Number,
       isVertical: Boolean,
+      index: Number,
     }
   }
 

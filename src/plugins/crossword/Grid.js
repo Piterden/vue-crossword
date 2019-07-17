@@ -13,31 +13,25 @@ class Grid extends BaseClass {
     }
   }
 
-  constructor () {
-    super(...arguments)
+  constructor (width, height, blanks, name) {
+    super(width, height, blanks, name)
 
     this.Cell = Cell
     this.Word = Word
+    this.cells = new Map(Array.from({ length: this.width }, (col, idx) => idx + 1)
+      .flatMap((col) => Array.from(
+        { length: this.height },
+        (row, idx) => [`${idx + 1}:${col}`, new this.Cell(idx + 1, col)],
+      )))
+    this.blanks = this.blanks.map(this.getCell)
   }
 
-  get cells () {
-    return Array.from(
-      { length: this.width },
-      (col, idx) => idx + 1,
-    )
-      .flatMap(
-        (col) => Array.from(
-          { length: this.height },
-          (row, idx) => new this.Cell(idx + 1, col),
-        )
-      )
-      .filter((cell) => !this.blanks.find((blank) => `${blank}` === `${cell}`))
+  getCell (id) {
+    return this.cells.get(id)
   }
 
   addBlank (id) {
-    const [x, y] = id.split(':')
-
-    this.blanks.push(new this.Cell(+x, +y))
+    this.blanks.push(this.getCell(id))
   }
 
   removeBlank (id) {
@@ -133,8 +127,8 @@ class Grid extends BaseClass {
     for (row; row <= (isVertical ? this.width : this.height); row += 1) {
       const rowBlankCells = this.blanks
         // eslint-disable-next-line no-loop-func
-        .filter((cell) => Number(cell.split(':')[isVertical ? 0 : 1]) === row)
-        .map((cell) => Number(cell.split(':')[isVertical ? 1 : 0]))
+        .filter((cell) => Number(cell[isVertical ? 'x' : 'y']) === row)
+        .map((cell) => Number(cell[isVertical ? 'y' : 'x']))
 
       if (rowBlankCells.length > 0) {
         const cols = Array.from({
