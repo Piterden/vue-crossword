@@ -83,6 +83,13 @@
       >
         Auto Fill
       </button>
+      <button
+        v-if="editGridMode"
+        class="btn"
+        @click.prevent="rotateGrid({ width, height, blanks })"
+      >
+        Rotate Grid
+      </button>
       <div class="statistics">
         <pre
           v-html="statsView.replace(
@@ -513,6 +520,15 @@ export default {
   methods: {
     switchLang () {
       this.lang = this.lang === 'en' ? 'ru' : 'en'
+    },
+
+    rotateGrid ({ width, height, blanks }) {
+      this.width = height
+      this.height = width
+      this.blanks = blanks.map((blank) => blank
+        .split(':')
+        .reverse()
+        .join(':'))
     },
 
     toggleAutoFill () {
