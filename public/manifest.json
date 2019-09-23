@@ -1,0 +1,141 @@
+{
+  "short_name": "VueCrossword",
+  "name": "Vue Crossword App",
+  "icons": [
+    {
+      "src": "assets/apple-icon-120.png",
+      "type": "image/png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "assets/apple-icon-180.png",
+      "type": "image/png",
+      "sizes": "180x180"
+    },
+    {
+      "src": "assets/apple-splash-1242-2208.png",
+      "type": "image/png",
+      "sizes": "1242x2208"
+    },
+    {
+      "src": "assets/apple-splash-1536-2048.png",
+      "type": "image/png",
+      "sizes": "1536x2048"
+    },
+    {
+      "src": "assets/apple-splash-1792-828.png",
+      "type": "image/png",
+      "sizes": "1792x828"
+    },
+    {
+      "src": "assets/apple-splash-2208-1242.png",
+      "type": "image/png",
+      "sizes": "2208x1242"
+    },
+    {
+      "src": "assets/apple-splash-2436-1125.png",
+      "type": "image/png",
+      "sizes": "2436x1125"
+    },
+    {
+      "src": "assets/apple-splash-640-1136.png",
+      "type": "image/png",
+      "sizes": "640x1136"
+    },
+    {
+      "src": "assets/manifest-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/apple-icon-152.png",
+      "type": "image/png",
+      "sizes": "152x152"
+    },
+    {
+      "src": "assets/apple-splash-1125-2436.png",
+      "type": "image/png",
+      "sizes": "1125x2436"
+    },
+    {
+      "src": "assets/apple-splash-1242-2688.png",
+      "type": "image/png",
+      "sizes": "1242x2688"
+    },
+    {
+      "src": "assets/apple-splash-1668-2224.png",
+      "type": "image/png",
+      "sizes": "1668x2224"
+    },
+    {
+      "src": "assets/apple-splash-2048-1536.png",
+      "type": "image/png",
+      "sizes": "2048x1536"
+    },
+    {
+      "src": "assets/apple-splash-2224-1668.png",
+      "type": "image/png",
+      "sizes": "2224x1668"
+    },
+    {
+      "src": "assets/apple-splash-2688-1242.png",
+      "type": "image/png",
+      "sizes": "2688x1242"
+    },
+    {
+      "src": "assets/apple-splash-750-1334.png",
+      "type": "image/png",
+      "sizes": "750x1334"
+    },
+    {
+      "src": "assets/manifest-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "assets/apple-icon-167.png",
+      "type": "image/png",
+      "sizes": "167x167"
+    },
+    {
+      "src": "assets/apple-splash-1136-640.png",
+      "type": "image/png",
+      "sizes": "1136x640"
+    },
+    {
+      "src": "assets/apple-splash-1334-750.png",
+      "type": "image/png",
+      "sizes": "1334x750"
+    },
+    {
+      "src": "assets/apple-splash-1668-2388.png",
+      "type": "image/png",
+      "sizes": "1668x2388"
+    },
+    {
+      "src": "assets/apple-splash-2048-2732.png",
+      "type": "image/png",
+      "sizes": "2048x2732"
+    },
+    {
+      "src": "assets/apple-splash-2388-1668.png",
+      "type": "image/png",
+      "sizes": "2388x1668"
+    },
+    {
+      "src": "assets/apple-splash-2732-2048.png",
+      "type": "image/png",
+      "sizes": "2732x2048"
+    },
+    {
+      "src": "assets/apple-splash-828-1792.png",
+      "type": "image/png",
+      "sizes": "828x1792"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#FFFFFF",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#FFFFFF"
+}
