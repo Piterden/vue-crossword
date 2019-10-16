@@ -103,22 +103,9 @@
           {{ log }}
         </pre>
       </div>
-      <transition name="slide-left">
-        <div
-          v-if="editGridMode"
-          class="grid-list"
-          transition="slide-left"
-        >
-          <grid-preview
-            v-for="grid in grids"
-            :key="grid.id"
-            :grid="grid"
-            @loadgrid="loadGrid"
-          />
-        </div>
-      </transition>
     </div>
 
+    <div class="container">
     <builder-form
       :size="{ width, height }"
       :clues="clues"
@@ -167,6 +154,21 @@
         :suggestion-counts="suggestionCounts"
         @updateblanks="blanksUpdate"
       />
+    </transition>
+    </div>
+
+    <transition name="slide-left">
+      <div
+        v-if="editGridMode"
+        class="grid-list"
+      >
+        <grid-preview
+          v-for="grid in grids"
+          :key="grid.id"
+          :grid="grid"
+          @loadgrid="loadGrid"
+        />
+      </div>
     </transition>
   </div>
 </template>
@@ -949,6 +951,10 @@ export default {
           document.title,
           `${window.location.origin}${window.location.pathname}?width=${this.width}&height=${this.height}&blanks=${this.blanks.join()}`,
         )
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth',
+        })
       }
     },
 

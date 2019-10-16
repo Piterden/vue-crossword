@@ -31,7 +31,6 @@ txt-clues-color = #0f3810
 btn-border-color = #CE93D8
 
 #crossword
-  min-width 970px
   font-family 'Roboto', Helvetica, Arial, sans-serif
   text-align left
   color #2c3e50
@@ -87,8 +86,6 @@ btn-border-color = #CE93D8
 
         input
           text-align center
-          width 1em
-          height 1em
           font-size 1.35rem
           text-transform uppercase
           border none
@@ -253,10 +250,11 @@ btn-border-color = #CE93D8
       color #1fb1f3
 
   .builder-page
+    width 100%
     display flex
     flex-direction row
-    flex-wrap wrap-reverse
-    align-items flex-end
+    flex-wrap wrap
+    align-items flex-start
 
   .btn
     height 50px
@@ -267,62 +265,77 @@ btn-border-color = #CE93D8
     font-size 0.8em
     font-weight bold
     color txt-clues-color
-    outline none
+    cursor pointer
+    transition all 0.3s
+
+    &:hover
+      background bg-filled-color
 
     &.editing
       background bg-filled-color
 
-  .toolbox
-    padding 0 20px
+  .grid-list
+    display grid
+    grid-gap: 10px
+    grid-template-columns: repeat(auto-fill)
+    justify-content space-around
+    align-items space-around
+    overflow-y auto
+    background-color white
+    flex-grow 1
+    flex-shrink 1
+
+  .grid-preview
+    display flex
+    justify-content center
+    align-items stretch
+    cursor pointer
+    min-width 80px
+    width 100%
+
+    .col
+      margin 0
+      height 100%
+      min-width 10px
+
+    .cell
+      margin 0 0 -1px -1px
+      width 100%
+      height 10px
+      border 1px solid
+
+      &.blank
+        background #000
+
+
+.toolbox
     text-align center
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    flex-shrink 1
+    flex-grow 1
 
     > button
-      margin 5px auto
+      margin-bottom  5px
       display block
 
     > div
       display flex
       flex-direction column
 
-      &.grid-list
-        position absolute
-        right 30px
-        top 30px
-        height 90%
-        overflow-y auto
-        background-color white
-        flex-wrap wrap
-        flex-direction row
-        width 33%
-        justify-content space-around
-        align-content flex-start
-        align-items center
-
-        .grid-preview
-          margin 0 5px 10px 5px
-          display grid
-          cursor pointer
-
-          .col
-            margin 0
-
-          .cell
-            margin 0 0 -1px -1px
-            width 10px
-            height 10px
-            border 1px solid
-
-            &.blank
-              background #000
 
   .log
-    position absolute
+    text-align center
 
     pre
-      text-align left
+      text-align center
 
   .builder-grid.page-inner
     white-space nowrap
+    flex-shrink 1
+    flex-grow 1
 
     .cell
       display inline-flex
@@ -341,10 +354,6 @@ btn-border-color = #CE93D8
       &.error > div > input
         background red
 
-  .page-inner
-    margin-right 20px
-    margin-bottom 20px
-    padding 0 10px
 
   .button
     display flex
@@ -402,27 +411,60 @@ btn-border-color = #CE93D8
 
   .controls
     width 300px
-    margin-left 50px
+
+    .grid-name-field
+      margin-bottom 10px
 
   .builder-grid.page-inner
     .cell.filled > div.hovered > input
       background bg-accent-color
 
   .builder-form.page-inner
+    display flex
+    justify-content center
+    align-items flex-start
     overflow-y auto
     overflow-x hidden
-    height 96vh
+    flex-shrink 1
+    flex-grow 1
+
+.container
+  display flex
+  justify-content flex-start
+  align-items center
+  flex-wrap wrap
+  flex-direction column
+  flex-grow 1
+  flex-shrink 1
+  margin-bottom 20px
+  margin-left 10px
+  margin-right 10px
 
 @media screen and (max-width: 767px)
   #crossword
+    min-width auto
+
     .page
       flex-direction column
+      align-items center
 
       .page-inner
         width 100%
+        display flex
+        justify-content center
 
       .builder-grid
         margin 0 auto
+
+    .toolbox
+      display flex
+      flex-direction row
+      justify-content space-between
+      align-items center
+      flex-wrap wrap
+
+    .grid-list
+      width 100%
 
 .slide-left-enter-active
 .slide-left-leave-active
