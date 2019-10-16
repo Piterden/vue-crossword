@@ -306,56 +306,53 @@ btn-border-color = #CE93D8
       &.blank
         background #000
 
+.builder-grid.page-inner
+  white-space nowrap
+  flex-shrink 1
+  flex-grow 1
+
+  .cell
+    display inline-flex
+    margin -2px -1px -2px 0px
+    padding 0
+    width 32px
+    height 38px
+
+    &.blank
+      background #000
+
+    &.filled > div > input
+      background bg-filled-color
+      border 2px solid grid-border-color
+
+    &.focused > div > input
+      background #FFEB3B
+
+    &.error > div > input
+      background red
 
 .toolbox
-    text-align center
+  text-align center
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
+  flex-shrink 1
+  flex-grow 1
+
+  > button
+    margin-bottom  5px
+    display block
+
+  > div
     display flex
     flex-direction column
-    justify-content center
-    align-items center
-    flex-shrink 1
-    flex-grow 1
-
-    > button
-      margin-bottom  5px
-      display block
-
-    > div
-      display flex
-      flex-direction column
-
 
   .log
     text-align center
 
     pre
       text-align center
-
-  .builder-grid.page-inner
-    white-space nowrap
-    flex-shrink 1
-    flex-grow 1
-
-    .cell
-      display inline-flex
-      margin -2px -1px -2px 0px
-      padding 0
-      width 32px
-      height 38px
-
-      &.blank
-        background #000
-
-      &.filled > div > input
-        background bg-filled-color
-        border 2px solid grid-border-color
-
-      &.focused > div > input
-        background #FFEB3B
-
-      &.error > div > input
-        background red
-
 
   .button
     display flex
