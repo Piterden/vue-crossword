@@ -300,7 +300,6 @@ btn-border-color = #CE93D8
 
     .cell
       margin 0 0 -1px -1px
-      width 100%
       height 10px
       border 1px solid
 
@@ -343,6 +342,9 @@ btn-border-color = #CE93D8
       padding 0
       width 32px
       height 38px
+
+      &.blank
+        background #000
 
       &.filled > div > input
         background bg-filled-color
