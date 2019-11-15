@@ -70,6 +70,8 @@ npm run lint
 
 PR's are appreciated.
 
+[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/0)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/0)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/1)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/1)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/2)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/2)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/3)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/3)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/4)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/4)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/5)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/5)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/6)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/6)[![](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/images/7)](https://sourcerer.io/fame/Piterden/Piterden/vue-crossword/links/7)
+
 ## Authors
 
 - **Denis Efremov** - *Code|Idea* - [Piterden](https://github.com/Piterden)
