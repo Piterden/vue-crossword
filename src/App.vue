@@ -251,6 +251,9 @@ btn-border-color = #CE93D8
       font-size 0.75em
       font-weight bold
       color #1fb1f3
+      width 15px
+      height 15px
+      text-align right
 
   .builder-page
     display flex
