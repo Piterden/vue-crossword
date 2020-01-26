@@ -286,36 +286,36 @@ btn-border-color = #CE93D8
     &.blank
       background #000
 
-      &.grid-list
-        position absolute
-        right 30px
-        top 30px
-        height 90%
-        overflow-y auto
-        background-color white
-        flex-wrap wrap
-        flex-direction row
-        width 33%
-        justify-content space-around
-        align-content flex-start
-        align-items center
+    .grid-list
+      position absolute
+      right 30px
+      top 30px
+      height 90%
+      overflow-y auto
+      background-color white
+      flex-wrap wrap
+      flex-direction row
+      width 33%
+      justify-content space-around
+      align-content flex-start
+      align-items center
 
-        .grid-preview
-          margin 0 5px 10px 5px
-          display grid
-          cursor pointer
+      .grid-preview
+        margin 0 5px 10px 5px
+        display grid
+        cursor pointer
 
-          .col
-            margin 0
+        .col
+          margin 0
 
-          .cell
-            margin 0 0 -1px -1px
-            width 10px
-            height 10px
-            border 1px solid
+        .cell
+          margin 0 0 -1px -1px
+          width 10px
+          height 10px
+          border 1px solid
 
-            &.blank
-              background #000
+          &.blank
+            background #000
 
   .log
     position absolute
