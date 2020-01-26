@@ -22,7 +22,7 @@ export default {
 
 <style lang="stylus">
 grid-border-color = #ccc
-bg-accent-color = #A5D6A7
+bg-accent-color = #A5D6A7cc
 bg-error-color = #b71c1cdd
 bg-filled-color = #eafe2b85
 txt-danger-color = #e53935
