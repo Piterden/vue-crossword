@@ -1,5 +1,9 @@
 <template>
   <div
+    :style="{
+      minWidth: `${width * 10}px`,
+      gridTemplateColumns: Array.from({ length: width }).fill('11px').join(' '),
+    }"
     class="grid-preview"
     @click="$emit('loadgrid', grid)"
   >
