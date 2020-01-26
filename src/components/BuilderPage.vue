@@ -566,11 +566,11 @@ export default {
     },
 
     async updateGrids () {
-      const response = await fetch('https://crossword.live/crossword/grids')
+      const response = await fetch('http://185.246.153.55:3000/crossword/grids')
       const json = await response.json()
 
-      if (json && json.success) {
-        this.grids = json.data.grids
+      if (json) {
+        this.grids = json
       }
     },
 
@@ -774,7 +774,7 @@ export default {
       })
 
       this.filledWords.push({ word, x, y, isVertical })
-      const url = `https://crossword.live/crossword/clues/${this.locale}find/${word}`
+      const url = `http://185.246.153.55:3000/crossword/clues/${this.locale}find/${word}`
       let response
 
       if ('caches' in window) {
@@ -972,7 +972,7 @@ export default {
           return
         }
         let response
-        const url = `https://crossword.live/crossword/words/${this.locale}find/0/${query}`
+        const url = `http://185.246.153.55:3000/crossword/words/${this.locale}find/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('words')
@@ -1010,7 +1010,7 @@ export default {
           return { query, count: 1 }
         }
         let response
-        const url = `https://crossword.live/crossword/words/${this.locale}count/${query}`
+        const url = `http://185.246.153.55:3000/crossword/words/${this.locale}count/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('counts')
