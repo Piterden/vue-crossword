@@ -22,7 +22,7 @@ export default {
 
 <style lang="stylus">
 grid-border-color = #ccc
-bg-accent-color = #d9d8d4cc
+bg-accent-color = #A5D6A7
 bg-error-color = #b71c1cdd
 bg-filled-color = #eafe2b85
 txt-danger-color = #e53935
@@ -332,6 +332,9 @@ btn-border-color = #CE93D8
       padding 0
       width 32px
       height 38px
+
+      &.filled
+        background bg-accent-color
 
   > button
     margin-bottom  5px
