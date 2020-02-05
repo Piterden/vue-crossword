@@ -84,5 +84,6 @@ This project is licensed under the MIT License - see the [LICENSE](https://githu
 
 ## Donate
 
-![Keybase BTC](https://img.shields.io/keybase/btc/piterden.svg?style=for-the-badge&logo=bitcoin)
-
+- **BTC** `3F275vPSCvYW19MHZqSjw79fEwwU4MbTgV`
+- **LTC** `MGMCQB3QAcrSBjU3eGJviqB2J2f5BNVRGr`
+- **DOGE** `D5m69FRDGEn3G3xuakvqTxUpGVt6NegKJp`
