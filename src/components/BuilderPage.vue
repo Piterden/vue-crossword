@@ -909,7 +909,7 @@ export default {
       }
 
       const response = await fetch(
-        'https://crossword.live/crossword/grids',
+        'https://bots.crossword.live:3000/crossword/grids',
         {
           method: 'POST',
           headers: {
