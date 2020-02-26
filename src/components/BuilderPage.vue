@@ -827,7 +827,7 @@ export default {
 
     newCrossword () {
       fetch(
-        'https://crossword.live/crossword/create',
+        'https://bots.crossword.live:3000/crossword/create',
         {
           method: 'POST',
           data: {
@@ -872,7 +872,7 @@ export default {
     },
 
     async loadCrossword (id) {
-      const response = await fetch(`https://crossword.live/crossword/${id}`)
+      const response = await fetch(`https://bots.crossword.live:3000/crossword/${id}`)
         .catch(console.log)
 
       if (response && response.success) {
