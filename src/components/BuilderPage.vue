@@ -151,6 +151,7 @@
 
     <transition name="slide-right">
       <builder-grid
+        ref="grid"
         :words="words"
         :blanks="blanks"
         :letters="letters"
@@ -459,6 +460,27 @@ export default {
     locale () {
       return this.lang === 'en' ? 'en/' : ''
     },
+
+    crosses () {
+      return [
+        ...this.horizontalWords.map(
+          ({ x, y, length }) => Array.from(
+            { length },
+            (el, idx) => `${x + idx}:${y}`
+          )
+        )
+          .flat()
+          .filter(
+            (id) => this.verticalWords.map(
+              ({ x, y, length }) => Array.from(
+                { length },
+                (el, idx) => `${x}:${y + idx}`)
+            )
+              .flat()
+              .indexOf(id) !== -1
+          ),
+      ]
+    },
   },
 
   watch: {
@@ -676,6 +698,8 @@ export default {
           this.blanksUpdate(`${x}:${y}`)
         }
       }
+
+      this.addCrossClasses()
     },
 
     clearGrid () {
@@ -718,6 +742,7 @@ export default {
         if (this.verticalSym && this.horizontalSym) {
           this.removeBlank(diagonalIndex)
         }
+        this.addCrossClasses()
 
         return
       }
@@ -735,6 +760,7 @@ export default {
       if (this.verticalSym && this.horizontalSym) {
         this.addBlank(diagonalIndex)
       }
+      this.addCrossClasses()
     },
 
     addBlank (id) {
@@ -949,6 +975,8 @@ export default {
           document.title,
           `${window.location.origin}${window.location.pathname}?width=${this.width}&height=${this.height}&blanks=${this.blanks.join()}`,
         )
+
+        this.addCrossClasses()
       }
     },
 
@@ -1039,6 +1067,18 @@ export default {
     changeDensity ({ density }) {
       // eslint-disable-next-line no-magic-numbers
       this.blankProbability = 1 / density * 2
+    },
+
+    addCrossClasses () {
+      this.$nextTick(() => {
+        this.$refs.grid.$children
+          .map((component) => {
+            component.$el.classList.remove('cross')
+            return component
+          })
+          .filter(({ x, y }) => this.crosses.includes(`${x}:${y}`))
+          .forEach(({ $el: el }) => el.classList.add('cross'))
+      })
     },
   },
 }

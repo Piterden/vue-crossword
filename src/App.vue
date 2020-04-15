@@ -58,6 +58,9 @@ btn-border-color = #CE93D8
     background red
     color white
 
+  .cross
+    background #d7befdc9
+
   .grid
     display inline-table
     border-radius .5em
