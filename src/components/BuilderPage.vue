@@ -586,7 +586,7 @@ export default {
     },
 
     async updateGrids () {
-      const response = await fetch('https://bots.crossword.live:3000/crossword/grids')
+      const response = await fetch('//185.151.245.237:3000/crossword/grids')
       const json = await response.json()
 
       if (json) {
@@ -798,7 +798,7 @@ export default {
       })
 
       this.filledWords.push({ word, x, y, isVertical })
-      const url = `https://bots.crossword.live:3000/crossword/clues/${this.locale}find/${word}`
+      const url = `//185.151.245.237:3000/crossword/clues/${this.locale}find/${word}`
       let response
 
       if ('caches' in window) {
@@ -853,7 +853,7 @@ export default {
 
     newCrossword () {
       fetch(
-        'https://bots.crossword.live:3000/crossword/create',
+        '//185.151.245.237:3000/crossword/create',
         {
           method: 'POST',
           data: {
@@ -898,7 +898,7 @@ export default {
     },
 
     async loadCrossword (id) {
-      const response = await fetch(`https://bots.crossword.live:3000/crossword/${id}`)
+      const response = await fetch(`//185.151.245.237:3000/crossword/${id}`)
         .catch(console.log)
 
       if (response && response.success) {
@@ -935,7 +935,7 @@ export default {
       }
 
       const response = await fetch(
-        'https://bots.crossword.live:3000/crossword/grids',
+        '//185.151.245.237:3000/crossword/grids',
         {
           method: 'POST',
           headers: {
@@ -994,7 +994,7 @@ export default {
           return
         }
         let response
-        const url = `https://bots.crossword.live:3000/crossword/words/${this.locale}find/${query}`
+        const url = `//185.151.245.237:3000/crossword/words/${this.locale}find/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('words')
@@ -1032,7 +1032,7 @@ export default {
           return { query, count: 1 }
         }
         let response
-        const url = `https://bots.crossword.live:3000/crossword/words/${this.locale}count/${query}`
+        const url = `//185.151.245.237:3000/crossword/words/${this.locale}count/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('counts')
