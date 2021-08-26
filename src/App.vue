@@ -229,7 +229,7 @@ btn-border-color = #CE93D8
     display inline-flex
     position relative
     cursor pointer
-    width 40px
+    width 34px
     height 35px
 
     &.hovered > input
@@ -240,7 +240,7 @@ btn-border-color = #CE93D8
 
     input
       cursor pointer
-      width 100%
+      width 31px
       text-align center
       font-size 1.25em
       background transparent
@@ -331,9 +331,9 @@ btn-border-color = #CE93D8
 
     .cell
       display inline-flex
-      margin -2px -1px -2px 0px
+      margin -2px 0
       padding 0
-      width 32px
+      width 34px
       height 38px
 
       &.filled

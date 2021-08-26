@@ -466,18 +466,18 @@ export default {
         ...this.horizontalWords.map(
           ({ x, y, length }) => Array.from(
             { length },
-            (el, idx) => `${x + idx}:${y}`
-          )
+            (el, idx) => `${x + idx}:${y}`,
+          ),
         )
           .flat()
           .filter(
             (id) => this.verticalWords.map(
               ({ x, y, length }) => Array.from(
                 { length },
-                (el, idx) => `${x}:${y + idx}`)
+                (el, idx) => `${x}:${y + idx}`),
             )
               .flat()
-              .indexOf(id) !== -1
+              .indexOf(id) !== -1,
           ),
       ]
     },
@@ -586,7 +586,7 @@ export default {
     },
 
     async updateGrids () {
-      const response = await fetch('//185.151.245.237:3000/crossword/grids')
+      const response = await fetch('https://chess.teacherlight.ru:3443/crossword/grids')
       const json = await response.json()
 
       if (json) {
@@ -798,7 +798,7 @@ export default {
       })
 
       this.filledWords.push({ word, x, y, isVertical })
-      const url = `//185.151.245.237:3000/crossword/clues/${this.locale}find/${word}`
+      const url = `https://chess.teacherlight.ru:3443/crossword/clues/${this.locale}find/${word}`
       let response
 
       if ('caches' in window) {
@@ -853,7 +853,7 @@ export default {
 
     newCrossword () {
       fetch(
-        '//185.151.245.237:3000/crossword/create',
+        'https://chess.teacherlight.ru:3443/crossword/create',
         {
           method: 'POST',
           data: {
@@ -864,7 +864,7 @@ export default {
             width: this.width,
             height: this.height,
           },
-        }
+        },
       )
         .then((response) => {
           if (!response.success) {
@@ -893,12 +893,12 @@ export default {
             width: this.width,
             height: this.height,
           },
-        }
+        },
       )
     },
 
     async loadCrossword (id) {
-      const response = await fetch(`//185.151.245.237:3000/crossword/${id}`)
+      const response = await fetch(`https://chess.teacherlight.ru:3443/crossword/${id}`)
         .catch(console.log)
 
       if (response && response.success) {
@@ -935,7 +935,7 @@ export default {
       }
 
       const response = await fetch(
-        '//185.151.245.237:3000/crossword/grids',
+        'https://chess.teacherlight.ru:3443/crossword/grids',
         {
           method: 'POST',
           headers: {
@@ -945,7 +945,7 @@ export default {
           body: Object.keys(params)
             .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(params[key]))
             .join('&'),
-        }
+        },
       )
         .catch((error) => {
           console.log(error)
@@ -994,7 +994,7 @@ export default {
           return
         }
         let response
-        const url = `//185.151.245.237:3000/crossword/words/${this.locale}find/${query}`
+        const url = `https://chess.teacherlight.ru:3443/crossword/words/${this.locale}find/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('words')
@@ -1032,7 +1032,7 @@ export default {
           return { query, count: 1 }
         }
         let response
-        const url = `//185.151.245.237:3000/crossword/words/${this.locale}count/${query}`
+        const url = `https://chess.teacherlight.ru:3443/crossword/words/${this.locale}count/${query}`
 
         if ('caches' in window && useCache) {
           const cache = await caches.open('counts')
